@@ -1,16 +1,6 @@
-# safeevents
+# SafeEvents FrontEnd
+En aquest repositori hi haurà el front end de l'aplicació Safe Events, feta en Dart, amb el Flutter.
+El projecte s'ha generat amb el Plugin de Intelij de Flutter.
 
-A new Flutter project.
+Es necessiten els SDK de Flutter, Dart i Android Studio JDK per poder visualitzar les pantalles.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
