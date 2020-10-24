@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
-class EventsGeneral extends StatelessWidget {
+class EventsGeneral extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    _StateEvents();
+  }
+}
+
+class _StateEvents extends State {
+  /*OBTENER LISTA DE EVENTOS*/
+
   var _categories = [
     'Música',
     'Teatro',
     'Deporte',
     'Arte'
   ]; //nombre de las categorias
-
-  void ImprimirTexto() {
-    print('texto');
-  }
-  /* @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
 
   void getEventsFiltrats() {
     //Pedir la lista de eventos que tienen que salir para el filtro que se pasa
@@ -24,8 +25,6 @@ class EventsGeneral extends StatelessWidget {
   void getEvents() {
     //Pedir la lista de todos los eventos que se tienen que mostrar
   }
-
-  EventsGeneral()*/
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -49,7 +48,7 @@ class EventsGeneral extends StatelessWidget {
             );
           }).toList(),
           onChanged: () {
-            ImprimirTexto();
+            /*mostrar los eventos filtrados por el tipo de evento escogido*/
           },
         ),
         IconButton(
@@ -66,12 +65,25 @@ class EventsGeneral extends StatelessWidget {
         )
       ]),
       /*ListView.builder(
-                itemCount: /*tamaño array de items*/,
-                itemBuilder: (context, position) {
-                  return RaisedButton(
-                    onPressed: /*hacer que habra la consulta especifica del evento*/,
-                    )
-                })*/
+          itemCount: GeneralEvents.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const  EndeInsets.symmetric(
+                vertical: 1.0, horizontal: 4.0,
+              ),
+              child: Card(
+                child: ListTile(
+                  onTap: () {
+                    /*mostrar la ventana de info de evento especifico*/
+                  },
+                  title: /*primera linea*/,
+                  subtitle: /*segunda linea*/,
+                  isThreeLine: /*tercera linea*/,
+                )
+              ),
+            );
+          }
+        )*/
     ])));
   }
 }
