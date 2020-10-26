@@ -1,10 +1,16 @@
 //This page shows the information of a selected user
 
 import 'package:flutter/material.dart';
+import 'User.dart';
 
-void main() => runApp(UserInfo());
+void main() =>
+    runApp(UserInfo(User('Paco2', 'paco2@email.com', 'paco2thebest')));
 
 class UserInfo extends StatelessWidget {
+  User userToShow;
+
+  UserInfo(this.userToShow);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,11 +20,14 @@ class UserInfo extends StatelessWidget {
           ),
           body: Column(children: [
             Text('Name'),
-            Text('Here goes the user\'s name'),
+            Text(userToShow.getUsername()),
             Text('Email'),
-            Text('Here goes the user\'s email'),
+            Text(userToShow.email),
             Text('Verified'),
-            Text('Here goes a mask whether if the user is verified or not'),
+            if (userToShow.getVerified())
+              Text('This user is verified')
+            else
+              Text('This user is not verified'),
             Text('Events'),
             Text('Here a list of events may be showed'),
           ])),
