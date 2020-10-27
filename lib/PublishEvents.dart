@@ -1,16 +1,24 @@
 
+import 'dart:developer';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-void main() {
-  runApp(new Publish());
+void main() => runApp(MaterialApp(
+  title: "PublicaEvents",
+  home: Publish(),
+));
+class Publish extends StatefulWidget {
+  Publish({Key key}) : super(key: key);
+  @override
+  _PublishState createState() => _PublishState();
 }
-
-class Publish extends StatelessWidget {
+class _PublishState extends State<Publish> {
   DateTime selectedDate = DateTime.now();
 
   final format = DateFormat("yyyy-MM-dd");
   final formath = DateFormat("HH:mm");
+  String tipus ='Escull el tipus d\'esdeveniment';
   @override
   Widget build(BuildContext context) {
     String _nom;
@@ -21,11 +29,12 @@ class Publish extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Container(
-          margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 120.0),
+          margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
           alignment: Alignment.bottomCenter,
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Wrap(
+            child: SingleChildScrollView(
+              child: Column(
               children: <Widget>[TextFormField(
                 decoration: InputDecoration(
                   labelText: "Nom Esdeveniment",
@@ -95,13 +104,35 @@ class Publish extends StatelessWidget {
 
                     ],
                   ),
-                ),Container(
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20.0, left: 10.0),
+                  child: Column(
+                    children: <Widget>[
+                      DropdownButton<String>(
+                          value: tipus,
+                          onChanged: (String newValue) {
+                            setState(() {
+                              tipus = newValue;
+                            });
+                          },
+                          items: <String>['Escull el tipus d\'esdeveniment','Concert', 'Teatre','Esdeveniment Esportiu','Altres'].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: new Text(value),
+                            );
+                          }).toList(),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
                   margin: EdgeInsets.only(top: 20.0, left: 10.0),
                   child: Column(
                     children: <Widget>[
                       Text('Introdueix la Data de l\'Esdeveniment'),
                       Container(
-                        margin: EdgeInsets.only(left: 100.0, right:70.0),
+                        margin: EdgeInsets.only(left: 60.0, right:70.0),
                         child: DateTimeField(
                             format: format,
                             onShowPicker: (context, currentValue){
@@ -123,7 +154,7 @@ class Publish extends StatelessWidget {
                     children: <Widget>[
                       Text('Introdueix l\'hora de l\'Esdeveniment'),
                       Container(
-                        margin: EdgeInsets.only(left: 120.0, right:94.0),
+                        margin: EdgeInsets.only(left: 70.0, right:94.0),
                         child: DateTimeField(
                             format: formath,
                             onShowPicker: (context, currentValue) async{
@@ -143,7 +174,7 @@ class Publish extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       RaisedButton(
-                          child: Text('Boton'),
+                          child: Text('Publica  '),
                           onPressed: () =>{
                             publicaEsdeveniment()
                           },
@@ -151,7 +182,9 @@ class Publish extends StatelessWidget {
                     ],
                   )
                 ),
+
               ],
+            ),
             ),
           ),
         ),
