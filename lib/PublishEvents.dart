@@ -18,14 +18,23 @@ class _PublishState extends State<Publish> {
 
   final format = DateFormat("yyyy-MM-dd");
   final formath = DateFormat("HH:mm");
+  String error = '';
+  var showerror = false;
+  var showerrorNom = false;
+  var showerrorDir = false;
+  var showerrorPreu = false;
+  var showerrorPicklist = false;
+  var showerrorDataHora = false;
+
   String tipus ='Escull el tipus d\'esdeveniment';
+  String _nom;
+  String _descripcio;
+
+  String _direccio;
+  String _preu;
   @override
   Widget build(BuildContext context) {
-    String _nom;
-    String _descripcio;
 
-    String _direccio;
-    String _preu;
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -35,7 +44,7 @@ class _PublishState extends State<Publish> {
             padding: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
               child: Column(
-              children: <Widget>[TextFormField(
+              children: <Widget>[TextField(
                 decoration: InputDecoration(
                   labelText: "Nom Esdeveniment",
                   fillColor: Colors.white,
@@ -45,9 +54,23 @@ class _PublishState extends State<Publish> {
                   )
                 ),
                 maxLines: 1,
-                validator: (input) => input.isEmpty ? 'Error' : null,
-                onSaved: (input) => _descripcio = input,
+                onChanged: (input) => _descripcio = input,
               ),
+                Container(
+                  child:Visibility (
+                      visible: showerrorNom,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            error,
+                            style: TextStyle(
+                              color: Colors.red[700],
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+                ),
                 Container(
                   margin: EdgeInsets.only(top: 20.0),
                   child: TextFormField(
@@ -84,6 +107,20 @@ class _PublishState extends State<Publish> {
 
                     ],
                   ),
+                ),Container(
+                  child:Visibility (
+                      visible: showerrorDir,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            error,
+                            style: TextStyle(
+                              color: Colors.red[700],
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20.0, left: 10.0),
@@ -103,6 +140,20 @@ class _PublishState extends State<Publish> {
                     ),
 
                     ],
+                  ),
+                ),Container(
+                  child:Visibility (
+                      visible: showerrorPreu,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            error,
+                            style: TextStyle(
+                              color: Colors.red[700],
+                            ),
+                          ),
+                        ],
+                      )
                   ),
                 ),
                 Container(
@@ -124,6 +175,21 @@ class _PublishState extends State<Publish> {
                           }).toList(),
                       )
                     ],
+                  ),
+                ),
+                Container(
+                  child:Visibility (
+                      visible: showerrorPicklist,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            error,
+                            style: TextStyle(
+                              color: Colors.red[700],
+                            ),
+                          ),
+                        ],
+                      )
                   ),
                 ),
                 Container(
@@ -170,6 +236,22 @@ class _PublishState extends State<Publish> {
                   ),
                 ),
                 Container(
+                    margin: EdgeInsets.only(top: 10.0, left: 10.0),
+                    child:Visibility (
+                      visible: showerrorDataHora,
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                              error,
+                            style: TextStyle(
+                              color: Colors.red[700],
+                            ),
+                          ),
+                        ],
+                      )
+                  ),
+                ),
+                Container(
                   margin: EdgeInsets.only(top: 10.0, left: 10.0),
                   child: Row(
                     children: <Widget>[
@@ -193,12 +275,17 @@ class _PublishState extends State<Publish> {
   }
 
   publicaEsdeveniment() {
-    //do stuff
+    //FALTEN VALIDACIONS, DEPENENT DEL SHOWERRORXXX ES MOSTRAN ERRORS DEPEN DEL LLOC
+    // if()
+    log('Nom? '+_nom);
+    error = 'hola';
+    setState(() {
+      log('showerror?? '+ showerror.toString());
+      if(!showerror)showerror = true;
+      else showerror = false;
+    });
+
   }
-
-
-
-
 }
 
 
