@@ -1,4 +1,22 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+class Debouncer {
+  final int milliseconds;
+  VoidCallback action;
+  Timer _timer;
+
+  Debouncer({this.milliseconds});
+
+  run(VoidCallback action) {
+    if (null != _timer) {
+      _timer.cancel();
+    }
+    _timer = Timer(Duration(milliseconds: milliseconds), action);
+  }
+  
+}
 
 class EventsGeneral extends StatefulWidget {
   @override
@@ -10,7 +28,7 @@ class EventsGeneral extends StatefulWidget {
 
 class _StateEvents extends State {
   /*OBTENER LISTA DE EVENTOS*/
-
+  final debouncer = Debouncer(milliseconds: 500);
   var _categories = [
     'Música',
     'Teatro',
@@ -48,7 +66,9 @@ class _StateEvents extends State {
             );
           }).toList(),
           onChanged: () {
-            /*mostrar los eventos filtrados por el tipo de evento escogido*/
+            debouncer.run() {
+              setState() { /*mostrar los eventos filtrados por el tipo de evento escogido*/}
+            }
           },
         ),
         IconButton(
