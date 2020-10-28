@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+
+TextEditingController nomcontroller = new TextEditingController();
 void main() => runApp(MaterialApp(
   title: "PublicaEvents",
   home: Publish(),
@@ -45,6 +47,7 @@ class _PublishState extends State<Publish> {
             child: SingleChildScrollView(
               child: Column(
               children: <Widget>[TextField(
+                controller: nomcontroller,
                 decoration: InputDecoration(
                   labelText: "Nom Esdeveniment",
                   fillColor: Colors.white,
@@ -276,8 +279,8 @@ class _PublishState extends State<Publish> {
 
   publicaEsdeveniment() {
     //FALTEN VALIDACIONS, DEPENENT DEL SHOWERRORXXX ES MOSTRAN ERRORS DEPEN DEL LLOC
-    // if()
-    log('Nom? '+_nom);
+    // if(nomcontroller.text)
+    log('Nom? '+nomcontroller.text);
     error = 'hola';
     setState(() {
       log('showerror?? '+ showerror.toString());
