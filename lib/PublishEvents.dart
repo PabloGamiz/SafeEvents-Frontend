@@ -2,10 +2,14 @@
 import 'dart:developer';
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
+TextEditingController dircontroller = new TextEditingController();
+TextEditingController preucontroller = new TextEditingController();
+
 void main() => runApp(MaterialApp(
   title: "PublicaEvents",
   home: Publish(),
@@ -20,7 +24,12 @@ class _PublishState extends State<Publish> {
 
   final format = DateFormat("yyyy-MM-dd");
   final formath = DateFormat("HH:mm");
-  String error = '';
+  String errorNom = '';
+  String errorDir = '';
+  String errorPreu = '';
+  String errorPicklist = '';
+  String errorDataHora = '';
+
   var showerror = false;
   var showerrorNom = false;
   var showerrorDir = false;
@@ -29,11 +38,12 @@ class _PublishState extends State<Publish> {
   var showerrorDataHora = false;
 
   String tipus ='Escull el tipus d\'esdeveniment';
-  String _nom;
-  String _descripcio;
-
-  String _direccio;
-  String _preu;
+  String _nom ='';
+  String _descripcio='';
+  var _data;
+  var _hora;
+  String _direccio='';
+  String _preu='';
   @override
   Widget build(BuildContext context) {
 
@@ -65,7 +75,7 @@ class _PublishState extends State<Publish> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            error,
+                            errorNom,
                             style: TextStyle(
                               color: Colors.red[700],
                             ),
@@ -95,6 +105,7 @@ class _PublishState extends State<Publish> {
                   margin: EdgeInsets.only(top: 20.0, left: 10.0),
                   child: Column(
                     children: <Widget>[TextFormField(
+                      controller: dircontroller,
                       decoration: InputDecoration(
                           labelText: "Direcció de l\'Esdeveniment",
                           fillColor: Colors.white,
@@ -116,7 +127,7 @@ class _PublishState extends State<Publish> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            error,
+                            errorDir,
                             style: TextStyle(
                               color: Colors.red[700],
                             ),
@@ -129,8 +140,9 @@ class _PublishState extends State<Publish> {
                   margin: EdgeInsets.only(top: 20.0, left: 10.0),
                   child: Column(
                     children: <Widget>[TextFormField(
+                      controller:preucontroller,
                       decoration: InputDecoration(
-                          labelText: "Preu",
+                          labelText: "Preu (en €)",
                           fillColor: Colors.white,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(25.0),
@@ -140,6 +152,9 @@ class _PublishState extends State<Publish> {
                       maxLines: 1,
                       validator: (input) => input.isEmpty ? 'Error' : null,
                       onSaved: (input) => _preu = input,
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly
+                      ], // Only numbers can be entered
                     ),
 
                     ],
@@ -150,7 +165,7 @@ class _PublishState extends State<Publish> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            error,
+                            errorPreu,
                             style: TextStyle(
                               color: Colors.red[700],
                             ),
@@ -186,7 +201,7 @@ class _PublishState extends State<Publish> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                            error,
+                            errorPicklist,
                             style: TextStyle(
                               color: Colors.red[700],
                             ),
@@ -205,11 +220,12 @@ class _PublishState extends State<Publish> {
                         child: DateTimeField(
                             format: format,
                             onShowPicker: (context, currentValue){
+                              _data = currentValue;
                               return showDatePicker(
                                   context: context,
                                   initialDate: currentValue ?? DateTime.now(),
                                   firstDate: DateTime(1900),
-                                  lastDate: DateTime(2100)
+                                  lastDate: DateTime(2100),
                               );
                             }
                         ),
@@ -231,6 +247,7 @@ class _PublishState extends State<Publish> {
                                 context: context,
                                 initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
                               );
+                              _hora = DateTimeField.convert(time);
                               return DateTimeField.convert(time);
                             }
                         ),
@@ -245,7 +262,7 @@ class _PublishState extends State<Publish> {
                       child: Column(
                         children: <Widget>[
                           Text(
-                              error,
+                              errorDataHora,
                             style: TextStyle(
                               color: Colors.red[700],
                             ),
@@ -279,17 +296,50 @@ class _PublishState extends State<Publish> {
 
   publicaEsdeveniment() {
     //FALTEN VALIDACIONS, DEPENENT DEL SHOWERRORXXX ES MOSTRAN ERRORS DEPEN DEL LLOC
-    // if(nomcontroller.text)
-    log('Nom? '+nomcontroller.text);
-    error = 'hola';
+    var nom = nomcontroller.text;
+    var dir = dircontroller.text;
+    var preu = preucontroller.text;
+    log('nom: '+nom+' dir: '+dir+ 'preu: '+preu);
     setState(() {
-      log('showerror?? '+ showerror.toString());
-      if(!showerror)showerror = true;
-      else showerror = false;
-    });
+      if(/*nom.isEmpty ||*/ nom == ''){
+        errorNom= 'El Nom de l\'esdeveniment ha d\'estar informat';
+        showerrorNom = true;
+      }else showerrorNom = false;
+
+      if(/*dir.isEmpty ||*/ dir == ''){
+        errorDir= 'La direcció de l\'esdeveniment ha d\'estar informada';
+        showerrorDir = true;
+      }else showerrorDir = false;
+
+      if(/*preu.isEmpty || */preu == '') {
+        errorPreu = 'El Preu de l\'esdeveniment ha d\'estar informat';
+        showerrorPreu = true;
+      }else if(int.parse(preu) < 0){
+        errorPreu = 'El Preu de l\'esdeveniment ha de ser positiu';
+        showerrorPreu = true;
+      }else showerrorPreu = false;
+
+      if(tipus == 'Escull el tipus d\'esdeveniment') {
+        errorPicklist = 'No és un tipus d\'esdeveniment vàlid';
+        showerrorPicklist = true;
+      }else showerrorPicklist = false;
+
+      if(/*_data.isEmpty ||*/ _data.toString() == '' /*|| _hora.isEmpty*/ || _hora.toString() == '') {
+        errorDataHora =
+        'La data i l\'hora de l\'esdeveniment han d\'estar informades';
+        showerrorDataHora = true;
+      }
+        /*type 'DateTime' is not a subtype of type 'String'
+      }else if(DateTime.parse(_data).isBefore(DateTime.now()) ){
+        errorDataHora = 'La data no pot ser anterior o igual a avui';
+        showerrorDataHora = true;
+      }*/
+      else showerrorDataHora = false;
+      });
+    }
 
   }
-}
+
 
 
 
