@@ -1,36 +1,101 @@
 //This page shows the information of a selected user
 
 import 'package:flutter/material.dart';
-import 'User.dart';
+import 'dart:convert';
 
-void main() =>
-    runApp(UserInfo(User('Paco2', 'paco2@email.com', 'paco2thebest')));
+import 'package:flutter/services.dart';
 
-class UserInfo extends StatelessWidget {
-  User userToShow;
+/*
+void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
+    ['kiko rivera concert', 'Getafe - Osasuna']));
+*/
 
-  UserInfo(this.userToShow);
+class UserInfo extends StatefulWidget {
+  String email;
+
+  UserInfo(this.email);
+
+  _UserInfoState createState() => _UserInfoState(email);
+}
+
+class _UserInfoState extends State<UserInfo> {
+  String username;
+  String email;
+  bool verified = false;
+  var events;
+
+  _UserInfoState(this.email);
+
+  bool parsed = false;
+
+  void setUserInfo() async {
+    //var user = Request.Get(URI).addheader("email", email).execute().returnContent());
+    String user = await rootBundle.loadString("assets/userTest.json");
+    var showData = json.decode(user.toString());
+    this.username = showData['username'];
+    this.verified = showData['verified'] == 'true';
+    this.events = showData['events'];
+    setState(() {
+      parsed = true;
+    });
+  }
+
+  Widget createWidget() {
+    return Scaffold(
+      body: Column(children: [
+        Text(
+          'Username',
+          style: TextStyle(fontSize: 30),
+          textAlign: TextAlign.center,
+        ),
+        Text(username),
+        Text(
+          'Email',
+          style: TextStyle(fontSize: 30),
+          textAlign: TextAlign.center,
+        ),
+        Text(email),
+        Text(
+          'Verified',
+          style: TextStyle(fontSize: 30),
+          textAlign: TextAlign.center,
+        ),
+        if (verified)
+          Text('This user is verified')
+        else
+          Text('This user is not verified'),
+        Text(
+          'Events',
+          style: TextStyle(fontSize: 30),
+          textAlign: TextAlign.center,
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                title: Text(events[index]['eventName']),
+                subtitle: Text(events[index]['Date']),
+              );
+            },
+            itemCount: events.length,
+            shrinkWrap: true,
+          ),
+        ),
+      ]),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('User Info'),
-          ),
-          body: Column(children: [
-            Text('Name'),
-            Text(userToShow.getUsername()),
-            Text('Email'),
-            Text(userToShow.email),
-            Text('Verified'),
-            if (userToShow.getVerified())
-              Text('This user is verified')
-            else
-              Text('This user is not verified'),
-            Text('Events'),
-            Text('Here a list of events may be showed'),
-          ])),
-    );
+    setUserInfo();
+
+    if (!parsed)
+      return Scaffold(
+        body: Center(
+          child: (Text('Parsing...')),
+        ),
+      );
+    else
+      return createWidget();
   }
 }
