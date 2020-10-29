@@ -33,7 +33,23 @@ class _SignInState extends State<SignIn> {
             ),
             onPressed: _signInWithGoogle,
             color: Colors.lightBlue,
-          )
+          ),
+          Container(
+            width: 250.0,
+            child: Align(
+              alignment: Alignment.center,
+              child: FlatButton(
+                onPressed: () => print(
+                    'boton presinado') /*llama a estructura, para que depues esta muestre eventos general*/,
+                child: Text(
+                  'Continue as guest user',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       )),
     );
