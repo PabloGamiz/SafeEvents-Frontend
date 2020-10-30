@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
+TextEditingController descrcontroller = new TextEditingController();
 TextEditingController dircontroller = new TextEditingController();
 TextEditingController preucontroller = new TextEditingController();
 
@@ -38,12 +39,10 @@ class _PublishState extends State<Publish> {
   var showerrorDataHora = false;
 
   String tipus ='Escull el tipus d\'esdeveniment';
-  String _nom ='';
-  String _descripcio='';
+
   var _data;
   var _hora;
-  String _direccio='';
-  String _preu='';
+
   @override
   Widget build(BuildContext context) {
 
@@ -66,8 +65,7 @@ class _PublishState extends State<Publish> {
                     borderSide: BorderSide(),
                   )
                 ),
-                maxLines: 1,
-                onChanged: (input) => _descripcio = input,
+                maxLines: 1
               ),
                 Container(
                   child:Visibility (
@@ -87,6 +85,7 @@ class _PublishState extends State<Publish> {
                 Container(
                   margin: EdgeInsets.only(top: 20.0),
                   child: TextFormField(
+                    controller: descrcontroller,
                     decoration: InputDecoration(
                         labelText: "Descripció de l'Esdeveniment",
                         fillColor: Colors.white,
@@ -97,8 +96,6 @@ class _PublishState extends State<Publish> {
                         )
                     ),
                     maxLines: 4,
-                    validator: (input) => input.isEmpty ? 'Error' : null,
-                    onSaved: (input) => _nom = input,
                   ),
                 ),
                 Container(
@@ -114,9 +111,7 @@ class _PublishState extends State<Publish> {
                             borderSide: BorderSide(),
                           )
                       ),
-                      maxLines: 1,
-                      validator: (input) => input.isEmpty ? 'Error' : null,
-                      onSaved: (input) => _direccio = input,
+                      maxLines: 1
                     ),
 
                     ],
@@ -150,8 +145,6 @@ class _PublishState extends State<Publish> {
                           )
                       ),
                       maxLines: 1,
-                      validator: (input) => input.isEmpty ? 'Error' : null,
-                      onSaved: (input) => _preu = input,
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.digitsOnly
                       ], // Only numbers can be entered
@@ -219,14 +212,16 @@ class _PublishState extends State<Publish> {
                         margin: EdgeInsets.only(left: 60.0, right:70.0),
                         child: DateTimeField(
                             format: format,
-                            onShowPicker: (context, currentValue){
-                              _data = currentValue;
-                              return showDatePicker(
+                            onShowPicker: (context, currentValue) async{
+
+                              final date = await showDatePicker (
                                   context: context,
                                   initialDate: currentValue ?? DateTime.now(),
                                   firstDate: DateTime(1900),
                                   lastDate: DateTime(2100),
                               );
+                              _data = date;
+                              return date;
                             }
                         ),
                       )
@@ -297,21 +292,32 @@ class _PublishState extends State<Publish> {
   publicaEsdeveniment() {
     //FALTEN VALIDACIONS, DEPENENT DEL SHOWERRORXXX ES MOSTRAN ERRORS DEPEN DEL LLOC
     var nom = nomcontroller.text;
+    var descripcio = descrcontroller.text;
     var dir = dircontroller.text;
     var preu = preucontroller.text;
-    log('nom: '+nom+' dir: '+dir+ 'preu: '+preu);
+    var data = '';
+    var hora = '';
+
+    if(_data.toString() != 'null') data = _data.toString().split(' ')[0];
+    else data = 'null';
+
+    if(_hora.toString() != 'null') hora = _hora.toString().split(' ')[1];
+    else hora = 'null';
+
+    var someError = false;
+
     setState(() {
-      if(/*nom.isEmpty ||*/ nom == ''){
+      if(nom == ''){
         errorNom= 'El Nom de l\'esdeveniment ha d\'estar informat';
         showerrorNom = true;
       }else showerrorNom = false;
 
-      if(/*dir.isEmpty ||*/ dir == ''){
+      if(dir == ''){
         errorDir= 'La direcció de l\'esdeveniment ha d\'estar informada';
         showerrorDir = true;
       }else showerrorDir = false;
 
-      if(/*preu.isEmpty || */preu == '') {
+      if(preu == '') {
         errorPreu = 'El Preu de l\'esdeveniment ha d\'estar informat';
         showerrorPreu = true;
       }else if(int.parse(preu) < 0){
@@ -324,19 +330,23 @@ class _PublishState extends State<Publish> {
         showerrorPicklist = true;
       }else showerrorPicklist = false;
 
-      if(/*_data.isEmpty ||*/ _data.toString() == '' /*|| _hora.isEmpty*/ || _hora.toString() == '') {
-        errorDataHora =
-        'La data i l\'hora de l\'esdeveniment han d\'estar informades';
+      if(data=='null' || hora == 'null') {
+        errorDataHora ='La data i l\'hora de l\'esdeveniment han d\'estar informades';
         showerrorDataHora = true;
       }
-        /*type 'DateTime' is not a subtype of type 'String'
-      }else if(DateTime.parse(_data).isBefore(DateTime.now()) ){
-        errorDataHora = 'La data no pot ser anterior o igual a avui';
-        showerrorDataHora = true;
-      }*/
       else showerrorDataHora = false;
-      });
+
+      if(showerrorDataHora || showerrorDir ||showerrorNom || showerrorPicklist || showerrorPreu)someError = true;
+      else someError = false;
+    });
+      //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
+    if(!someError){
+      //Envia data al backend i redirecciona
     }
+
+    }
+
+
 
   }
 
