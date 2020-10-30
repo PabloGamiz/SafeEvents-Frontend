@@ -10,6 +10,7 @@ TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
 TextEditingController dircontroller = new TextEditingController();
 TextEditingController preucontroller = new TextEditingController();
+TextEditingController imgcontroller = new TextEditingController();
 
 void main() => runApp(MaterialApp(
   title: "PublicaEvents",
@@ -99,7 +100,7 @@ class _PublishState extends State<Publish> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20.0, left: 10.0),
+                  margin: EdgeInsets.only(top: 20.0),
                   child: Column(
                     children: <Widget>[TextFormField(
                       controller: dircontroller,
@@ -117,7 +118,9 @@ class _PublishState extends State<Publish> {
                     ],
                   ),
                 ),Container(
+                  margin: EdgeInsets.only(left: 15.0),
                   child:Visibility (
+
                       visible: showerrorDir,
                       child: Column(
                         children: <Widget>[
@@ -132,7 +135,7 @@ class _PublishState extends State<Publish> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 20.0, left: 10.0),
+                  margin: EdgeInsets.only(top: 20.0),
                   child: Column(
                     children: <Widget>[TextFormField(
                       controller:preucontroller,
@@ -166,6 +169,55 @@ class _PublishState extends State<Publish> {
                         ],
                       )
                   ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 20.0),
+                  child: Column(
+                    children: <Widget>[TextField(
+                        controller: imgcontroller,
+                        decoration: InputDecoration(
+                            labelText: "Afegeix un enllaç d'imatge",
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(),
+                            )
+                        ),
+                        maxLines: 1
+                    ),
+                    Text(
+                      'Per afegir una imatge és obligatori que estigui pujada a internet',
+                      style: TextStyle(
+                        fontSize: 10
+                      ),
+                    )],
+                  ),
+                  /*child: Row(
+                    children: <Widget>[
+                      Text(
+                        'Selecciona una imatge (Opcional): '
+                    ),
+                      Container(
+                          child: Align(
+                              alignment: Alignment.centerRight,
+                              child: RaisedButton(
+                                color: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                ),
+                                child: Text(
+                                  'Select',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () => {
+                                  seleccionaImatge()
+                                },
+                              )
+                          )
+                      )],
+                  ),*/
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20.0, left: 10.0),
@@ -251,7 +303,7 @@ class _PublishState extends State<Publish> {
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.only(top: 10.0, left: 10.0),
+                    margin: EdgeInsets.only(top: 10.0, left: 20.0),
                     child:Visibility (
                       visible: showerrorDataHora,
                       child: Column(
@@ -271,7 +323,16 @@ class _PublishState extends State<Publish> {
                   child: Row(
                     children: <Widget>[
                       RaisedButton(
-                          child: Text('Publica  '),
+                          color: Colors.blue,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(18.0),
+                        ),
+
+                          child: Text('Publica',
+                            style: TextStyle(
+                            color: Colors.white,
+
+                          ),),
                           onPressed: () =>{
                             publicaEsdeveniment()
                           },
@@ -290,13 +351,13 @@ class _PublishState extends State<Publish> {
   }
 
   publicaEsdeveniment() {
-    //FALTEN VALIDACIONS, DEPENENT DEL SHOWERRORXXX ES MOSTRAN ERRORS DEPEN DEL LLOC
     var nom = nomcontroller.text;
     var descripcio = descrcontroller.text;
     var dir = dircontroller.text;
     var preu = preucontroller.text;
     var data = '';
     var hora = '';
+    var img = imgcontroller.text;
 
     if(_data.toString() != 'null') data = _data.toString().split(' ')[0];
     else data = 'null';
@@ -345,6 +406,10 @@ class _PublishState extends State<Publish> {
     }
 
     }
+
+  seleccionaImatge() {
+    //do stuff per seleccionar la imatge (obrir explorador arxius)
+  }
 
 
 
