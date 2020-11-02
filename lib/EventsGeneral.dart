@@ -15,21 +15,18 @@ class Debouncer {
     }
     _timer = Timer(Duration(milliseconds: milliseconds), action);
   }
-  
 }
 
 class EventsGeneral extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    _StateEvents();
-  }
+  _GeneralEventsState createState() => _GeneralEventsState();
 }
 
-class _StateEvents extends State {
+class _GeneralEventsState extends State {
   /*OBTENER LISTA DE EVENTOS*/
   final debouncer = Debouncer(milliseconds: 500);
-  var _categories = [
+  String _defaultValue;
+  List categories = [
     'Música',
     'Teatro',
     'Deporte',
@@ -48,6 +45,9 @@ class _StateEvents extends State {
     return MaterialApp(
         home: Scaffold(
             body: Column(children: <Widget>[
+      SizedBox(
+        height: 10,
+      ),
       TextFormField(
           decoration: InputDecoration(
         labelText: "Cercar ciutat",
@@ -57,53 +57,76 @@ class _StateEvents extends State {
           borderSide: BorderSide(),
         ),
       )),
-      Row(children: <Widget>[
-        DropdownButton<String>(
-          items: _categories.map((String dropDownStringItem) {
-            return DropdownMenuItem<String>(
-              value: dropDownStringItem,
-              child: Text(dropDownStringItem),
-            );
-          }).toList(),
-          onChanged: () {
-            debouncer.run() {
-              setState() { /*mostrar los eventos filtrados por el tipo de evento escogido*/}
-            }
-          },
-        ),
-        IconButton(
-          onPressed: /*Funcion que muestra la lista de eventos filtrados*/ ImprimirTexto(),
-          icon: Image.asset(
-            'assets/Filtrar.png',
-            height: 30,
-            alignment: Alignment.center,
-          ),
-          color: Colors.black,
-          splashColor: Colors.grey,
-          focusColor: Colors.grey,
-          highlightColor: Colors.grey,
-        )
-      ]),
-      /*ListView.builder(
-          itemCount: GeneralEvents.length,
-          itemBuilder: (context, index) {
+      SizedBox(
+        height: 10,
+      ),
+      DropdownButton<String>(
+        hint: Text('Select category'),
+        value: _defaultValue,
+        items: categories.map((newValue) {
+          return DropdownMenuItem<String>(
+            value: newValue,
+            child: Text(newValue),
+          );
+        }).toList(),
+        onChanged: (newValue) {
+          setState(() {
+            _defaultValue = newValue;
+          });
+        },
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      Expanded(
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
             return Padding(
-              padding: const  EndeInsets.symmetric(
-                vertical: 1.0, horizontal: 4.0,
+              padding: const EdgeInsets.symmetric(
+                vertical: 1.0,
+                horizontal: 4.0,
               ),
               child: Card(
+                color: Colors.lightBlue,
                 child: ListTile(
-                  onTap: () {
-                    /*mostrar la ventana de info de evento especifico*/
-                  },
-                  title: /*primera linea*/,
-                  subtitle: /*segunda linea*/,
-                  isThreeLine: /*tercera linea*/,
-                )
+                  title: Row(
+                    children: [
+                      Text('Kiko rivera',
+                          style: TextStyle(fontSize: 24, color: Colors.white)),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      Text('Palau Sant Jordi, Barcelona',
+                          style: TextStyle(fontSize: 15, color: Colors.white)),
+                    ],
+                  ),
+                  subtitle: Row(
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text('45 €',
+                          style: TextStyle(fontSize: 40, color: Colors.white)),
+                      SizedBox(
+                        width: 130,
+                      ),
+                      Column(
+                        children: [
+                          Text('Fecha', style: TextStyle(color: Colors.white)),
+                          Text(categories[1],
+                              style: TextStyle(color: Colors.white)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
             );
-          }
-        )*/
+          },
+          itemCount: 10,
+          shrinkWrap: true,
+        ),
+      ),
     ])));
   }
 }
