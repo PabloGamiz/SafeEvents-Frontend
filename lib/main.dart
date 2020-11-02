@@ -6,6 +6,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:safeevents/posts.dart';
+import 'package:safeevents/user_model.dart';
 
 import 'SignIn.dart';
 
@@ -17,23 +19,72 @@ void main() async {
   ));
 }
 
+Future<UserModel> createUser(String tokenid) async {
+  final String apitUrl = "http://10.4.41.148:8080/signin";
+  var queryParamaters = {'token_id': tokenid};
+  final jsonCliend = json.encode(queryParamaters);
+  final response = await http.post(apitUrl, body: jsonCliend);
+  if (response.statusCode == 201 || response.statusCode == 200) {
+    print("bien");
+    final String responseString = response.body;
+    return userModelFromJson(responseString);
+  } else if (response.statusCode == 400) {
+    print("Bad Request");
+    return null;
+  } else {
+    print(response.statusCode);
+    return null;
+  }
+}
+
+/*class HomePage extends StatelessWidget {
+  UserModel _user;
+  final TextEditingController tokenidController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Conexion'),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(32),
+        child: Column(
+          children: <Widget>[
+            TextField(
+              controller: tokenidController,
+            ),
+            SizedBox(
+              height: 32,
+            ),
+            _user == null
+                ? Container()
+                : Text(
+                    "The cookie: ${_user.cookie} and the ${_user.time.toString()}"),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final String tokenid = tokenidController.text;
+          print("0_0");
+          final UserModel user = await createUser(tokenid);
+          print("0_1");
+          _user = user;
+        },
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}*/
+
+/*final String tokenid = tokenidController.text;
+final UserModel user = await createUser(tokenid);*/
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
-}
-
-class Album {
-  final Int64 deadline;
-  final String cookie;
-
-  Album({this.deadline, this.cookie});
-
-  factory Album.fromJson(Map<String, dynamic> json) {
-    return Album(
-      deadline: json['timeout'],
-      cookie: json['cookie'],
-    );
-  }
 }
 
 final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
@@ -73,60 +124,22 @@ class _HomePageState extends State<HomePage> {
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-    {
-      /*Future<Album> createAlbum(String title) {
-        return http.post(
-          'http://10.4.41.148:9090/signin',
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "token_id": googleAuth.idToken,
-          }),
-        );
-        if (response.statusCode == 201) {
-          // If the server did return a 201 CREATED response,
-          // then parse the JSON.
-          return Album.fromJson(jsonDecode(response.body));
-        } else {
-          // If the server did not return a 201 CREATED response,
-          // then throw an exception.
-          throw Exception('Failed to load album');
-        }
-      }
-    }*/
+    /*final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);*/
+    final UserModel prova = await createUser(googleAuth.idToken);
+    print("json:");
 
-      Future<Album> createAlbum(String title) async {
-        final http.Response response = await http.post(
-          'http://10.4.41.148:9090/signin',
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "token_id": googleAuth.idToken,
-          }),
-        );
-        if (response.statusCode == 201) {
-          // If the server did return a 201 CREATED response,
-          // then parse the JSON.
-          return Album.fromJson(jsonDecode(response.body));
-        } else {
-          // If the server did not return a 201 CREATED response,
-          // then throw an exception.
-          throw Exception('Failed to load album');
-        }
-      }
-
+    print(prova.cookie);
+    print(prova.timeout);
+    /*{
       final FirebaseUser user =
           (await firebaseAuth.signInWithCredential(credential)).user;
     }
     FirebaseAuth.instance.signOut();
-    FirebaseUser user = FirebaseAuth.instance.currentUser;
+    FirebaseUser user = FirebaseAuth.instance.currentUser;*/
 
-    runApp(new MaterialApp(
+    /*runApp(new MaterialApp(
       home: new SignIn(),
-    ));
+    ));*/
   }
 }
