@@ -29,7 +29,6 @@ class _MostraState extends State<Mostra> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      height: 100,
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.blue),
                           borderRadius: BorderRadius.all(
@@ -41,54 +40,80 @@ class _MostraState extends State<Mostra> {
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: <Widget>[
-                            Image.network(
-                                'https://www.imagetheatre.cz/wp-content/uploads/2018/09/66b_pullidi_c3-20.jpg',
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20.0),
+                              child: Image.network(
+                                'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
 
-                              width: 100,
-                              height: 600,
-                              loadingBuilder: (context,child,progress){
+                                width: 120,
+                                loadingBuilder: (context,child,progress){
                                   return progress == null?
-                                      child:LinearProgressIndicator();
-                              },
+                                  child:LinearProgressIndicator();
+                                },
+                              ),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10.0,),
-                             child: Align(
-                               alignment: Alignment.centerLeft,
-                               child: Column(
-                                   children: <Widget>[Text(
-                                    'NOM DEL CONCERT',
-                                     style: TextStyle(
-                                       fontSize: 14,
-                                         fontWeight: FontWeight.bold,
-                                         color: Colors.white.withOpacity(1)
-                                     ) ,
-                                    ),
-                                     Text(
-                                        'Direcció de l\'esdeveniment per backend',
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                               child: Container(
+                                 width: 150,
+                                 child: Column(
+                                     children: <Widget>[Text(
+                                      'KIKO RIVERA ON TOUR',
+                                       overflow: TextOverflow.ellipsis,
+                                       maxLines: 3,
                                        style: TextStyle(
-                                           fontSize: 9,
+                                         fontSize: 14,
+                                           fontWeight: FontWeight.bold,
                                            color: Colors.white.withOpacity(1)
                                        ) ,
-                                     ),
-                                     Text(
-                                       'DD/MM/AAAA - HH:MM',
-                                       style: TextStyle(
-                                           fontSize: 12,
-                                           color: Colors.white.withOpacity(1)
-                                       ) ,
-                                       //style: , Ha de ser més petit ja que es un subtitol
-                                     ),
-                                     Text(
-                                       'preu €',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                            color: Colors.white.withOpacity(1)
-                                        ), //Ha de ser més gran
-                                     )
-                                   ]),
-                             )
-                            )
+                                      ),
+                                       Text(
+                                          'Palau Sant Jordi, Barcelona',
+                                         overflow: TextOverflow.ellipsis,
+                                         maxLines: 2,
+                                         style: TextStyle(
+                                             fontSize: 11,
+                                             color: Colors.white.withOpacity(1)
+                                         ) ,
+                                       ),
+                                       Text(
+                                         '11/04/2021 - 20:30\n',
+                                         style: TextStyle(
+                                             fontSize: 12,
+                                             color: Colors.white.withOpacity(1)
+                                         ) ,
+                                       ),
+                                       Text(
+                                         '25 €',
+                                         textAlign: TextAlign.left,
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                              color: Colors.white.withOpacity(1)
+                                          ),
+                                       ),
+                                       Row(
+                                         children: [
+                                           Text('\nEmpresa org',
+                                             style: TextStyle(
+                                                 fontSize: 11,
+                                                 color: Colors.white.withOpacity(1)
+                                             ),
+                                           ),
+                                           Image.network(
+                                             "http://assets.stickpng.com/images/5873869ef3a71010b5e8ef41.png",
+
+                                             width: 80,
+                                             loadingBuilder: (context,child,progress){
+                                               return progress == null?
+                                               child:LinearProgressIndicator();
+                                             },
+                                           ),
+
+                                         ],
+                                       ),
+                                     ]),
+                               )
+                            ),
                           ],
                         ),
                       ),
@@ -121,6 +146,8 @@ class _MostraState extends State<Mostra> {
                         child:Column(
                           children: <Widget>[
                             Text('MESURES\n',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white.withOpacity(1)
@@ -128,7 +155,9 @@ class _MostraState extends State<Mostra> {
                             ),
                             Text("-Mascareta obligatòria\n"
                                   "-Dispensador de gel hidroalcohòlic\n"
-                                  "-Aforament reduït al 60%\n\n",
+                                  "-Aforament reduït al 60%\n",
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 20,
                               style: TextStyle(
                                 color: Colors.white.withOpacity(1),
                             ),
@@ -137,6 +166,32 @@ class _MostraState extends State<Mostra> {
                       ),
                       ),
                     ),
+                    Container(
+                      width: 500,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.blue),
+                        borderRadius: BorderRadius.all(
+                      Radius.circular(20.0) //         <--- border radius here
+                    ),),
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: RaisedButton(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(20.0),
+                        ),
+
+                        child: Text('RESERVA / COMPRA',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 20
+
+                          ),),
+                        onPressed: () =>{
+
+                        },
+                      ),
+                    )
                   ],
                 ),
 
