@@ -1,19 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:safeevents/pantalla_principal.dart';
-import 'http_models/user_model.dart';
-import 'http_requests/http_signin.dart';
 
-class SignIn extends StatefulWidget {
+class PantallaPrincipal extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  _PantallaPrincipalState createState() => _PantallaPrincipalState();
 }
 
-final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = GoogleSignIn();
-
-class _SignInState extends State<SignIn> {
+class _PantallaPrincipalState extends State<PantallaPrincipal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +25,7 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
-            onPressed: _signInWithGoogle,
+            onPressed: _funcion(),
             color: Colors.lightBlue,
           ),
           Container(
@@ -57,20 +49,7 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  _signInWithGoogle() async {
-    // pop up del usuario que eliges para iniciar sesion
-    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-
-    final UserModel prova = await createUser(googleAuth.idToken);
-    print("json:");
-
-    print(prova.cookie);
-    print(prova.timeout);
-
-    runApp(MaterialApp(
-      home: PantallaPrincipal(),
-    ));
+  _funcion() {
+    print('vamos bien');
   }
 }
