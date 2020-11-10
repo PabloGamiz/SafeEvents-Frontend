@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:safeevents/pantalla_principal.dart';
-import 'http_models/user_model.dart';
+import 'http_models/SignIn_model.dart';
 import 'http_requests/http_signin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -63,11 +64,11 @@ class _SignInState extends State<SignIn> {
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
-    final UserModel prova = await createUser(googleAuth.idToken);
-    print("json:");
+    final SignInModel session = await http_SignIn(googleAuth.idToken);
 
-    print(prova.cookie);
-    print(prova.timeout);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('cookie', session.cookie);
+    prefs.setInt('timeout', session.deadline);
 
     runApp(MaterialApp(
       home: PantallaPrincipal(),
