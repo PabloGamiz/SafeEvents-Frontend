@@ -1,6 +1,9 @@
 import 'dart:async';
-
+import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:safeevents/http_requests/http_generalevents.dart';
+import 'http_models/GeneralEventsModel.dart';
+import 'http_requests/http_generalevents.dart';
 
 class Debouncer {
   final int milliseconds;
@@ -24,8 +27,14 @@ class EventsGeneral extends StatefulWidget {
 
 class _GeneralEventsState extends State {
   /*OBTENER LISTA DE EVENTOS*/
-  final debouncer = Debouncer(milliseconds: 500);
+  final _debouncer = Debouncer(milliseconds: 500);
+
+  List likeds = List.filled(100, false);
+
   String _defaultValue;
+
+  int counter = 0;
+
   List categories = [
     'Música',
     'Teatro',
@@ -33,12 +42,28 @@ class _GeneralEventsState extends State {
     'Arte'
   ]; //nombre de las categorias
 
-  void getEventsFiltrats() {
-    //Pedir la lista de eventos que tienen que salir para el filtro que se pasa
+  List<Event> generalEvents = List();
+
+  List<Event> filteredEvents = List();
+
+  void initState() {
+    super.initState();
+    http_GeneralEvents().then((eventsFromServer) {
+      setState(() {
+        generalEvents = eventsFromServer;
+        filteredEvents = generalEvents;
+      });
+    });
   }
 
-  void getEvents() {
-    //Pedir la lista de todos los eventos que se tienen que mostrar
+  int sumadelpreu(Event e) {
+    int suma = 0;
+    for (Service s in e.services) {
+      for (Product p in s.products) {
+        suma = suma + p.price;
+      }
+    }
+    return suma;
   }
 
   Widget build(BuildContext context) {
@@ -49,14 +74,25 @@ class _GeneralEventsState extends State {
         height: 10,
       ),
       TextFormField(
-          decoration: InputDecoration(
-        labelText: "Cercar ciutat",
-        fillColor: Colors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(25.0),
-          borderSide: BorderSide(),
+        decoration: InputDecoration(
+          labelText: "Cercar ciutat",
+          fillColor: Colors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25.0),
+            borderSide: BorderSide(),
+          ),
         ),
-      )),
+        onChanged: (string) {
+          _debouncer.run(() {
+            setState(() {
+              filteredEvents = generalEvents
+                  .where((e) =>
+                      (e.location.toLowerCase().contains(string.toLowerCase())))
+                  .toList();
+            });
+          });
+        },
+      ),
       SizedBox(
         height: 10,
       ),
@@ -70,8 +106,13 @@ class _GeneralEventsState extends State {
           );
         }).toList(),
         onChanged: (newValue) {
-          setState(() {
-            _defaultValue = newValue;
+          _debouncer.run(() {
+            setState(() {
+              _defaultValue = newValue;
+              filteredEvents = generalEvents
+                  .where((e) => e.category.contains(newValue))
+                  .toList();
+            });
           });
         },
       ),
@@ -80,6 +121,7 @@ class _GeneralEventsState extends State {
       ),
       Expanded(
         child: ListView.builder(
+          itemCount: filteredEvents.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.symmetric(
@@ -91,29 +133,66 @@ class _GeneralEventsState extends State {
                 child: ListTile(
                   title: Row(
                     children: [
-                      Text('Kiko rivera',
-                          style: TextStyle(fontSize: 24, color: Colors.white)),
-                      SizedBox(
-                        width: 40,
+                      Container(
+                        width: 305,
+                        height: 35,
+                        child: Text(
+                          filteredEvents[index].title,
+                          style: TextStyle(fontSize: 24, color: Colors.white),
+                          maxLines: 2,
+                          overflow: TextOverflow.fade,
+                        ),
                       ),
-                      Text('Palau Sant Jordi, Barcelona',
-                          style: TextStyle(fontSize: 15, color: Colors.white)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          likeds[index]
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color: likeds[index] ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () => setState(() {
+                          likeds[index] = !likeds[index];
+                        }),
+                      ),
                     ],
                   ),
                   subtitle: Row(
+                    /* mainAxisAlignment: MainAxisAlignment.center,*/
                     children: [
                       SizedBox(
                         width: 20,
                       ),
-                      Text('45 €',
+                      Text(sumadelpreu(filteredEvents[index]).toString(),
                           style: TextStyle(fontSize: 40, color: Colors.white)),
                       SizedBox(
-                        width: 130,
+                        width: 40,
                       ),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Fecha', style: TextStyle(color: Colors.white)),
-                          Text(categories[1],
+                          Container(
+                            width: 225,
+                            height: 20,
+                            /*alignment: AlignmentGeometry(),*/
+                            child: Text(
+                              filteredEvents[index].location.name,
+                              style: TextStyle(color: Colors.white),
+                              maxLines: 2,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                          Container(
+                            height: 5,
+                          ),
+                          Text(filteredEvents[index].date.toString(),
+                              style: TextStyle(color: Colors.white)),
+                          Container(
+                            height: 5,
+                          ),
+                          Text(filteredEvents[index].category,
                               style: TextStyle(color: Colors.white)),
                         ],
                       ),
@@ -123,10 +202,13 @@ class _GeneralEventsState extends State {
               ),
             );
           },
-          itemCount: 10,
           shrinkWrap: true,
         ),
       ),
+      /*FloatingActionButton (
+              onPressed:,
+              backgroundColor: Colors.blue,
+            ),*/
     ])));
   }
 }
