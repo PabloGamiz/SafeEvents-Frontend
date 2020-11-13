@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safeevents/ClientInfo.dart';
 
+import 'EventsGeneral.dart';
+
 class Structure extends StatefulWidget {
   @override
   _StructureState createState() => _StructureState();
@@ -15,10 +17,7 @@ class _StructureState extends State<Structure> {
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
 
   static List<Widget> _widgetOptionsIfRegistered = <Widget>[
-    Text(
-      'Index 0: Events',
-      style: optionStyle,
-    ),
+    EventsGeneral(),
     Text(
       'Index 1: Map',
       style: optionStyle,
@@ -31,10 +30,7 @@ class _StructureState extends State<Structure> {
   ];
 
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
-    Text(
-      'Index 0: Events',
-      style: optionStyle,
-    ),
+    EventsGeneral(),
     Text(
       'Index 1: Map',
       style: optionStyle,
@@ -60,7 +56,14 @@ class _StructureState extends State<Structure> {
     if (registered) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("SafEƎventS"),
+          title: Container(
+            height: 55,
+            child: Center(
+              child: Image(
+                image: AssetImage('assets/SafeEventsBlack.png'),
+              ),
+            ),
+          ),
         ),
         body: Center(
           child: _widgetOptionsIfRegistered.elementAt(_selectedIndex),
@@ -96,7 +99,14 @@ class _StructureState extends State<Structure> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text("SafEƎventS"),
+          title: Container(
+            height: 40,
+            child: Center(
+              child: Image(
+                image: AssetImage('assets/SafeEventsBlack.png'),
+              ),
+            ),
+          ),
         ),
         body: Center(
           child: _widgetOptionsIfNotRegistered.elementAt(_selectedIndex),
@@ -106,6 +116,11 @@ class _StructureState extends State<Structure> {
             BottomNavigationBarItem(
               icon: Icon(Icons.emoji_events),
               label: 'Events',
+              backgroundColor: Colors.blueGrey,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              label: 'Favourites',
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
