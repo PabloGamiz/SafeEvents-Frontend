@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-/*
-void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
-    ['kiko rivera concert', 'Getafe - Osasuna']));
-*/
-
 class ClientInfo extends StatefulWidget {
   final String email;
 
