@@ -70,7 +70,7 @@ class _SignInState extends State<SignIn> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('cookie', session.cookie);
     prefs.setInt('timeout', session.deadline);
-
+    print(session.cookie);
     runApp(MaterialApp(
       home: Structure(),
     ));

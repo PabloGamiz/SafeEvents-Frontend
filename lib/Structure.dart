@@ -57,7 +57,7 @@ class _StructureState extends State<Structure> {
 
   @override
   Widget build(BuildContext context) {
-    if (!registered) {
+    if (registered) {
       return Scaffold(
         appBar: AppBar(
           title: Text("SafEƎventS"),
