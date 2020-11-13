@@ -35,7 +35,7 @@ class _SignInState extends State<SignIn> {
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
-            onPressed: _signInWithGoogle,
+            onPressed: (_signInWithGoogle),
             color: Colors.lightBlue,
           ),
           Container(
@@ -70,13 +70,15 @@ class _SignInState extends State<SignIn> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('cookie', session.cookie);
     prefs.setInt('timeout', session.deadline);
-    print(session.cookie);
+
     runApp(MaterialApp(
       home: Structure(),
     ));
   }
 
-  _launchStructure() {
+  _launchStructure() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
     runApp(MaterialApp(
       home: Structure(),
     ));

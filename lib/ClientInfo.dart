@@ -3,11 +3,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'SignIn.dart';
-import 'http_models/SignIn_model.dart';
-import 'http_requests/http_signout.dart';
 
 /*
 void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
@@ -45,6 +40,7 @@ class _ClientInfoState extends State<ClientInfo> {
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
+
         // By default, show a loading spinner.
         return CircularProgressIndicator();
       },
@@ -122,38 +118,8 @@ Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
           shrinkWrap: true,
         ),
       ),
-      FlatButton(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Tancar sessio',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-            ),
-          ),
-        ),
-        onPressed: tancarSessio(),
-        color: Colors.redAccent,
-      ),
     ]),
   );
-}
-
-tancarSessio() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String stringValue = prefs.getString('cookie');
-  print(stringValue);
-  SignInModel session = await http_SignOut(stringValue);
-  /*var now;
-    do {
-      session = await http_SignOut(stringValue);
-      now = new DateTime.now();
-    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
-
-  runApp(MaterialApp(
-    home: SignIn(),
-  ));
 }
 
 /*
@@ -170,7 +136,6 @@ tancarSessio() async {
   }
   */
 /*setUserInfo();
-
     if (!parsed)
       return Scaffold(
         body: Center(
@@ -179,3 +144,23 @@ tancarSessio() async {
       );
     else
       return createWidget();*/
+
+/*
+_tancarSessio() async {
+  print('5');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String stringValue = prefs.getString('cookie');
+  print(stringValue);
+  SignInModel session = await http_SignOut(stringValue);
+  /*var now;
+    do {
+      session = await http_SignOut(stringValue);
+      now = new DateTime.now();
+    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
+
+  runApp(MaterialApp(
+    home: SignIn(),
+  ));
+}
+
+*/

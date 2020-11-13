@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:safeevents/ClientInfo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'EventsGeneral.dart';
+import 'no_login.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -35,15 +37,11 @@ class _StructureState extends State<Structure> {
       'Index 1: Map',
       style: optionStyle,
     ),
-    Text(
-      'Registrate puto',
-      style: optionStyle,
-    ),
-    Text(
-      'Registrate puto',
-      style: optionStyle,
-    ),
+    Nologin(),
+    Nologin(),
   ];
+
+  bool register = false;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -51,19 +49,22 @@ class _StructureState extends State<Structure> {
     });
   }
 
+  comprovarSessio() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    if (stringValue != null)
+      register = true;
+    else
+      register = false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (registered) {
+    comprovarSessio();
+    if (register) {
       return Scaffold(
         appBar: AppBar(
-          title: Container(
-            height: 55,
-            child: Center(
-              child: Image(
-                image: AssetImage('assets/SafeEventsBlack.png'),
-              ),
-            ),
-          ),
+          title: Text("SafEƎventS"),
         ),
         body: Center(
           child: _widgetOptionsIfRegistered.elementAt(_selectedIndex),
@@ -99,14 +100,7 @@ class _StructureState extends State<Structure> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Container(
-            height: 40,
-            child: Center(
-              child: Image(
-                image: AssetImage('assets/SafeEventsBlack.png'),
-              ),
-            ),
-          ),
+          title: Text("SafEƎventS"),
         ),
         body: Center(
           child: _widgetOptionsIfNotRegistered.elementAt(_selectedIndex),
@@ -116,11 +110,6 @@ class _StructureState extends State<Structure> {
             BottomNavigationBarItem(
               icon: Icon(Icons.emoji_events),
               label: 'Events',
-              backgroundColor: Colors.blueGrey,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              label: 'Favourites',
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
