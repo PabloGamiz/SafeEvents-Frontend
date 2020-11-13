@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
+var _colorFav = Colors.white;
+
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
       home: Mostra(),
@@ -19,6 +21,7 @@ class Mostra extends StatefulWidget {
 class _MostraState extends State<Mostra> {
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -37,12 +40,11 @@ class _MostraState extends State<Mostra> {
                     child: Column(
                       children: [
                         Container(
-                          height: 5,
+                          height:13,
                           child: IconButton(
                             icon: Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ),
+                              Icons.favorite),
+                              color: _colorFav,
                             onPressed: () => {_doFav()},
                           ),
                           alignment: Alignment(1, 1),
@@ -131,24 +133,29 @@ class _MostraState extends State<Mostra> {
                                               ),
                                             ],
                                           ),
-                                          ButtonTheme(
-                                            height: 20,
-                                            child: RaisedButton(
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: ButtonTheme(
+                                              minWidth:1,
+                                              height: 20,
+                                              child: RaisedButton(
 
-                                              color: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: new BorderRadius.circular(18.0),
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: new BorderRadius.circular(18.0),
+                                                ),
+
+                                                child: Text('CONTACTA',
+                                                  style: TextStyle(
+                                                    fontSize: 9,
+                                                    color: Colors.blue,
+
+                                                  ),),
+                                                onPressed: () =>{
+                                                  _contacta()
+                                                },
+
                                               ),
-
-                                              child: Text('CONTACTA',
-                                                style: TextStyle(
-                                                  color: Colors.blue,
-
-                                                ),),
-                                              onPressed: () =>{
-                                                //_contactaAmbEmpresa()
-                                              },
-
                                             ),
                                           )
                                         ],
@@ -229,7 +236,7 @@ class _MostraState extends State<Mostra> {
                         'RESERVA / COMPRA',
                         style: TextStyle(color: Colors.blue, fontSize: 20),
                       ),
-                      onPressed: () => {},
+                      onPressed: () => {_contrata()},
                     ),
                   )
                 ],
@@ -243,5 +250,18 @@ class _MostraState extends State<Mostra> {
 
   _doFav() {
     //do something
+    setState(() {
+
+      if(_colorFav == Colors.white)_colorFav = Colors.red;
+      else if(_colorFav == Colors.red) _colorFav = Colors.white;
+    });
   }
+}
+
+_contrata() {
+  //saltar a la pestanya de Comprar / Reservar
+}
+
+_contacta() {
+  //saltar a la pestanya de Xat amb la empresa
 }
