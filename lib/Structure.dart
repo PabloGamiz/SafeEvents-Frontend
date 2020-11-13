@@ -11,21 +11,34 @@ class Structure extends StatefulWidget {
 }
 
 class _StructureState extends State<Structure> {
-  bool registered = true;
+  bool registered = false;
 
   int _selectedIndex = 0;
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black);
 
+  comprovarSessio() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    if (stringValue != null)
+      registered = true;
+    else
+      registered = false;
+  }
+
   static List<Widget> _widgetOptionsIfRegistered = <Widget>[
     EventsGeneral(),
+    Text(
+      'Index 1: Favourites',
+      style: optionStyle,
+    ),
     Text(
       'Index 1: Map',
       style: optionStyle,
     ),
     Text(
-      'Index 1: Map',
+      'Xat 1: Map',
       style: optionStyle,
     ),
     ClientInfo('paco@gmail.com')
@@ -34,6 +47,10 @@ class _StructureState extends State<Structure> {
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
     EventsGeneral(),
     Text(
+      'Index 1: Favourites',
+      style: optionStyle,
+    ),
+    Text(
       'Index 1: Map',
       style: optionStyle,
     ),
@@ -41,30 +58,26 @@ class _StructureState extends State<Structure> {
     Nologin(),
   ];
 
-  bool register = false;
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  comprovarSessio() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('cookie');
-    if (stringValue != null)
-      register = true;
-    else
-      register = false;
-  }
-
   @override
   Widget build(BuildContext context) {
     comprovarSessio();
-    if (register) {
+    if (registered) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("SafEƎventS"),
+          title: Container(
+            height: 55,
+            child: Center(
+              child: Image(
+                image: AssetImage('assets/SafeEventsBlack.png'),
+              ),
+            ),
+          ),
         ),
         body: Center(
           child: _widgetOptionsIfRegistered.elementAt(_selectedIndex),
@@ -74,6 +87,11 @@ class _StructureState extends State<Structure> {
             BottomNavigationBarItem(
               icon: Icon(Icons.emoji_events),
               label: 'Events',
+              backgroundColor: Colors.blueGrey,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              label: 'Favourites',
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
@@ -100,7 +118,14 @@ class _StructureState extends State<Structure> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          title: Text("SafEƎventS"),
+          title: Container(
+            height: 40,
+            child: Center(
+              child: Image(
+                image: AssetImage('assets/SafeEventsBlack.png'),
+              ),
+            ),
+          ),
         ),
         body: Center(
           child: _widgetOptionsIfNotRegistered.elementAt(_selectedIndex),
@@ -110,6 +135,11 @@ class _StructureState extends State<Structure> {
             BottomNavigationBarItem(
               icon: Icon(Icons.emoji_events),
               label: 'Events',
+              backgroundColor: Colors.blueGrey,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              label: 'Favourites',
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(

@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:safeevents/pantalla_principal.dart';
 import 'Structure.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_signin.dart';
@@ -79,6 +78,7 @@ class _SignInState extends State<SignIn> {
   _launchStructure() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
+
     runApp(MaterialApp(
       home: Structure(),
     ));
