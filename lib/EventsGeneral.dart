@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:safeevents/http_requests/http_generalevents.dart';
+import 'PublishEvents.dart';
+import 'PublishEvents.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_requests/http_generalevents.dart';
 
@@ -41,7 +43,7 @@ class _GeneralEventsState extends State {
     'Deporte',
     'Arte'
   ]; //nombre de las categorias
-
+/*
   List<Event> generalEvents = List();
 
   List<Event> filteredEvents = List();
@@ -64,7 +66,7 @@ class _GeneralEventsState extends State {
       }
     }
     return suma;
-  }
+  }*/
 
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -82,7 +84,7 @@ class _GeneralEventsState extends State {
             borderSide: BorderSide(),
           ),
         ),
-        onChanged: (string) {
+        /*onChanged: (string) {
           _debouncer.run(() {
             setState(() {
               filteredEvents = generalEvents
@@ -91,7 +93,7 @@ class _GeneralEventsState extends State {
                   .toList();
             });
           });
-        },
+        },*/
       ),
       SizedBox(
         height: 10,
@@ -109,9 +111,9 @@ class _GeneralEventsState extends State {
           _debouncer.run(() {
             setState(() {
               _defaultValue = newValue;
-              filteredEvents = generalEvents
+              /*filteredEvents = generalEvents
                   .where((e) => e.category.contains(newValue))
-                  .toList();
+                  .toList();*/
             });
           });
         },
@@ -121,7 +123,7 @@ class _GeneralEventsState extends State {
       ),
       Expanded(
         child: ListView.builder(
-          itemCount: filteredEvents.length,
+          itemCount: 15, //filteredEvents.length,
           itemBuilder: (BuildContext context, int index) {
             return Padding(
               padding: const EdgeInsets.symmetric(
@@ -137,7 +139,7 @@ class _GeneralEventsState extends State {
                         width: 305,
                         height: 35,
                         child: Text(
-                          filteredEvents[index].title,
+                          'KIKO RIVERA ON CONCERT', //filteredEvents[index].title,
                           style: TextStyle(fontSize: 24, color: Colors.white),
                           maxLines: 2,
                           overflow: TextOverflow.fade,
@@ -165,7 +167,8 @@ class _GeneralEventsState extends State {
                       SizedBox(
                         width: 20,
                       ),
-                      Text(sumadelpreu(filteredEvents[index]).toString(),
+                      Text(
+                          '45€', //sumadelpreu(filteredEvents[index]).toString(),
                           style: TextStyle(fontSize: 40, color: Colors.white)),
                       SizedBox(
                         width: 40,
@@ -178,7 +181,7 @@ class _GeneralEventsState extends State {
                             height: 20,
                             /*alignment: AlignmentGeometry(),*/
                             child: Text(
-                              filteredEvents[index].location.name,
+                              'Palau Sant Jordi', //filteredEvents[index].location.name,
                               style: TextStyle(color: Colors.white),
                               maxLines: 2,
                               overflow: TextOverflow.fade,
@@ -187,12 +190,13 @@ class _GeneralEventsState extends State {
                           Container(
                             height: 5,
                           ),
-                          Text(filteredEvents[index].date.toString(),
+                          Text(
+                              '25/10/2020, 19:50', //filteredEvents[index].date.toString(),
                               style: TextStyle(color: Colors.white)),
                           Container(
                             height: 5,
                           ),
-                          Text(filteredEvents[index].category,
+                          Text('Música', //filteredEvents[index].category,
                               style: TextStyle(color: Colors.white)),
                         ],
                       ),
@@ -205,10 +209,16 @@ class _GeneralEventsState extends State {
           shrinkWrap: true,
         ),
       ),
-      /*FloatingActionButton (
-              onPressed:,
-              backgroundColor: Colors.blue,
-            ),*/
+      /*FloatingActionButton(
+        onPressed: _publishEsdeveniment(),
+        backgroundColor: Colors.blue,
+      ),*/
     ])));
+  }
+
+  _publishEsdeveniment() {
+    runApp(MaterialApp(
+      home: Publish(),
+    ));
   }
 }
