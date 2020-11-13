@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:safeevents/ClientInfo.dart';
-import 'package:safeevents/AlbumTest.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -24,7 +23,10 @@ class _StructureState extends State<Structure> {
       'Index 1: Map',
       style: optionStyle,
     ),
-    AlbumTest(),
+    Text(
+      'Index 1: Map',
+      style: optionStyle,
+    ),
     ClientInfo('paco@gmail.com')
   ];
 

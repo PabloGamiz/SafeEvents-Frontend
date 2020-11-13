@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:safeevents/pantalla_principal.dart';
+import 'Structure.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -42,8 +43,8 @@ class _SignInState extends State<SignIn> {
             child: Align(
               alignment: Alignment.center,
               child: FlatButton(
-                onPressed: () => print(
-                    'boton presinado') /*llama a estructura, para que depues esta muestre eventos general*/,
+                onPressed: () =>
+                    _launchStructure() /*llama a estructura, para que depues esta muestre eventos general*/,
                 child: Text(
                   'Continue as guest user',
                   style: TextStyle(
@@ -71,7 +72,13 @@ class _SignInState extends State<SignIn> {
     prefs.setInt('timeout', session.deadline);
 
     runApp(MaterialApp(
-      home: PantallaPrincipal(),
+      home: Structure(),
+    ));
+  }
+
+  _launchStructure() {
+    runApp(MaterialApp(
+      home: Structure(),
     ));
   }
 }
