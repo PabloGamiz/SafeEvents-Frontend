@@ -43,17 +43,19 @@ class _MostraState extends State<Mostra> {
                               Icons.favorite,
                               color: Colors.red,
                             ),
+                            onPressed: () => {_doFav()},
                           ),
                           alignment: Alignment(1, 1),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0, top: 20),
                           child: Row(
                             children: <Widget>[
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: Image.network(
-                                  'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
+                                  //'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
+                                  'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
                                   width: 120,
                                   loadingBuilder: (context, child, progress) {
                                     return progress == null
@@ -97,25 +99,58 @@ class _MostraState extends State<Mostra> {
                                             fontSize: 25,
                                             color: Colors.white.withOpacity(1)),
                                       ),
-                                      Row(
+                                      Column(
                                         children: [
-                                          Text(
-                                            '\nEmpresa org',
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white
-                                                    .withOpacity(1)),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 70,
+                                                child: Text(
+                                                  '\nEmpresa org',
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 20,
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: Colors.white
+                                                          .withOpacity(1)),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 8, top: 10),
+                                                child: Image.network(
+                                                  //Que es mostrin depenent del numero d'estrelles de la empresa una imatge o una altre
+                                                  "http://assets.stickpng.com/images/5873869ef3a71010b5e8ef41.png",
+                                                  width: 60,
+                                                  loadingBuilder:
+                                                      (context, child, progress) {
+                                                    return progress == null
+                                                        ? child
+                                                        : LinearProgressIndicator();
+                                                  },
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Image.network(
-                                            "http://assets.stickpng.com/images/5873869ef3a71010b5e8ef41.png",
-                                            width: 80,
-                                            loadingBuilder:
-                                                (context, child, progress) {
-                                              return progress == null
-                                                  ? child
-                                                  : LinearProgressIndicator();
-                                            },
-                                          ),
+                                          ButtonTheme(
+                                            height: 20,
+                                            child: RaisedButton(
+
+                                              color: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: new BorderRadius.circular(18.0),
+                                              ),
+
+                                              child: Text('CONTACTA',
+                                                style: TextStyle(
+                                                  color: Colors.blue,
+
+                                                ),),
+                                              onPressed: () =>{
+                                                //_contactaAmbEmpresa()
+                                              },
+
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ]),
@@ -204,5 +239,9 @@ class _MostraState extends State<Mostra> {
         ),
       ),
     );
+  }
+
+  _doFav() {
+    //do something
   }
 }
