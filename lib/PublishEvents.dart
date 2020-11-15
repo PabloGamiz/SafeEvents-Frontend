@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
+import 'package:safeevents/EventsGeneral.dart';
+
 TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
 TextEditingController dircontroller = new TextEditingController();
@@ -403,6 +405,9 @@ class _PublishState extends State<Publish> {
       //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if(!someError){
       //Envia data al backend i redirecciona
+      runApp(MaterialApp(
+        home: EventsGeneral(),
+      ));
     }
 
     }

@@ -4,6 +4,12 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'http_models/EsdevenimentEspecificModel.dart';
+import 'http_requests/http_esdevenimentespecific.dart';
+import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
+import 'package:safeevents/reserves.dart';
 
 var _colorFav = Colors.white;
 
@@ -19,6 +25,26 @@ class Mostra extends StatefulWidget {
 }
 
 class _MostraState extends State<Mostra> {
+
+  Controller event;
+  @override
+  void initState() async{
+    super.initState();
+    int id = 20;
+    //int id = id que pasan desde general Events;
+    final Controller session = await http_esdevenimentespecific(id);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('title', session.title);
+
+    http_esdevenimentespecific(id).then((eventid) {
+      setState(() {
+        log('Hola');
+        event = eventid;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -259,6 +285,9 @@ class _MostraState extends State<Mostra> {
 }
 
 _contrata() {
+  runApp(MaterialApp(
+    home: Reserves(),
+  ));
   //saltar a la pestanya de Comprar / Reservar
 }
 
