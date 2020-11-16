@@ -19,11 +19,15 @@ class _StructureState extends State<Structure> {
   static List<Widget> _widgetOptionsIfRegistered = <Widget>[
     EventsGeneral(),
     Text(
-      'Index 1: Map',
+      'Index 2: Favourites',
       style: optionStyle,
     ),
     Text(
-      'Index 1: Map',
+      'Index 3: Map',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 3: Chat',
       style: optionStyle,
     ),
     ClientInfo('paco@gmail.com')
@@ -32,15 +36,19 @@ class _StructureState extends State<Structure> {
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
     EventsGeneral(),
     Text(
-      'Index 1: Map',
+      'Register to use this option',
       style: optionStyle,
     ),
     Text(
-      'Registrate puto',
+      'Index 3: Map',
       style: optionStyle,
     ),
     Text(
-      'Registrate puto',
+      'Register to use this option',
+      style: optionStyle,
+    ),
+    Text(
+      'Register to use this option',
       style: optionStyle,
     ),
   ];
