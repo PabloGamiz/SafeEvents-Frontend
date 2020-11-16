@@ -17,16 +17,21 @@ class _PantallaReserva extends State<Reserves> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          FlatButton(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Boton que no hace nada',
-                style: TextStyle(color: Colors.white, fontSize: 24),
+          Container(
+            width: 250.0,
+            child: Align(
+              alignment: Alignment.center,
+              child: FlatButton(
+                onPressed: () =>
+                    _reserva() /*llama a estructura, para que depues esta muestre eventos general*/,
+                child: Text(
+                  'Tancar sessió',
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
               ),
             ),
-            onPressed: () => print('boton presinado'),
-            color: Colors.lightBlue,
           ),
           Container(
             width: 250.0,
@@ -49,5 +54,24 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 
-  _reserva() {}
+  _reserva() {
+    /*   18:27
+// Request
+{
+	"client_id": "",
+	"event_id": "",
+	"option": 0,
+	"how_many": 0,
+	"description": "hello world"
+}
+
+// response
+{
+	"tickets_id": []
+}
+Tu18:23
+option = 0 reserva, 1 = compra
+
+*/
+  }
 }

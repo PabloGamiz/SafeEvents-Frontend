@@ -67,6 +67,7 @@ class _SignInState extends State<SignIn> {
     final SignInModel session = await http_SignIn(googleAuth.idToken);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(session.cookie);
     prefs.setString('cookie', session.cookie);
     prefs.setInt('timeout', session.deadline);
 

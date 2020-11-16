@@ -124,7 +124,8 @@ class _GeneralEventsState extends State {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: 15, /*filteredEvents.length,*/
+            itemCount: 15,
+            /*filteredEvents.length,*/
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -177,10 +178,10 @@ class _GeneralEventsState extends State {
                           width: 25,
                         ),
                         Expanded(
-                          child: Text(
-                            '45€', /*sumadelpreu(filteredEvents[index]).toString(),*/
-                            style: TextStyle(fontSize: 40, color: Colors.white)
-                          ),
+                          child: Text('45€',
+                              /*sumadelpreu(filteredEvents[index]).toString(),*/
+                              style:
+                                  TextStyle(fontSize: 40, color: Colors.white)),
                         ),
                         Expanded(
                           //color: Colors.red,
@@ -191,7 +192,8 @@ class _GeneralEventsState extends State {
                               Center(
                                 child: Container(
                                   child: Text(
-                                    'Palau Sant Jordi', /*filteredEvents[index].location.name,*/
+                                    'Palau Sant Jordi',
+                                    /*filteredEvents[index].location.name,*/
                                     style: TextStyle(color: Colors.white),
                                     maxLines: 2,
                                     overflow: TextOverflow.fade,
@@ -201,8 +203,8 @@ class _GeneralEventsState extends State {
                               Container(
                                 height: 5,
                               ),
-                              Text(
-                                  '25/10/2020, 19:50', /*filteredEvents[index].date.toString(),*/
+                              Text('25/10/2020, 19:50',
+                                  /*filteredEvents[index].date.toString(),*/
                                   style: TextStyle(color: Colors.white)),
                               Container(
                                 height: 5,
