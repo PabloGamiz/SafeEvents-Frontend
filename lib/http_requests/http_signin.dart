@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/SignIn_model.dart';
 
 Future<SignInModel> http_SignIn(String tokenid) async {
-  print('hola');
   final String apitUrl = "http://10.4.41.148:8080/signin";
   var queryParamaters = {'token_id': tokenid};
   final jsonCliend = json.encode(queryParamaters);
