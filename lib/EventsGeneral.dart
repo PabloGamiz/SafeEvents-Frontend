@@ -108,16 +108,16 @@ class _GeneralEventsState extends State {
               child: Text(newValue),
             );
           }).toList(),
-         /* onChanged: (newValue) {
+          onChanged: (newValue) {
             _debouncer.run(() {
               setState(() {
                 _defaultValue = newValue;
-                filteredEvents = generalEvents
+                /*filteredEvents = generalEvents
                           .where((e) => e.category.contains(newValue))
-                          .toList();
+                          .toList();*/
               });
             });
-          },*/
+          },
         ),
         SizedBox(
           height: 5,
