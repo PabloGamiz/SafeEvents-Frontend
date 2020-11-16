@@ -4,6 +4,14 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'http_models/EsdevenimentEspecificModel.dart';
+import 'http_requests/http_esdevenimentespecific.dart';
+import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
+import 'package:safeevents/reserves.dart';
+
+var _colorFav = Colors.white;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -17,8 +25,20 @@ class Mostra extends StatefulWidget {
 }
 
 class _MostraState extends State<Mostra> {
+
+  Controller event;
+  @override
+  void initState() {
+    super.initState();
+    int id = 20;
+    //int id = id que pasan desde general Events;
+    _initEvent(id);
+
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -37,23 +57,24 @@ class _MostraState extends State<Mostra> {
                     child: Column(
                       children: [
                         Container(
-                          height: 5,
+                          height:13,
                           child: IconButton(
                             icon: Icon(
-                              Icons.favorite,
-                              color: Colors.red,
-                            ),
+                              Icons.favorite),
+                              color: _colorFav,
+                            onPressed: () => {_doFav()},
                           ),
                           alignment: Alignment(1, 1),
                         ),
                         Padding(
-                          padding: const EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0, top: 20),
                           child: Row(
                             children: <Widget>[
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
                                 child: Image.network(
-                                  'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
+                                  //'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
+                                  'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
                                   width: 120,
                                   loadingBuilder: (context, child, progress) {
                                     return progress == null
@@ -97,25 +118,63 @@ class _MostraState extends State<Mostra> {
                                             fontSize: 25,
                                             color: Colors.white.withOpacity(1)),
                                       ),
-                                      Row(
+                                      Column(
                                         children: [
-                                          Text(
-                                            '\nEmpresa org',
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.white
-                                                    .withOpacity(1)),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                width: 70,
+                                                child: Text(
+                                                  '\nEmpresa org',
+                                                  overflow: TextOverflow.ellipsis,
+                                                  maxLines: 20,
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: Colors.white
+                                                          .withOpacity(1)),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(left: 8, top: 10),
+                                                child: Image.network(
+                                                  //Que es mostrin depenent del numero d'estrelles de la empresa una imatge o una altre
+                                                  "http://assets.stickpng.com/images/5873869ef3a71010b5e8ef41.png",
+                                                  width: 60,
+                                                  loadingBuilder:
+                                                      (context, child, progress) {
+                                                    return progress == null
+                                                        ? child
+                                                        : LinearProgressIndicator();
+                                                  },
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                          Image.network(
-                                            "http://assets.stickpng.com/images/5873869ef3a71010b5e8ef41.png",
-                                            width: 80,
-                                            loadingBuilder:
-                                                (context, child, progress) {
-                                              return progress == null
-                                                  ? child
-                                                  : LinearProgressIndicator();
-                                            },
-                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: ButtonTheme(
+                                              minWidth:1,
+                                              height: 20,
+                                              child: RaisedButton(
+
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: new BorderRadius.circular(18.0),
+                                                ),
+
+                                                child: Text('CONTACTA',
+                                                  style: TextStyle(
+                                                    fontSize: 9,
+                                                    color: Colors.blue,
+
+                                                  ),),
+                                                onPressed: () =>{
+                                                  _contacta()
+                                                },
+
+                                              ),
+                                            ),
+                                          )
                                         ],
                                       ),
                                     ]),
@@ -194,7 +253,7 @@ class _MostraState extends State<Mostra> {
                         'RESERVA / COMPRA',
                         style: TextStyle(color: Colors.blue, fontSize: 20),
                       ),
-                      onPressed: () => {},
+                      onPressed: () => {_contrata()},
                     ),
                   )
                 ],
@@ -205,4 +264,29 @@ class _MostraState extends State<Mostra> {
       ),
     );
   }
+
+  _doFav() {
+    //do something
+    setState(() {
+
+      if(_colorFav == Colors.white)_colorFav = Colors.red;
+      else if(_colorFav == Colors.red) _colorFav = Colors.white;
+    });
+  }
+
+  void _initEvent(int id) async {
+    final EsdevenimentEspecificModel event = await http_esdevenimentespecific(id);
+    print('EVENT '+event.controller.title);
+  }
+}
+
+_contrata() {
+  runApp(MaterialApp(
+    home: Reserves(),
+  ));
+  //saltar a la pestanya de Comprar / Reservar
+}
+
+_contacta() {
+  //saltar a la pestanya de Xat amb la empresa
 }

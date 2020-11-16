@@ -30,15 +30,15 @@ class _StructureState extends State<Structure> {
   static List<Widget> _widgetOptionsIfRegistered = <Widget>[
     EventsGeneral(),
     Text(
-      'Index 1: Favourites',
+      'Index 2: Favourites',
       style: optionStyle,
     ),
     Text(
-      'Index 1: Map',
+      'Index 3: Map',
       style: optionStyle,
     ),
     Text(
-      'Xat 1: Map',
+      'Index 3: Chat',
       style: optionStyle,
     ),
     ClientInfo('paco@gmail.com')
@@ -47,15 +47,21 @@ class _StructureState extends State<Structure> {
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
     EventsGeneral(),
     Text(
-      'Index 1: Favourites',
+      'Register to use this option',
       style: optionStyle,
     ),
     Text(
-      'Index 1: Map',
+      'Index 3: Map',
       style: optionStyle,
     ),
-    Nologin(),
-    Nologin(),
+    Text(
+      'Register to use this option',
+      style: optionStyle,
+    ),
+    Text(
+      'Register to use this option',
+      style: optionStyle,
+    ),
   ];
 
   void _onItemTapped(int index) {
