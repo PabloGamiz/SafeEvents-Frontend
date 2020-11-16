@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/http_requests/http_generalevents.dart';
 import 'PublishEvents.dart';
 import 'PublishEvents.dart';
@@ -71,154 +72,184 @@ class _GeneralEventsState extends State {
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
-            body: Column(children: <Widget>[
-      SizedBox(
-        height: 10,
-      ),
-      TextFormField(
-        decoration: InputDecoration(
-          labelText: "Cercar ciutat",
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25.0),
-            borderSide: BorderSide(),
-          ),
+      body: Column(children: <Widget>[
+        SizedBox(
+          height: 10,
         ),
-        /*onChanged: (string) {
-          _debouncer.run(() {
-            setState(() {
-              filteredEvents = generalEvents
-                  .where((e) =>
-                      (e.location.toLowerCase().contains(string.toLowerCase())))
-                  .toList();
+        TextFormField(
+          decoration: InputDecoration(
+            labelText: "Cercar ciutat",
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(),
+            ),
+          ),
+          /*onChanged: (string) {
+                  _debouncer.run(() {
+                    setState(() {
+                      filteredEvents = generalEvents
+                          .where((e) =>
+                              (e.location.toLowerCase().contains(string.toLowerCase())))
+                          .toList();
+                    });
+                  });
+                },*/
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        DropdownButton<String>(
+          hint: Text('Select category'),
+          value: _defaultValue,
+          items: categories.map((newValue) {
+            return DropdownMenuItem<String>(
+              value: newValue,
+              child: Text(newValue),
+            );
+          }).toList(),
+          onChanged: (newValue) {
+            _debouncer.run(() {
+              setState(() {
+                _defaultValue = newValue;
+                /*filteredEvents = generalEvents
+                          .where((e) => e.category.contains(newValue))
+                          .toList();*/
+              });
             });
-          });
-        },*/
-      ),
-      SizedBox(
-        height: 10,
-      ),
-      DropdownButton<String>(
-        hint: Text('Select category'),
-        value: _defaultValue,
-        items: categories.map((newValue) {
-          return DropdownMenuItem<String>(
-            value: newValue,
-            child: Text(newValue),
-          );
-        }).toList(),
-        onChanged: (newValue) {
-          _debouncer.run(() {
-            setState(() {
-              _defaultValue = newValue;
-              /*filteredEvents = generalEvents
-                  .where((e) => e.category.contains(newValue))
-                  .toList();*/
-            });
-          });
-        },
-      ),
-      SizedBox(
-        height: 10,
-      ),
-      Expanded(
-        child: ListView.builder(
-          itemCount: 15, //filteredEvents.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: 1.0,
-                horizontal: 4.0,
-              ),
-              child: Card(
-                color: Colors.lightBlue,
-                child: ListTile(
-                  title: Row(
-                    children: [
-                      Container(
-                        width: 305,
-                        height: 35,
-                        child: Text(
-                          'KIKO RIVERA ON CONCERT', //filteredEvents[index].title,
-                          style: TextStyle(fontSize: 24, color: Colors.white),
-                          maxLines: 2,
-                          overflow: TextOverflow.fade,
+          },
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        Expanded(
+          child: ListView.builder(
+            itemCount: 15, //filteredEvents.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 1.0,
+                  horizontal: 4.0,
+                ),
+                child: Card(
+                  color: Colors.lightBlue,
+                  child: ListTile(
+                    onTap: () {
+                      _esdevenimentEspecific();
+                    },
+                    title: Column(
+                      children: [
+                        Container(
+                          height: 19,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton(
+                              icon: Icon(
+                                likeds[index]
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: likeds[index] ? Colors.red : Colors.grey,
+                              ),
+                              onPressed: () => setState(() {
+                                likeds[index] = !likeds[index];
+                              }),
+                            ),
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          likeds[index]
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: likeds[index] ? Colors.red : Colors.grey,
-                        ),
-                        onPressed: () => setState(() {
-                          likeds[index] = !likeds[index];
-                        }),
-                      ),
-                    ],
-                  ),
-                  subtitle: Row(
-                    /* mainAxisAlignment: MainAxisAlignment.center,*/
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                          '45€', //sumadelpreu(filteredEvents[index]).toString(),
-                          style: TextStyle(fontSize: 40, color: Colors.white)),
-                      SizedBox(
-                        width: 40,
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 225,
-                            height: 20,
-                            /*alignment: AlignmentGeometry(),*/
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            width: 320,
                             child: Text(
-                              'Palau Sant Jordi', //filteredEvents[index].location.name,
-                              style: TextStyle(color: Colors.white),
+                              'KIKO RIVERA ON CONCERT', //filteredEvents[index].title,
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.white),
                               maxLines: 2,
                               overflow: TextOverflow.fade,
                             ),
                           ),
-                          Container(
-                            height: 5,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                      ],
+                    ),
+                    subtitle: Row(
+                      /* mainAxisAlignment: MainAxisAlignment.center,*/
+                      children: [
+                        SizedBox(
+                          width: 25,
+                        ),
+                        Expanded(
+                          child: Text(
+                            '45€', //sumadelpreu(filteredEvents[index]).toString(),
+                            style: TextStyle(fontSize: 40, color: Colors.white)
                           ),
-                          Text(
-                              '25/10/2020, 19:50', //filteredEvents[index].date.toString(),
-                              style: TextStyle(color: Colors.white)),
-                          Container(
-                            height: 5,
+                        ),
+                        Container(
+                          //color: Colors.red,
+                          width: 260,
+                          //height: 80,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Center(
+                                child: Container(
+                                  child: Text(
+                                    'Palau Sant Jordi', //filteredEvents[index].location.name,
+                                    style: TextStyle(color: Colors.white),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.fade,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                height: 5,
+                              ),
+                              Text(
+                                  '25/10/2020, 19:50', //filteredEvents[index].date.toString(),
+                                  style: TextStyle(color: Colors.white)),
+                              Container(
+                                height: 5,
+                              ),
+                              Text('Música', //filteredEvents[index].category,
+                                  style: TextStyle(color: Colors.white)),
+                            ],
                           ),
-                          Text('Música', //filteredEvents[index].category,
-                              style: TextStyle(color: Colors.white)),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-          shrinkWrap: true,
+              );
+            },
+            shrinkWrap: true,
+          ),
         ),
+      ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _publishEsdeveniment();
+        },
+        tooltip: 'Publish event',
+        child: Icon(
+          Icons.add,
+        ),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
       ),
-      /*FloatingActionButton(
-        onPressed: _publishEsdeveniment(),
-        backgroundColor: Colors.blue,
-      ),*/
-    ])));
+    ));
   }
 
   _publishEsdeveniment() {
     runApp(MaterialApp(
       home: Publish(),
+    ));
+  }
+
+  _esdevenimentEspecific() {
+    runApp(MaterialApp(
+      home: Mostra(),
     ));
   }
 }
