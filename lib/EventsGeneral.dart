@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/http_requests/http_generalevents.dart';
 import 'PublishEvents.dart';
 import 'PublishEvents.dart';
@@ -133,6 +134,9 @@ class _GeneralEventsState extends State {
                 child: Card(
                   color: Colors.lightBlue,
                   child: ListTile(
+                    onTap: () {
+                      _esdevenimentEspecific();
+                    },
                     title: Column(
                       children: [
                         Container(
@@ -176,10 +180,12 @@ class _GeneralEventsState extends State {
                         SizedBox(
                           width: 25,
                         ),
-                        Text(
+                        Expanded(
+                          child: Text(
                             '45€', //sumadelpreu(filteredEvents[index]).toString(),
-                            style:
-                                TextStyle(fontSize: 40, color: Colors.white)),
+                            style: TextStyle(fontSize: 40, color: Colors.white)
+                          ),
+                        ),
                         Container(
                           //color: Colors.red,
                           width: 260,
@@ -238,6 +244,12 @@ class _GeneralEventsState extends State {
   _publishEsdeveniment() {
     runApp(MaterialApp(
       home: Publish(),
+    ));
+  }
+
+  _esdevenimentEspecific() {
+    runApp(MaterialApp(
+      home: Mostra(),
     ));
   }
 }
