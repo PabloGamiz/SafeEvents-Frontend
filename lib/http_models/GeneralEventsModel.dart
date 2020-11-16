@@ -1,56 +1,90 @@
+// To parse this JSON data, do
+//
+//     final listEsdevenimentsModel = listEsdevenimentsModelFromJson(jsonString);
+
 import 'dart:convert';
 
-EventsModel eventsModelFromJson(String str) =>
-    EventsModel.fromJson(json.decode(str));
+List<ListEsdevenimentsModel> listEsdevenimentsModelFromJson(String str) =>
+    List<ListEsdevenimentsModel>.from(
+        json.decode(str).map((x) => ListEsdevenimentsModel.fromJson(x)));
 
-String eventsModelToJson(EventsModel data) => json.encode(data.toJson());
+String listEsdevenimentsModelToJson(List<ListEsdevenimentsModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class EventsModel {
-  EventsModel({
-    this.events,
+class ListEsdevenimentsModel {
+  ListEsdevenimentsModel({
+    this.controller,
   });
 
-  List<Event> events;
+  Controller controller;
 
-  factory EventsModel.fromJson(Map<String, dynamic> json) => EventsModel(
-        events: List<Event>.from(json["events"].map((x) => Event.fromJson(x))),
+  factory ListEsdevenimentsModel.fromJson(Map<String, dynamic> json) =>
+      ListEsdevenimentsModel(
+        controller: Controller.fromJson(json["Controller"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "events": List<dynamic>.from(events.map((x) => x.toJson())),
+        "Controller": controller.toJson(),
       };
 }
 
-class Event {
-  Event({
+class Controller {
+  Controller({
     this.id,
     this.title,
-    this.date,
+    this.description,
+    this.capacity,
+    this.price,
+    this.checkInDate,
+    this.closureDate,
     this.location,
+    this.organizers,
     this.services,
+    this.createdAt,
+    this.updatedAt,
   });
 
   int id;
   String title;
-  int date;
+  String description;
+  int capacity;
+  int price;
+  DateTime checkInDate;
+  DateTime closureDate;
   Location location;
-  List<Service> services;
+  List<dynamic> organizers;
+  List<dynamic> services;
+  DateTime createdAt;
+  DateTime updatedAt;
 
-  factory Event.fromJson(Map<String, dynamic> json) => Event(
+  factory Controller.fromJson(Map<String, dynamic> json) => Controller(
         id: json["id"],
         title: json["title"],
-        date: json["date"],
+        description: json["description"],
+        capacity: json["capacity"],
+        price: json["price"],
+        checkInDate: DateTime.parse(json["checkInDate"]),
+        closureDate: DateTime.parse(json["closureDate"]),
         location: Location.fromJson(json["location"]),
-        services: List<Service>.from(
-            json["services"].map((x) => Service.fromJson(x))),
+        organizers: List<dynamic>.from(json["organizers"].map((x) => x)),
+        services: List<dynamic>.from(json["services"].map((x) => x)),
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "title": title,
-        "date": date,
+        "description": description,
+        "capacity": capacity,
+        "price": price,
+        "checkInDate": checkInDate.toIso8601String(),
+        "closureDate": closureDate.toIso8601String(),
         "location": location.toJson(),
-        "services": List<dynamic>.from(services.map((x) => x.toJson())),
+        "organizers": List<dynamic>.from(organizers.map((x) => x)),
+        "services": List<dynamic>.from(services.map((x) => x)),
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
       };
 }
 
@@ -58,59 +92,57 @@ class Location {
   Location({
     this.id,
     this.name,
+    this.address,
+    this.coordinates,
+    this.extension,
+    this.createdAt,
+    this.updatedAt,
   });
 
   int id;
   String name;
+  String address;
+  String coordinates;
+  int extension;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
         id: json["id"],
         name: json["name"],
+        address: json["address"],
+        coordinates: json["coordinates"],
+        extension: json["extension"],
+        createdAt: DateTime.parse(json["CreatedAt"]),
+        updatedAt: DateTime.parse(json["UpdatedAt"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
+        "address": address,
+        "coordinates": coordinates,
+        "extension": extension,
+        "CreatedAt": createdAt.toIso8601String(),
+        "UpdatedAt": updatedAt.toIso8601String(),
       };
 }
 
-class Service {
-  Service({
-    this.id,
-    this.products,
-  });
+/*
+final String apitUrl = "http://10.4.41.148:8080/event/list";
+    print(await http.get(apitUrl));
 
-  int id;
-  List<Product> products;
-
-  factory Service.fromJson(Map<String, dynamic> json) => Service(
-        id: json["id"],
-        products: List<Product>.from(
-            json["products"].map((x) => Product.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "products": List<dynamic>.from(products.map((x) => x.toJson())),
-      };
-}
-
-class Product {
-  Product({
-    this.id,
-    this.price,
-  });
-
-  int id;
-  int price;
-
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-        id: json["id"],
-        price: json["price"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "price": price,
-      };
-}
+    final response = await http.get(apitUrl);
+    print(response.statusCode);
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      final String responseString = response.body;
+      final listEsdevenimentsModel =
+          listEsdevenimentsModelFromJson(responseString);
+      print(listEsdevenimentsModel);
+      for (int i = 0; i < 3; ++i) {
+        print(i);
+        print(listEsdevenimentsModel[i].controller.title);
+      }
+    }
+    
+*/

@@ -159,13 +159,13 @@ class _GeneralEventsState extends State {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child:  Text(
-                              'KIKO RIVERA ON CONCERT', /*filteredEvents[index].title,*/
-                              style:
-                                  TextStyle(fontSize: 24, color: Colors.white),
-                              maxLines: 2,
-                              overflow: TextOverflow.fade,
-                            ),
+                          child: Text(
+                            'KIKO RIVERA ON CONCERT',
+                            /*filteredEvents[index].title,*/
+                            style: TextStyle(fontSize: 24, color: Colors.white),
+                            maxLines: 2,
+                            overflow: TextOverflow.fade,
+                          ),
                         ),
                         SizedBox(
                           height: 10,

@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/GeneralEventsModel.dart';
 
@@ -20,3 +20,4 @@ List<Event> _parseEvents(String responseBody) {
   final parse = json.decode(responseBody).cast<Map<String, dynamic>>();
   return parse.map<Event>((json) => Event.fromJson(json)).toList();
 }
+*/
