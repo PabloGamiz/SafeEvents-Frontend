@@ -1,17 +1,21 @@
+// To parse this JSON data, do
+//
+//     final esdevenimentEspecificModel = esdevenimentEspecificModelFromJson(jsonString);
+
 import 'dart:convert';
 
-EsdevenimentEspecific esdevenimentEspecificFromJson(String str) => EsdevenimentEspecific.fromJson(json.decode(str));
+EsdevenimentEspecificModel esdevenimentEspecificModelFromJson(String str) => EsdevenimentEspecificModel.fromJson(json.decode(str));
 
-String esdevenimentEspecificToJson(EsdevenimentEspecific data) => json.encode(data.toJson());
+String esdevenimentEspecificModelToJson(EsdevenimentEspecificModel data) => json.encode(data.toJson());
 
-class EsdevenimentEspecific {
-  EsdevenimentEspecific({
+class EsdevenimentEspecificModel {
+  EsdevenimentEspecificModel({
     this.controller,
   });
 
   Controller controller;
 
-  factory EsdevenimentEspecific.fromJson(Map<String, dynamic> json) => EsdevenimentEspecific(
+  factory EsdevenimentEspecificModel.fromJson(Map<String, dynamic> json) => EsdevenimentEspecificModel(
     controller: Controller.fromJson(json["Controller"]),
   );
 
