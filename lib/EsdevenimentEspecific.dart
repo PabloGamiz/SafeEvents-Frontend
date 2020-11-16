@@ -28,21 +28,12 @@ class _MostraState extends State<Mostra> {
 
   Controller event;
   @override
-  void initState() async{
+  void initState() {
     super.initState();
     int id = 20;
     //int id = id que pasan desde general Events;
-    final Controller session = await http_esdevenimentespecific(id);
+    _initEvent(id);
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('title', session.title);
-
-    http_esdevenimentespecific(id).then((eventid) {
-      setState(() {
-        log('Hola');
-        event = eventid;
-      });
-    });
   }
 
   @override
@@ -281,6 +272,11 @@ class _MostraState extends State<Mostra> {
       if(_colorFav == Colors.white)_colorFav = Colors.red;
       else if(_colorFav == Colors.red) _colorFav = Colors.white;
     });
+  }
+
+  void _initEvent(int id) async {
+    final EsdevenimentEspecificModel event = await http_esdevenimentespecific(id);
+    print('EVENT '+event.controller.title);
   }
 }
 
