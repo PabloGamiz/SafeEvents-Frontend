@@ -108,23 +108,24 @@ class _GeneralEventsState extends State {
               child: Text(newValue),
             );
           }).toList(),
-         /* onChanged: (newValue) {
+          onChanged: (newValue) {
             _debouncer.run(() {
               setState(() {
                 _defaultValue = newValue;
-                filteredEvents = generalEvents
+                /*filteredEvents = generalEvents
                           .where((e) => e.category.contains(newValue))
-                          .toList();
+                          .toList();*/
               });
             });
-          },*/
+          },
         ),
         SizedBox(
           height: 5,
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: 15, /*filteredEvents.length,*/
+            itemCount: 15,
+            /*filteredEvents.length,*/
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(
@@ -140,7 +141,7 @@ class _GeneralEventsState extends State {
                     title: Column(
                       children: [
                         Container(
-                          height: 19,
+                          height: 30,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: IconButton(
@@ -158,15 +159,12 @@ class _GeneralEventsState extends State {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: 320,
-                            child: Text(
-                              'KIKO RIVERA ON CONCERT', /*filteredEvents[index].title,*/
-                              style:
-                                  TextStyle(fontSize: 24, color: Colors.white),
-                              maxLines: 2,
-                              overflow: TextOverflow.fade,
-                            ),
+                          child: Text(
+                            'KIKO RIVERA ON CONCERT',
+                            /*filteredEvents[index].title,*/
+                            style: TextStyle(fontSize: 24, color: Colors.white),
+                            maxLines: 2,
+                            overflow: TextOverflow.fade,
                           ),
                         ),
                         SizedBox(
@@ -180,14 +178,13 @@ class _GeneralEventsState extends State {
                           width: 25,
                         ),
                         Expanded(
-                          child: Text(
-                            '45€', /*sumadelpreu(filteredEvents[index]).toString(),*/
-                            style: TextStyle(fontSize: 40, color: Colors.white)
-                          ),
+                          child: Text('45€',
+                              /*sumadelpreu(filteredEvents[index]).toString(),*/
+                              style:
+                                  TextStyle(fontSize: 40, color: Colors.white)),
                         ),
-                        Container(
+                        Expanded(
                           //color: Colors.red,
-                          width: 260,
                           //height: 80,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -195,7 +192,8 @@ class _GeneralEventsState extends State {
                               Center(
                                 child: Container(
                                   child: Text(
-                                    'Palau Sant Jordi', /*filteredEvents[index].location.name,*/
+                                    'Palau Sant Jordi',
+                                    /*filteredEvents[index].location.name,*/
                                     style: TextStyle(color: Colors.white),
                                     maxLines: 2,
                                     overflow: TextOverflow.fade,
@@ -205,8 +203,8 @@ class _GeneralEventsState extends State {
                               Container(
                                 height: 5,
                               ),
-                              Text(
-                                  '25/10/2020, 19:50', /*filteredEvents[index].date.toString(),*/
+                              Text('25/10/2020, 19:50',
+                                  /*filteredEvents[index].date.toString(),*/
                                   style: TextStyle(color: Colors.white)),
                               Container(
                                 height: 5,
