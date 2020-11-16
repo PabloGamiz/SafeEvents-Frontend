@@ -46,22 +46,13 @@ class _StructureState extends State<Structure> {
 
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
     EventsGeneral(),
-    Text(
-      'Register to use this option',
-      style: optionStyle,
-    ),
+    Nologin(),
     Text(
       'Index 3: Map',
       style: optionStyle,
     ),
-    Text(
-      'Register to use this option',
-      style: optionStyle,
-    ),
-    Text(
-      'Register to use this option',
-      style: optionStyle,
-    ),
+    Nologin(),
+    Nologin(),
   ];
 
   void _onItemTapped(int index) {

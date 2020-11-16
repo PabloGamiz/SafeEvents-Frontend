@@ -140,7 +140,7 @@ class _GeneralEventsState extends State {
                     title: Column(
                       children: [
                         Container(
-                          height: 19,
+                          height: 30,
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: IconButton(
@@ -158,16 +158,13 @@ class _GeneralEventsState extends State {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: Container(
-                            width: 320,
-                            child: Text(
+                          child:  Text(
                               'KIKO RIVERA ON CONCERT', /*filteredEvents[index].title,*/
                               style:
                                   TextStyle(fontSize: 24, color: Colors.white),
                               maxLines: 2,
                               overflow: TextOverflow.fade,
                             ),
-                          ),
                         ),
                         SizedBox(
                           height: 10,
@@ -185,9 +182,8 @@ class _GeneralEventsState extends State {
                             style: TextStyle(fontSize: 40, color: Colors.white)
                           ),
                         ),
-                        Container(
+                        Expanded(
                           //color: Colors.red,
-                          width: 260,
                           //height: 80,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

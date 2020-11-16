@@ -57,7 +57,7 @@ class _MostraState extends State<Mostra> {
                     child: Column(
                       children: [
                         Container(
-                          height:13,
+                          height:20,
                           child: IconButton(
                             icon: Icon(
                               Icons.favorite),
