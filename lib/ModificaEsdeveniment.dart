@@ -49,8 +49,9 @@ class _ModificaState extends State<Modifica> {
     // TODO: implement initState
     setState(() {
       _data = DateTime.parse('2018-09-27 13:27:00');
+      _hora = DateTime.parse('2018-09-27 13:27:00');
       log('Holas _'+_data.toString());
-      log('Datetime');
+      log('Datetime ');
       nomcontroller.text = 'Kiko Rivera on Tour';
       dircontroller.text = 'Palau Sant Jordi';
       descrcontroller.text = 'El Kiko Rivera torna a Barcelona en el seu tour per Europa';
@@ -281,6 +282,7 @@ class _ModificaState extends State<Modifica> {
                           margin: EdgeInsets.only(left: 60.0, right:70.0),
                           child: DateTimeField(
                               format: format,
+                              initialValue: _data,
                               onShowPicker: (context, currentValue) async{
 
                                 final date = await showDatePicker (
@@ -289,7 +291,7 @@ class _ModificaState extends State<Modifica> {
                                   firstDate: DateTime(1900),
                                   lastDate: DateTime(2100),
                                 );
-                                //_data = date;
+                                _data = date;
                                 return _data;
                               }
                           ),
@@ -306,6 +308,8 @@ class _ModificaState extends State<Modifica> {
                           margin: EdgeInsets.only(left: 70.0, right:94.0),
                           child: DateTimeField(
                               format: formath,
+
+                              initialValue: _hora,
                               onShowPicker: (context, currentValue) async{
                                 final time = await showTimePicker(
                                   context: context,
