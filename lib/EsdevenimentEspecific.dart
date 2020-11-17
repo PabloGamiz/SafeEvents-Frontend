@@ -13,7 +13,11 @@ import 'http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/reserves.dart';
 
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+
 var _colorFav = Colors.white;
+TextEditingController controllerfeedback = new TextEditingController();
+
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -139,17 +143,119 @@ class _MostraState extends State<Mostra> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 8, top: 10),
-                                                  child: Image.network(
-                                                    //Que es mostrin depenent del numero d'estrelles de la empresa una imatge o una altre
-                                                    "http://assets.stickpng.com/images/5873869ef3a71010b5e8ef41.png",
-                                                    width: 60,
-                                                    loadingBuilder:
-                                                        (context, child, progress) {
-                                                      return progress == null
-                                                          ? child
-                                                          : LinearProgressIndicator();
-                                                    },
+                                                  child: SmoothStarRating(
+                                                      allowHalfRating: false,
+                                                      onRated: (v) {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (_) =>
+                                                          new Container(
+                                                            margin: EdgeInsets.only(top:100, left: 50, right:50, bottom: 100),
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(color: Colors.blue),
+                                                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                                                color: Colors.blue),
+                                                            child:Padding(
+                                                              padding: EdgeInsets.only(top:45),
+                                                              child:Column(
+                                                                children: <Widget>[
+                                                                  Text(
+                                                                    'PUNTUA L\'ESDEVENIMENT',
+                                                                    style: TextStyle(
+                                                                      decoration: TextDecoration.none,
+                                                                      color: Colors.white,
+                                                                      fontSize: 13,
+                                                                    ),
+                                                                    maxLines: 1,
+                                                                  ),
+                                                                  SmoothStarRating(
+                                                                    allowHalfRating: false,
+                                                                    starCount: 5,
+                                                                    rating: v,
+                                                                    isReadOnly:false,
+                                                                    color: Colors.white,
+                                                                    borderColor: Colors.white,
+                                                                    spacing:1.0
+                                                                  ),
+                                                                Align(
+                                                                  alignment: Alignment.center,
+                                                                  child:Container(
+                                                                    margin: EdgeInsets.only(top:30),
+                                                                      child:Text(
+                                                                        'DONA\'NS FEEDBACK DE L\'ESDEVENIMENT',
+                                                                        style: TextStyle(
+                                                                          decoration: TextDecoration.none,
+                                                                          color: Colors.white,
+                                                                          fontSize: 13,
+                                                                        ),
+                                                                        maxLines: 1,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  Card(
+                                                                    margin: EdgeInsets.only(top:18,right:20, left:20, bottom: 20),
+                                                                    child:Container(
+                                                                      color: Colors.blue,
+                                                                      child: Container(
+                                                                        decoration:BoxDecoration(
+                                                                          color: Colors.white,
+                                                                          borderRadius: new BorderRadius.only(
+                                                                            topLeft: const Radius.circular(25.0),
+                                                                            topRight: const Radius.circular(25.0),
+                                                                            bottomLeft: const Radius.circular(25.0),
+                                                                            bottomRight: const Radius.circular(25.0),
+                                                                          ),
+                                                                        ),
+                                                                        child:Column(
+                                                                          children: <Widget>[
+
+                                                                            TextField(
+                                                                              controller: controllerfeedback,
+                                                                              decoration: InputDecoration(
+                                                                                  border: OutlineInputBorder(
+                                                                                    borderRadius: BorderRadius.circular(25.0),
+                                                                                    borderSide: BorderSide(),
+                                                                                  )
+                                                                              ),
+                                                                              maxLines: 12
+                                                                            ),
+
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                  ),
+                                                                  ),
+                                                                  RaisedButton(
+                                                                    color: Colors.white,
+                                                                    shape: RoundedRectangleBorder(
+                                                                      borderRadius: new BorderRadius.circular(18.0),
+                                                                    ),
+
+                                                                    child: Text('Publica',
+                                                                      style: TextStyle(
+                                                                        fontSize: 13,
+                                                                        color: Colors.blue,
+
+                                                                      ),),
+                                                                    onPressed: () =>{
+                                                                      _doFeedback()
+                                                                    },
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      starCount: 5,
+                                                      size: 13.0,
+                                                      rating: 3,
+                                                      isReadOnly:false,
+                                                      color: Colors.white,
+                                                      borderColor: Colors.white,
+                                                      spacing:0.0
                                                   ),
+
                                                 ),
                                               ],
                                             ),
@@ -303,6 +409,10 @@ class _MostraState extends State<Mostra> {
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra aixo
     return true;
+  }
+
+  _doFeedback() {
+    //Aqui comunicarem amb el backend per enviar les dades del feedback, estrelles(1-5), missatge, id esdeveniment, usuari
   }
 }
 
