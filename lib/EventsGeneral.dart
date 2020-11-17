@@ -3,8 +3,11 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/http_requests/http_generalevents.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'PublishEvents.dart';
 import 'PublishEvents.dart';
+import 'http_models/GeneralEventsModel.dart';
+import 'http_models/GeneralEventsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_requests/http_generalevents.dart';
 
@@ -32,6 +35,17 @@ class _GeneralEventsState extends State {
   /*OBTENER LISTA DE EVENTOS*/
   final _debouncer = Debouncer(milliseconds: 500);
 
+  bool registered = false;
+
+  _comprovarSessio() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    if (stringValue != null)
+      registered = true;
+    else
+      registered = false;
+  }
+
   List likeds = List.filled(100, false);
 
   String _defaultValue;
@@ -39,18 +53,20 @@ class _GeneralEventsState extends State {
   int counter = 0;
 
   List categories = [
+    ' ',
     'Música',
     'Teatro',
     'Deporte',
     'Arte'
   ]; //nombre de las categorias
 
-  /*List<Event> generalEvents = List();
+  List<ListEsdevenimentsModel> generalEvents = List();
 
-  List<Event> filteredEvents = List();
+  List<ListEsdevenimentsModel> filteredEvents = List();
 
   void initState() {
     super.initState();
+    _comprovarSessio();
     http_GeneralEvents().then((eventsFromServer) {
       setState(() {
         generalEvents = eventsFromServer;
@@ -58,10 +74,10 @@ class _GeneralEventsState extends State {
       });
     });
   }
-
-  int sumadelpreu(Event e) {
+/*
+  int sumadelpreu(ListEsdevenimentsModel l) {
     int suma = 0;
-    for (Service s in e.services) {
+    for (Service s in l.controller.services) {
       for (Product p in s.products) {
         suma = suma + p.price;
       }
@@ -70,9 +86,331 @@ class _GeneralEventsState extends State {
   }*/
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-      body: Column(children: <Widget>[
+    if (registered && filteredEvents.length > 0) {
+      return MaterialApp(
+          home: Scaffold(
+        body: Column(children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: "Cercar ciutat",
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(),
+              ),
+            ),
+            onChanged: (string) {
+              _debouncer.run(() {
+                setState(() {
+                  filteredEvents = generalEvents
+                      .where(
+                          (e) => (e.controller.location.name.contains(string)))
+                      .toList();
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          DropdownButton<String>(
+            hint: Text('Select category'),
+            value: _defaultValue,
+            items: categories.map((newValue) {
+              return DropdownMenuItem<String>(
+                value: newValue,
+                child: Text(newValue),
+              );
+            }).toList(),
+            onChanged: (newValue) {
+              _debouncer.run(() {
+                setState(() {
+                  _defaultValue = newValue;
+                  /*filteredEvents = generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredEvents.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 1.0,
+                    horizontal: 4.0,
+                  ),
+                  child: Card(
+                    color: Colors.lightBlue,
+                    child: ListTile(
+                      onTap: () {
+                        _esdevenimentEspecific();
+                      },
+                      title: Column(
+                        children: [
+                          Container(
+                            height: 30,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                icon: Icon(
+                                  likeds[index]
+                                      ? Icons.favorite
+                                      : Icons.favorite,
+                                  color:
+                                      likeds[index] ? Colors.red : Colors.white,
+                                ),
+                                onPressed: () => setState(() {
+                                  likeds[index] = !likeds[index];
+                                }),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              /*'KIKO RIVERA ON CONCERT',*/
+                              filteredEvents[index].controller.title,
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.white),
+                              maxLines: 2,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                      subtitle: Row(
+                        children: [
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Expanded(
+                            child: Text('45€',
+                                /*sumadelpreu(filteredEvents[index]).toString(),*/
+                                style: TextStyle(
+                                    fontSize: 40, color: Colors.white)),
+                          ),
+                          Expanded(
+                            //color: Colors.red,
+                            //height: 80,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    child: Text(
+                                      /*'Palau Sant Jordi',*/
+                                      filteredEvents[index]
+                                          .controller
+                                          .location
+                                          .name,
+                                      style: TextStyle(color: Colors.white),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text(
+                                    /*'25/10/2020, 19:50',*/
+                                    filteredEvents[index]
+                                        .controller
+                                        .closureDate
+                                        .toString(),
+                                    style: TextStyle(color: Colors.white)),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text('Música', //filteredEvents[index].category,
+                                    style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+              shrinkWrap: true,
+            ),
+          ),
+        ]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _publishEsdeveniment();
+          },
+          tooltip: 'Publish event',
+          child: Icon(
+            Icons.add,
+          ),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+        ),
+      ));
+    } else if (!registered && filteredEvents.length > 0) {
+      return MaterialApp(
+          home: Scaffold(
+        body: Column(children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: "Cercar ciutat",
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(),
+              ),
+            ),
+            onChanged: (string) {
+              _debouncer.run(() {
+                setState(() {
+                  filteredEvents = generalEvents
+                      .where(
+                          (e) => (e.controller.location.name.contains(string)))
+                      .toList();
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          DropdownButton<String>(
+            hint: Text('Select category'),
+            value: _defaultValue,
+            items: categories.map((newValue) {
+              return DropdownMenuItem<String>(
+                value: newValue,
+                child: Text(newValue),
+              );
+            }).toList(),
+            onChanged: (newValue) {
+              _debouncer.run(() {
+                setState(() {
+                  _defaultValue = newValue;
+                  /*filteredEvents = generalEvents
+                          .where((e) => e.category.contains(newValue))
+                          .toList();*/
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredEvents.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 1.0,
+                    horizontal: 4.0,
+                  ),
+                  child: Card(
+                    color: Colors.lightBlue,
+                    child: ListTile(
+                      onTap: () {
+                        _esdevenimentEspecific();
+                      },
+                      title: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              /*'KIKO RIVERA ON CONCERT',*/
+                              filteredEvents[index].controller.title,
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.white),
+                              maxLines: 2,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                      subtitle: Row(
+                        children: [
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Expanded(
+                            child: Text('45€',
+                                /*sumadelpreu(filteredEvents[index]).toString(),*/
+                                style: TextStyle(
+                                    fontSize: 40, color: Colors.white)),
+                          ),
+                          Expanded(
+                            //color: Colors.red,
+                            //height: 80,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    child: Text(
+                                      /*'Palau Sant Jordi',*/
+                                      filteredEvents[index]
+                                          .controller
+                                          .location
+                                          .name,
+                                      style: TextStyle(color: Colors.white),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.fade,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text(
+                                    /*'25/10/2020, 19:50',*/
+                                    filteredEvents[index]
+                                        .controller
+                                        .closureDate
+                                        .toString(),
+                                    style: TextStyle(color: Colors.white)),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text('Música', //filteredEvents[index].category,
+                                    style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+              shrinkWrap: true,
+            ),
+          ),
+        ]),
+      ));
+    } else {
+      return MaterialApp(
+          home: Scaffold(
+              body: Column(children: <Widget>[
         SizedBox(
           height: 10,
         ),
@@ -85,16 +423,15 @@ class _GeneralEventsState extends State {
               borderSide: BorderSide(),
             ),
           ),
-          /*onChanged: (string) {
+          onChanged: (string) {
             _debouncer.run(() {
               setState(() {
                 filteredEvents = generalEvents
-                    .where((e) =>
-                        (e.location.contains(string)))
+                    .where((e) => (e.controller.location.name.contains(string)))
                     .toList();
               });
             });
-          },*/
+          },
         ),
         SizedBox(
           height: 10,
@@ -120,122 +457,18 @@ class _GeneralEventsState extends State {
           },
         ),
         SizedBox(
-          height: 5,
+          height: 180,
         ),
         Expanded(
-          child: ListView.builder(
-            itemCount: 15,
-            /*filteredEvents.length,*/
-            itemBuilder: (BuildContext context, int index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 1.0,
-                  horizontal: 4.0,
-                ),
-                child: Card(
-                  color: Colors.lightBlue,
-                  child: ListTile(
-                    onTap: () {
-                      _esdevenimentEspecific();
-                    },
-                    title: Column(
-                      children: [
-                        Container(
-                          height: 30,
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: IconButton(
-                              icon: Icon(
-                                likeds[index]
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: likeds[index] ? Colors.red : Colors.grey,
-                              ),
-                              onPressed: () => setState(() {
-                                likeds[index] = !likeds[index];
-                              }),
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'KIKO RIVERA ON CONCERT',
-                            /*filteredEvents[index].title,*/
-                            style: TextStyle(fontSize: 24, color: Colors.white),
-                            maxLines: 2,
-                            overflow: TextOverflow.fade,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                      ],
-                    ),
-                    subtitle: Row(
-                      children: [
-                        SizedBox(
-                          width: 25,
-                        ),
-                        Expanded(
-                          child: Text('45€',
-                              /*sumadelpreu(filteredEvents[index]).toString(),*/
-                              style:
-                                  TextStyle(fontSize: 40, color: Colors.white)),
-                        ),
-                        Expanded(
-                          //color: Colors.red,
-                          //height: 80,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Container(
-                                  child: Text(
-                                    'Palau Sant Jordi',
-                                    /*filteredEvents[index].location.name,*/
-                                    style: TextStyle(color: Colors.white),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.fade,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: 5,
-                              ),
-                              Text('25/10/2020, 19:50',
-                                  /*filteredEvents[index].date.toString(),*/
-                                  style: TextStyle(color: Colors.white)),
-                              Container(
-                                height: 5,
-                              ),
-                              Text('Música', //filteredEvents[index].category,
-                                  style: TextStyle(color: Colors.white)),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-            shrinkWrap: true,
+          child: Text(
+            'No event matching with the location or category indicated',
+            style: TextStyle(
+              color: Colors.grey,
+            ),
           ),
-        ),
-      ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _publishEsdeveniment();
-        },
-        tooltip: 'Publish event',
-        child: Icon(
-          Icons.add,
-        ),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-      ),
-    ));
+        )
+      ])));
+    }
   }
 
   _publishEsdeveniment() {

@@ -127,22 +127,3 @@ class Location {
         "UpdatedAt": updatedAt.toIso8601String(),
       };
 }
-
-/*
-final String apitUrl = "http://10.4.41.148:8080/event/list";
-    print(await http.get(apitUrl));
-
-    final response = await http.get(apitUrl);
-    print(response.statusCode);
-    if (response.statusCode == 201 || response.statusCode == 200) {
-      final String responseString = response.body;
-      final listEsdevenimentsModel =
-          listEsdevenimentsModelFromJson(responseString);
-      print(listEsdevenimentsModel);
-      for (int i = 0; i < 3; ++i) {
-        print(i);
-        print(listEsdevenimentsModel[i].controller.title);
-      }
-    }
-    
-*/
