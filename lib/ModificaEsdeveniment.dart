@@ -5,6 +5,8 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:safeevents/EsdevenimentEspecific.dart';
+import 'http_models/EsdevenimentEspecificModel.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
@@ -349,7 +351,7 @@ class _ModificaState extends State<Modifica> {
                               borderRadius: new BorderRadius.circular(18.0),
                             ),
 
-                            child: Text('Publica',
+                            child: Text('Actualitza',
                               style: TextStyle(
                                 color: Colors.white,
 
@@ -423,6 +425,10 @@ class _ModificaState extends State<Modifica> {
     //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if(!someError){
       //Envia data al backend i redirecciona
+      runApp(MaterialApp(
+        home: Mostra(),
+      ));
+
     }
 
   }
