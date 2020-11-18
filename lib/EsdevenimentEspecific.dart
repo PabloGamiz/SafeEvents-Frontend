@@ -16,6 +16,8 @@ import 'package:safeevents/reserves.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 var _colorFav = Colors.white;
+//TO DO: quan connectem amb back, aquest valor serà el que ens dona per darrere
+var _rate = 0.0;
 TextEditingController controllerfeedback = new TextEditingController();
 
 
@@ -150,7 +152,7 @@ class _MostraState extends State<Mostra> {
                                                           context: context,
                                                           builder: (_) =>
                                                           new Container(
-                                                            margin: EdgeInsets.only(top:100, left: 50, right:50, bottom: 100),
+                                                            margin: EdgeInsets.only(top:150, left: 50, right:50, bottom: 150),
                                                             decoration: BoxDecoration(
                                                                 border: Border.all(color: Colors.blue),
                                                                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -172,6 +174,9 @@ class _MostraState extends State<Mostra> {
                                                                     allowHalfRating: false,
                                                                     starCount: 5,
                                                                     rating: v,
+                                                                    onRated: (r){
+                                                                      _rate = r;
+                                                                    },
                                                                     isReadOnly:false,
                                                                     color: Colors.white,
                                                                     borderColor: Colors.white,
@@ -249,7 +254,7 @@ class _MostraState extends State<Mostra> {
                                                       },
                                                       starCount: 5,
                                                       size: 13.0,
-                                                      rating: 3,
+                                                      rating: _rate,
                                                       isReadOnly:false,
                                                       color: Colors.white,
                                                       borderColor: Colors.white,
@@ -403,16 +408,20 @@ class _MostraState extends State<Mostra> {
 
   void _initEvent(int id) async {
     final EsdevenimentEspecificModel event = await http_esdevenimentespecific(id);
+    //_rate = event.controller.rating;
     print('EVENT '+event.controller.title);
   }
 
   bool esDeLaEmpresa() {
-    //Si el esdeveniment és de l'empresa es mostra aixo
+    //Si el esdeveniment és de l'empresa es mostra per editar
     return true;
   }
 
   _doFeedback() {
     //Aqui comunicarem amb el backend per enviar les dades del feedback, estrelles(1-5), missatge, id esdeveniment, usuari
+    print(controllerfeedback.text);
+    print(_rate);
+    Navigator.pop(context);
   }
 }
 
