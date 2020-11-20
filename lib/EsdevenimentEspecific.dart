@@ -23,7 +23,6 @@ var _colorFav = Colors.white;
 var _rate = 0.0;
 TextEditingController controllerfeedback = new TextEditingController();
 
-
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
       home: Mostra(),
@@ -67,17 +66,17 @@ class _MostraState extends State<Mostra> {
                       child: Column(
                         children: [
                           Container(
-                            height:13,
+                            height: 13,
                             child: IconButton(
-                              icon: Icon(
-                                Icons.favorite),
-                                color: _colorFav,
+                              icon: Icon(Icons.favorite),
+                              color: _colorFav,
                               onPressed: () => {_doFav()},
                             ),
                             alignment: Alignment(1, 1),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0, top: 20),
+                            padding: const EdgeInsets.only(
+                                left: 10.0, right: 10.0, bottom: 10.0, top: 20),
                             child: Row(
                               children: <Widget>[
                                 ClipRRect(
@@ -105,7 +104,8 @@ class _MostraState extends State<Mostra> {
                                           style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.white.withOpacity(1)),
+                                              color:
+                                                  Colors.white.withOpacity(1)),
                                         ),
                                         Text(
                                           'Palau Sant Jordi, Barcelona',
@@ -113,20 +113,23 @@ class _MostraState extends State<Mostra> {
                                           maxLines: 2,
                                           style: TextStyle(
                                               fontSize: 11,
-                                              color: Colors.white.withOpacity(1)),
+                                              color:
+                                                  Colors.white.withOpacity(1)),
                                         ),
                                         Text(
                                           '11/04/2021 - 20:30\n',
                                           style: TextStyle(
                                               fontSize: 12,
-                                              color: Colors.white.withOpacity(1)),
+                                              color:
+                                                  Colors.white.withOpacity(1)),
                                         ),
                                         Text(
                                           '25 €',
                                           textAlign: TextAlign.left,
                                           style: TextStyle(
                                               fontSize: 25,
-                                              color: Colors.white.withOpacity(1)),
+                                              color:
+                                                  Colors.white.withOpacity(1)),
                                         ),
                                         Column(
                                           children: [
@@ -136,7 +139,8 @@ class _MostraState extends State<Mostra> {
                                                   width: 70,
                                                   child: Text(
                                                     '\nEmpresa org',
-                                                    overflow: TextOverflow.ellipsis,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                     maxLines: 20,
                                                     style: TextStyle(
                                                         fontSize: 11,
@@ -145,105 +149,169 @@ class _MostraState extends State<Mostra> {
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding: const EdgeInsets.only(left: 8, top: 10),
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8, top: 10),
                                                   child: SmoothStarRating(
                                                       allowHalfRating: false,
                                                       onRated: (v) {
                                                         showDialog(
                                                           context: context,
                                                           builder: (_) =>
-                                                          new Container(
-                                                            margin: EdgeInsets.only(top:150, left: 50, right:50, bottom: 150),
+                                                              new Container(
+                                                            margin:
+                                                                EdgeInsets.only(
+                                                                    top: 150,
+                                                                    left: 50,
+                                                                    right: 50,
+                                                                    bottom:
+                                                                        150),
                                                             decoration: BoxDecoration(
-                                                                border: Border.all(color: Colors.blue),
-                                                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                                                color: Colors.blue),
-                                                            child:Padding(
-                                                              padding: EdgeInsets.only(top:45),
-                                                              child:Column(
-                                                                children: <Widget>[
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .blue),
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            20.0)),
+                                                                color: Colors
+                                                                    .blue),
+                                                            child: Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      top: 45),
+                                                              child: Column(
+                                                                children: <
+                                                                    Widget>[
                                                                   Text(
                                                                     'PUNTUA L\'ESDEVENIMENT',
-                                                                    style: TextStyle(
-                                                                      decoration: TextDecoration.none,
-                                                                      color: Colors.white,
-                                                                      fontSize: 13,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      decoration:
+                                                                          TextDecoration
+                                                                              .none,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontSize:
+                                                                          13,
                                                                     ),
                                                                     maxLines: 1,
                                                                   ),
                                                                   SmoothStarRating(
-                                                                    allowHalfRating: false,
-                                                                    starCount: 5,
-                                                                    rating: v,
-                                                                    onRated: (r){
-                                                                      _rate = r;
-                                                                    },
-                                                                    isReadOnly:false,
-                                                                    color: Colors.white,
-                                                                    borderColor: Colors.white,
-                                                                    spacing:1.0
-                                                                  ),
-                                                                Align(
-                                                                  alignment: Alignment.center,
-                                                                  child:Container(
-                                                                    margin: EdgeInsets.only(top:30),
-                                                                      child:Text(
+                                                                      allowHalfRating:
+                                                                          false,
+                                                                      starCount:
+                                                                          5,
+                                                                      rating: v,
+                                                                      onRated:
+                                                                          (r) {
+                                                                        _rate =
+                                                                            r;
+                                                                      },
+                                                                      isReadOnly:
+                                                                          false,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      borderColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      spacing:
+                                                                          1.0),
+                                                                  Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child:
+                                                                        Container(
+                                                                      margin: EdgeInsets
+                                                                          .only(
+                                                                              top: 30),
+                                                                      child:
+                                                                          Text(
                                                                         'DONA\'NS FEEDBACK DE L\'ESDEVENIMENT',
-                                                                        style: TextStyle(
-                                                                          decoration: TextDecoration.none,
-                                                                          color: Colors.white,
-                                                                          fontSize: 13,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          decoration:
+                                                                              TextDecoration.none,
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              13,
                                                                         ),
-                                                                        maxLines: 1,
+                                                                        maxLines:
+                                                                            1,
                                                                       ),
                                                                     ),
                                                                   ),
                                                                   Card(
-                                                                    margin: EdgeInsets.only(top:18,right:20, left:20, bottom: 20),
-                                                                    child:Container(
-                                                                      color: Colors.blue,
-                                                                      child: Container(
-                                                                        decoration:BoxDecoration(
-                                                                          color: Colors.white,
-                                                                          borderRadius: new BorderRadius.only(
-                                                                            topLeft: const Radius.circular(25.0),
-                                                                            topRight: const Radius.circular(25.0),
-                                                                            bottomLeft: const Radius.circular(25.0),
-                                                                            bottomRight: const Radius.circular(25.0),
+                                                                    margin: EdgeInsets.only(
+                                                                        top: 18,
+                                                                        right:
+                                                                            20,
+                                                                        left:
+                                                                            20,
+                                                                        bottom:
+                                                                            20),
+                                                                    child:
+                                                                        Container(
+                                                                      color: Colors
+                                                                          .blue,
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          borderRadius:
+                                                                              new BorderRadius.only(
+                                                                            topLeft:
+                                                                                const Radius.circular(25.0),
+                                                                            topRight:
+                                                                                const Radius.circular(25.0),
+                                                                            bottomLeft:
+                                                                                const Radius.circular(25.0),
+                                                                            bottomRight:
+                                                                                const Radius.circular(25.0),
                                                                           ),
                                                                         ),
-                                                                        child:Column(
-                                                                          children: <Widget>[
-
+                                                                        child:
+                                                                            Column(
+                                                                          children: <
+                                                                              Widget>[
                                                                             TextField(
-                                                                              controller: controllerfeedback,
-                                                                              decoration: InputDecoration(
-                                                                                  border: OutlineInputBorder(
-                                                                                    borderRadius: BorderRadius.circular(25.0),
-                                                                                    borderSide: BorderSide(),
-                                                                                  )
-                                                                              ),
-                                                                              maxLines: 12
-                                                                            ),
-
+                                                                                controller: controllerfeedback,
+                                                                                decoration: InputDecoration(
+                                                                                    border: OutlineInputBorder(
+                                                                                  borderRadius: BorderRadius.circular(25.0),
+                                                                                  borderSide: BorderSide(),
+                                                                                )),
+                                                                                maxLines: 12),
                                                                           ],
                                                                         ),
                                                                       ),
-                                                                  ),
+                                                                    ),
                                                                   ),
                                                                   RaisedButton(
-                                                                    color: Colors.white,
-                                                                    shape: RoundedRectangleBorder(
-                                                                      borderRadius: new BorderRadius.circular(18.0),
+                                                                    color: Colors
+                                                                        .white,
+                                                                    shape:
+                                                                        RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          new BorderRadius.circular(
+                                                                              18.0),
                                                                     ),
-
-                                                                    child: Text('Publica',
-                                                                      style: TextStyle(
-                                                                        fontSize: 13,
-                                                                        color: Colors.blue,
-
-                                                                      ),),
-                                                                    onPressed: () =>{
+                                                                    child: Text(
+                                                                      'Publica',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            13,
+                                                                        color: Colors
+                                                                            .blue,
+                                                                      ),
+                                                                    ),
+                                                                    onPressed:
+                                                                        () => {
                                                                       _doFeedback()
                                                                     },
                                                                   )
@@ -256,37 +324,34 @@ class _MostraState extends State<Mostra> {
                                                       starCount: 5,
                                                       size: 13.0,
                                                       rating: _rate,
-                                                      isReadOnly:false,
+                                                      isReadOnly: false,
                                                       color: Colors.white,
                                                       borderColor: Colors.white,
-                                                      spacing:0.0
-                                                  ),
-
+                                                      spacing: 0.0),
                                                 ),
                                               ],
                                             ),
                                             Align(
                                               alignment: Alignment.centerLeft,
                                               child: ButtonTheme(
-                                                minWidth:1,
+                                                minWidth: 1,
                                                 height: 20,
                                                 child: RaisedButton(
-
                                                   color: Colors.white,
                                                   shape: RoundedRectangleBorder(
-                                                    borderRadius: new BorderRadius.circular(18.0),
+                                                    borderRadius:
+                                                        new BorderRadius
+                                                            .circular(18.0),
                                                   ),
-
-                                                  child: Text('CONTACTA',
+                                                  child: Text(
+                                                    'CONTACTA',
                                                     style: TextStyle(
                                                       fontSize: 9,
                                                       color: Colors.blue,
-
-                                                    ),),
-                                                  onPressed: () =>{
-                                                    _contacta()
-                                                  },
-
+                                                    ),
+                                                  ),
+                                                  onPressed: () =>
+                                                      {_contacta()},
                                                 ),
                                               ),
                                             )
@@ -381,18 +446,17 @@ class _MostraState extends State<Mostra> {
             child: FloatingActionButton(
               onPressed: () {
                 runApp(MaterialApp(
-                home: Modifica(),
-              ));
-            },
-            tooltip: 'Publish event',
-            child: Icon(
-              Icons.edit,
+                  home: Modifica(),
+                ));
+              },
+              tooltip: 'Publish event',
+              child: Icon(
+                Icons.edit,
+              ),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
             ),
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-        ),
           ),
-
         ),
       ),
     );
@@ -408,9 +472,10 @@ class _MostraState extends State<Mostra> {
   }
 
   void _initEvent(int id) async {
-    final EsdevenimentEspecificModel event = await http_esdevenimentespecific(id);
+    final EsdevenimentEspecificModel event =
+        await http_esdevenimentespecific(id);
     //_rate = event.controller.rating;
-    print('EVENT '+event.controller.title);
+    print('EVENT ' + event.controller.title);
   }
 
   bool esDeLaEmpresa() {
@@ -424,7 +489,6 @@ class _MostraState extends State<Mostra> {
     print(_rate);
     Navigator.pop(context);
   }
-}
 
   _contrata() async {
     final int entradas = 20; //await http_entradas(id);
