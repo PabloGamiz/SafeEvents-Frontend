@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:safeevents/reserves.dart';
 import 'package:safeevents/venda.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,7 +110,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
     ));
   }
 }
-/*
+
 import 'package:flutter/material.dart';
 import 'package:safeevents/ClientInfo.dart';
 import 'package:shared_preferences/shared_preferences.dart';

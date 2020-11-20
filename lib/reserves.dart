@@ -1,10 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:numberpicker/numberpicker.dart';
 
+import 'EsdevenimentEspecific.dart';
 import 'Structure.dart';
 import 'http_models/resposta_reserva_model.dart';
 import 'http_requests/http_entrades.dart';
@@ -12,6 +12,7 @@ import 'http_requests/http_entrades.dart';
 class Reserves extends StatefulWidget {
   final int entradas;
   final int id;
+
   const Reserves({Key key, @required this.entradas, @required this.id})
       : super(key: key);
   @override
@@ -20,92 +21,229 @@ class Reserves extends StatefulWidget {
 
 class _PantallaReserva extends State<Reserves> {
   final int entradas;
-
   final int id;
+  int numero = 0;
 
   _PantallaReserva(this.entradas, this.id);
-
-  final _controller = TextEditingController();
-
-  set clientId(String clientId) {}
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Sign-In Demo'),
+    final levelIndicator = Container(
+      child: Container(
+        child: Icon(
+          Icons.arrow_right_alt_sharp,
+          color: Colors.white,
+          size: 30.0,
+        ),
       ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Encare quedan " +
-              entradas.toString() +
-              " per reservar o camprar d'aquest event"),
-          //"Si selecciones reservar has de tenir en compte que les entrades nomes es reservaran per 24 hores"
-          Container(
-            width: 225.0,
-            child: Align(
-              alignment: Alignment.center,
-              child: TextFormField(
-                /*Presta atención a la siguiente línea:*/
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return "Quantitat d'entrades desitjades";
-                  }
-                  return null;
-                },
-                controller: _controller,
-                decoration: InputDecoration(
-                  hintText: "Quantitat",
-                  labelText: "Quantitat d'entrades desitjades",
-                ),
-              ),
-            ),
+    );
+
+    final coursePrice = Container(
+      padding: const EdgeInsets.all(7.0),
+      decoration: new BoxDecoration(
+          border: new Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(5.0)),
+      child: new Text(
+        entradas.toString() + " entrades disponibles",
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+
+    final courseentrades = Container(
+      padding: const EdgeInsets.all(7.0),
+      decoration: new BoxDecoration(
+          border: new Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(5.0)),
+      child: new Text(
+        "Nombre d'entrades seleccionades: " + numero.toString(),
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+    _comprovacionsreserva() {
+      if (numero > entradas)
+        return showAlertDialogentrades(context);
+      else
+        return showAlertDialog(context);
+    }
+
+    final reservaButton = Container(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        //width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          onPressed: () => {
+            _comprovacionsreserva(),
+          },
+          color: Colors.blue,
+          child:
+              Text("Reservar entrades", style: TextStyle(color: Colors.white)),
+        ));
+    _comprovacionscompra() {
+      if (numero > entradas)
+        return showAlertDialogentrades(context);
+      else
+        return showAlertDialogcompra(context);
+    }
+
+    final compraButton = Container(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        // width: MediaQuery.of(context).size.width,
+        child: RaisedButton(
+          onPressed: () => {
+            _comprovacionscompra(),
+          },
+          color: Colors.blue,
+          child:
+              Text("Comprar entrades", style: TextStyle(color: Colors.white)),
+        ));
+
+    final topContentText = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        SizedBox(height: 80.0),
+        Container(
+          width: 200.0,
+          child: new Divider(color: Colors.green),
+        ),
+        SizedBox(height: 10.0),
+        Text(
+          "Entrades",
+          style: TextStyle(color: Colors.white, fontSize: 45.0),
+        ),
+        SizedBox(height: 30.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Expanded(flex: 1, child: levelIndicator),
+            Expanded(
+                flex: 6,
+                child: Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(
+                      "Entrades disponibles",
+                      style: TextStyle(color: Colors.white),
+                      textAlign: TextAlign.center,
+                    ))),
+            Expanded(flex: 12, child: coursePrice)
+          ],
+        ),
+        SizedBox(height: 30.0),
+        Container(
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            // width: MediaQuery.of(context).size.width,
+            child: Center(
+                child: RaisedButton(
+              onPressed: () => {
+                showselectnumber(context),
+              },
+              color: Colors.blue,
+              child: Text("Seleccionar entrades",
+                  style: TextStyle(color: Colors.white)),
+            ))),
+        SizedBox(height: 10.0),
+        Center(
+          child: courseentrades,
+        ),
+      ],
+    );
+
+    final topContent = Stack(
+      children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height * 0.57,
+          padding: EdgeInsets.all(40.0),
+          decoration: BoxDecoration(color: Colors.lightBlue),
+          child: Center(
+            child: topContentText,
           ),
-          Container(
-            width: 350.0,
-            child: Align(
-              alignment: Alignment.center,
-              child: FlatButton(
-                child: Text("Reservar la quantitat seleccionada d'entrades"),
-                onPressed: () {
-                  if (int.parse(_controller.text) > 0) showAlertDialog(context);
-                },
-              ),
-            ),
+        ),
+        Positioned(
+          left: 8.0,
+          top: 70.0,
+          child: InkWell(
+            onTap: () {
+              runApp(MaterialApp(
+                home: Mostra(),
+              ));
+            },
+            child: Icon(Icons.arrow_back, color: Colors.white),
           ),
-          Container(
-            width: 350.0,
-            child: Align(
-              alignment: Alignment.center,
-              child: FlatButton(
-                  child: Text("Comprar la quantitat seleccionada d'entrades"),
-                  onPressed: () {
-                    if (int.parse(_controller.text) > 0)
-                      showAlertDialogcompra(context);
-                  }),
-            ),
-          ),
-        ],
-      )),
+        ),
+      ],
+    );
+
+    final bottomContent = Container(
+      //height: MediaQuery.of(context).size.height * 0.30,
+      // width: MediaQuery.of(context).size.width,
+      // color: Theme.of(context).primaryColor,
+      padding: EdgeInsets.all(40.0),
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            SizedBox(height: 20.0),
+            reservaButton,
+            compraButton,
+          ],
+        ),
+      ),
+    );
+
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[topContent, bottomContent],
+        ),
+      ),
     );
   }
 
-  showAlertDialog(BuildContext context) {
+  showselectnumber(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
-      onPressed: () => _reserva(),
+      onPressed: () => Navigator.of(context).pop(),
+    );
+
+    Widget selector =
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+      new NumberPicker.integer(
+          initialValue: 0,
+          minValue: 0,
+          maxValue: entradas,
+          onChanged: (newValue) => setState(() => numero = newValue)),
+    ]);
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Avis"),
+      content: Text("Selecciona el nombre d'entrades desitjades"),
+      actions: [
+        selector,
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertDialogentrades(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () => Navigator.of(context).pop(),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Avis"),
       content: Text(
-          "Si selecciones reservar has de tenir en compte que les entrades nomes es reservaran per 24 hores."),
+          "El nombre d'entrades que intentes reservar o comprar és superior al nombre d'entrades que queden disponibles"),
       actions: [
         okButton,
       ],
@@ -120,7 +258,32 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 
-  _wait() {}
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () => _reserva(),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Avis"),
+      content: Text(
+          "Si selecciones reservar has de tenir en compte que les entrades només es reservaran per 24 hores."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   showAlertDialogcompra(BuildContext context) {
     Widget okButton = FlatButton(
       child: Text("OK"),
@@ -150,7 +313,7 @@ class _PantallaReserva extends State<Reserves> {
     String stringValue = prefs.getString('cookie');
     print('1');
     final RespostaReservaModel session =
-        await http_reserva(stringValue, id, int.parse(_controller.text));
+        await http_reserva(stringValue, id, numero);
     print('1');
 
     if (session != null)
@@ -166,7 +329,7 @@ class _PantallaReserva extends State<Reserves> {
     String stringValue = prefs.getString('cookie');
     print('1');
     final RespostaReservaModel session =
-        await http_reserva(stringValue, id, int.parse(_controller.text));
+        await http_reserva(stringValue, id, numero);
     print('1');
 
     if (session != null)
@@ -191,7 +354,7 @@ class _PantallaReserva extends State<Reserves> {
     AlertDialog alert = AlertDialog(
       title: Text("Avis"),
       content: Text("S'ha fer la reserva correctament de les " +
-          _controller.text +
+          numero.toString() +
           " entrades"),
       actions: [
         okButton,
@@ -223,7 +386,7 @@ class _PantallaReserva extends State<Reserves> {
     AlertDialog alert = AlertDialog(
       title: Text("Avis"),
       content: Text("S'ha fer la compra correctament de les " +
-          _controller.text +
+          numero.toString() +
           " entrades"),
       actions: [
         okButton,
@@ -239,8 +402,8 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 }
-
-/*   
+/*
+  
 // Request
 {
 	"client_id": "",

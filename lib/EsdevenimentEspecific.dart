@@ -282,7 +282,7 @@ class _MostraState extends State<Mostra> {
   }
 
   _contrata() async {
-    final int entradas = await http_entradas(id);
+    final int entradas = 20; //await http_entradas(id);
     runApp(MaterialApp(
       home: Reserves(
         entradas: entradas,
