@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 
 import 'package:safeevents/EventsGeneral.dart';
+import 'package:safeevents/http_models/PublicaEsdevenimentsModel.dart';
+import 'package:safeevents/http_requests/http_publishevents.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
@@ -45,6 +47,7 @@ class _PublishState extends State<Publish> {
 
   var _data;
   var _hora;
+
 
   @override
   Widget build(BuildContext context) {
@@ -360,6 +363,8 @@ class _PublishState extends State<Publish> {
     var data = '';
     var hora = '';
     var img = imgcontroller.text;
+    int capacity;
+    var id;
 
     if(_data.toString() != 'null') data = _data.toString().split(' ')[0];
     else data = 'null';
@@ -405,13 +410,19 @@ class _PublishState extends State<Publish> {
       //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if(!someError){
       //Envia data al backend i redirecciona
+      _cridabackend(id,nom,descripcio,capacity,dir,preu,data,hora,img,tipus);
+      //SI LA CAPACITAT ESTA TOTA OCUPADA PUES SHA DE DESACTIVAR
       runApp(MaterialApp(
         home: EventsGeneral(),
       ));
     }
 
     }
-
+  _cridabackend(int id, String nom, String descripcio,int capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
+    DateTime datahora ;
+    var dir;
+    final PublicaEsdevenimentsModel event = await http_publishevents(id,nom,descripcio,capacity,datahora,int.parse(preu),dir);
+  }
   seleccionaImatge() {
     //do stuff per seleccionar la imatge (obrir explorador arxius)
   }

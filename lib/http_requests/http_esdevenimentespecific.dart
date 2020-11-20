@@ -4,7 +4,7 @@ import 'package:safeevents/http_models/EsdevenimentEspecificModel.dart';
 
 Future<EsdevenimentEspecificModel> http_esdevenimentespecific(int id) async {
   print('hola');
-  final String apitUrl = "http://10.4.41.148:8080/event/single/";
+  final String apitUrl = "http://10.4.41.148:8080/event/single?id=";
   /*var queryParamaters = {'id': id};
   final jsonID = json.encode(queryParamaters);*/
   final response = await http.get(apitUrl + id.toString());
