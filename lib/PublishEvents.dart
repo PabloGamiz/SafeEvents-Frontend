@@ -235,7 +235,7 @@ class _PublishState extends State<Publish> {
                               tipus = newValue;
                             });
                           },
-                          items: <String>['Escull el tipus d\'esdeveniment','Concert', 'Teatre','Esdeveniment Esportiu','Altres'].map<DropdownMenuItem<String>>((String value) {
+                          items: <String>['Escull el tipus d\'esdeveniment','Musica', 'Teatre','Esports','Art','Altres'].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: new Text(value),
@@ -363,8 +363,7 @@ class _PublishState extends State<Publish> {
     var data = '';
     var hora = '';
     var img = imgcontroller.text;
-    int capacity;
-    var id;
+    int capacity = 10;
 
     if(_data.toString() != 'null') data = _data.toString().split(' ')[0];
     else data = 'null';
@@ -410,7 +409,7 @@ class _PublishState extends State<Publish> {
       //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if(!someError){
       //Envia data al backend i redirecciona
-      _cridabackend(id,nom,descripcio,capacity,dir,preu,data,hora,img,tipus);
+      _cridabackend(nom,descripcio,capacity,dir,preu,data,hora,img,tipus);
       //SI LA CAPACITAT ESTA TOTA OCUPADA PUES SHA DE DESACTIVAR
       runApp(MaterialApp(
         home: EventsGeneral(),
@@ -418,10 +417,11 @@ class _PublishState extends State<Publish> {
     }
 
     }
-  _cridabackend(int id, String nom, String descripcio,int capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
-    DateTime datahora ;
-    var dir;
-    final PublicaEsdevenimentsModel event = await http_publishevents(id,nom,descripcio,capacity,datahora,int.parse(preu),dir);
+  _cridabackend(String nom, String descripcio,int capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
+    String datahora = data+'T'+hora+'Z';
+    print('datahora '+datahora);
+    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,capacity,datahora,int.parse(preu),direc);
+
   }
   seleccionaImatge() {
     //do stuff per seleccionar la imatge (obrir explorador arxius)

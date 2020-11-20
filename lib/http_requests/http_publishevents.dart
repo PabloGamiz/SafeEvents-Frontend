@@ -2,18 +2,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/PublicaEsdevenimentsModel.dart';
 
-Future<PublicaEsdevenimentsModel> http_publishevents(int id, String title, String description, int capacity,DateTime data, int price, List<String> location ) async {
+Future<PublicaEsdevenimentsModel> http_publishevents(String title, String description, int capacity,String data, int price, String location ) async {
   print('Entra');
   final String apitUrl = "http://10.4.41.148:8080/event/publica";
   var queryParamaters = {
-    /*'id': id,*/
     'title': title,
     'description' : description,
     'capacity' : capacity,
-    'checkInDate' : 'data',
-    'closureDate': 'data',
-    'price' : 10,//price,
-    'locations' : {'id' : 'a'/*location[1]*/,'name':'aa', 'adress' : 'aasas'/*location[2]*/,'coordinates': '','extension':''}
+    'checkInDate' : data,
+    'closureDate': '2020-12-01T17:01:10Z',
+    'price' : price,
+    'locations' : {'id' : 1,'name':'', 'adress' : location,'coordinates': '','extension': 0}
   };
   final jsonID = json.encode(queryParamaters);
   print('b '+jsonID.toString());
