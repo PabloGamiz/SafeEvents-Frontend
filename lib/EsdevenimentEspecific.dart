@@ -38,11 +38,14 @@ class _MostraState extends State<Mostra> {
   Controller event;
   @override
   int id = 20;
+  bool mostrar = false;
+
   //int id = id que pasan desde general Events;
-  void initState() {
+  Future<void> initState() {
     super.initState();
 
     _initEvent(id);
+    print(mostrar);
   }
 
   @override
@@ -414,28 +417,31 @@ class _MostraState extends State<Mostra> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: 500,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.blue),
-                        borderRadius: BorderRadius.all(Radius.circular(
-                                20.0) //         <--- border radius here
+                    Visibility(
+                        visible: mostrar,
+                        child: Container(
+                          width: 500,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue),
+                            borderRadius: BorderRadius.all(Radius.circular(
+                                    20.0) //         <--- border radius here
+                                ),
+                          ),
+                          margin: EdgeInsets.only(top: 20.0),
+                          child: RaisedButton(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(20.0),
                             ),
-                      ),
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: RaisedButton(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(20.0),
-                        ),
-                        child: Text(
-                          'RESERVA / COMPRA',
-                          style: TextStyle(color: Colors.blue, fontSize: 20),
-                        ),
-                        onPressed: () => {_contrata()},
-                      ),
-                    )
+                            child: Text(
+                              'RESERVA / COMPRA',
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 20),
+                            ),
+                            onPressed: () => {_contrata()},
+                          ),
+                        ))
                   ],
                 ),
               ),
@@ -472,6 +478,15 @@ class _MostraState extends State<Mostra> {
   }
 
   void _initEvent(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    print(stringValue);
+    setState(() {
+      if (stringValue != null)
+        mostrar = true;
+      else
+        mostrar = false;
+    });
     final EsdevenimentEspecificModel event =
         await http_esdevenimentespecific(id);
     //_rate = event.controller.rating;
@@ -492,12 +507,14 @@ class _MostraState extends State<Mostra> {
 
   _contrata() async {
     final int entradas = 20; //await http_entradas(id);
+
     runApp(MaterialApp(
       home: Reserves(
         entradas: entradas,
         id: id,
       ),
     ));
+
     //saltar a la pestanya de Comprar / Reservar
   }
 }
