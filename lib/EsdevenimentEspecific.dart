@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'http_models/EsdevenimentEspecificModel.dart';
+import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/reserves.dart';
@@ -25,20 +28,18 @@ class Mostra extends StatefulWidget {
 }
 
 class _MostraState extends State<Mostra> {
-
   Controller event;
   @override
+  int id = 20;
+  //int id = id que pasan desde general Events;
   void initState() {
     super.initState();
-    int id = 20;
-    //int id = id que pasan desde general Events;
-    _initEvent(id);
 
+    _initEvent(id);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -57,17 +58,17 @@ class _MostraState extends State<Mostra> {
                     child: Column(
                       children: [
                         Container(
-                          height:20,
+                          height: 20,
                           child: IconButton(
-                            icon: Icon(
-                              Icons.favorite),
-                              color: _colorFav,
+                            icon: Icon(Icons.favorite),
+                            color: _colorFav,
                             onPressed: () => {_doFav()},
                           ),
                           alignment: Alignment(1, 1),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0, top: 20),
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10.0, bottom: 10.0, top: 20),
                           child: Row(
                             children: <Widget>[
                               ClipRRect(
@@ -126,7 +127,8 @@ class _MostraState extends State<Mostra> {
                                                 width: 70,
                                                 child: Text(
                                                   '\nEmpresa org',
-                                                  overflow: TextOverflow.ellipsis,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 20,
                                                   style: TextStyle(
                                                       fontSize: 11,
@@ -135,13 +137,14 @@ class _MostraState extends State<Mostra> {
                                                 ),
                                               ),
                                               Padding(
-                                                padding: const EdgeInsets.only(left: 8, top: 10),
+                                                padding: const EdgeInsets.only(
+                                                    left: 8, top: 10),
                                                 child: Image.network(
                                                   //Que es mostrin depenent del numero d'estrelles de la empresa una imatge o una altre
                                                   "http://assets.stickpng.com/images/5873869ef3a71010b5e8ef41.png",
                                                   width: 60,
-                                                  loadingBuilder:
-                                                      (context, child, progress) {
+                                                  loadingBuilder: (context,
+                                                      child, progress) {
                                                     return progress == null
                                                         ? child
                                                         : LinearProgressIndicator();
@@ -153,25 +156,23 @@ class _MostraState extends State<Mostra> {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: ButtonTheme(
-                                              minWidth:1,
+                                              minWidth: 1,
                                               height: 20,
                                               child: RaisedButton(
-
                                                 color: Colors.white,
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: new BorderRadius.circular(18.0),
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          18.0),
                                                 ),
-
-                                                child: Text('CONTACTA',
+                                                child: Text(
+                                                  'CONTACTA',
                                                   style: TextStyle(
                                                     fontSize: 9,
                                                     color: Colors.blue,
-
-                                                  ),),
-                                                onPressed: () =>{
-                                                  _contacta()
-                                                },
-
+                                                  ),
+                                                ),
+                                                onPressed: () => {_contacta()},
                                               ),
                                             ),
                                           )
@@ -268,25 +269,48 @@ class _MostraState extends State<Mostra> {
   _doFav() {
     //do something
     setState(() {
-
-      if(_colorFav == Colors.white)_colorFav = Colors.red;
-      else if(_colorFav == Colors.red) _colorFav = Colors.white;
+      if (_colorFav == Colors.white)
+        _colorFav = Colors.red;
+      else if (_colorFav == Colors.red) _colorFav = Colors.white;
     });
   }
 
   void _initEvent(int id) async {
-    final EsdevenimentEspecificModel event = await http_esdevenimentespecific(id);
-    print('EVENT '+event.controller.title);
+    /*final EsdevenimentEspecificModel event =
+        await http_esdevenimentespecific(id);
+    print('EVENT ' + event.controller.title);*/
   }
-}
 
-_contrata() {
-  runApp(MaterialApp(
-    home: Reserves(),
-  ));
-  //saltar a la pestanya de Comprar / Reservar
+  _contrata() async {
+    final int entradas = await http_entradas(id);
+    runApp(MaterialApp(
+      home: Reserves(
+        entradas: entradas,
+        id: id,
+      ),
+    ));
+    //saltar a la pestanya de Comprar / Reservar
+  }
 }
 
 _contacta() {
   //saltar a la pestanya de Xat amb la empresa
+}
+
+class ReservaModel {
+  String clientId;
+  String eventId;
+  int option;
+  int howMany;
+  String desciption;
+
+  // constructor
+  Creadora(String clientId, String eventId, int option, int howMany,
+      String description) {
+    this.clientId = clientId;
+    this.eventId = eventId;
+    this.option = option;
+    this.howMany = howMany;
+    this.desciption = description;
+  }
 }
