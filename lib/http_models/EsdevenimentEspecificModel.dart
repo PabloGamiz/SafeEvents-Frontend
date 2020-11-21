@@ -30,7 +30,9 @@ class Controller {
     this.title,
     this.description,
     this.capacity,
+    this.price,
     this.checkInDate,
+    this.closureDate,
     this.location,
     this.organizers,
     this.services,
@@ -42,10 +44,12 @@ class Controller {
   String title;
   String description;
   int capacity;
+  int price;
   DateTime checkInDate;
+  DateTime closureDate;
   Location location;
-  dynamic organizers;
-  dynamic services;
+  List<dynamic> organizers;
+  List<dynamic> services;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -54,10 +58,12 @@ class Controller {
     title: json["title"],
     description: json["description"],
     capacity: json["capacity"],
+    price: json["price"],
     checkInDate: DateTime.parse(json["checkInDate"]),
+    closureDate: DateTime.parse(json["closureDate"]),
     location: Location.fromJson(json["location"]),
-    organizers: json["organizers"],
-    services: json["services"],
+    organizers: List<dynamic>.from(json["organizers"].map((x) => x)),
+    services: List<dynamic>.from(json["services"].map((x) => x)),
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
   );
@@ -67,10 +73,12 @@ class Controller {
     "title": title,
     "description": description,
     "capacity": capacity,
+    "price": price,
     "checkInDate": checkInDate.toIso8601String(),
+    "closureDate": closureDate.toIso8601String(),
     "location": location.toJson(),
-    "organizers": organizers,
-    "services": services,
+    "organizers": List<dynamic>.from(organizers.map((x) => x)),
+    "services": List<dynamic>.from(services.map((x) => x)),
     "createdAt": createdAt.toIso8601String(),
     "updatedAt": updatedAt.toIso8601String(),
   };
@@ -78,16 +86,40 @@ class Controller {
 
 class Location {
   Location({
+    this.id,
     this.name,
+    this.address,
+    this.coordinates,
+    this.extension,
+    this.createdAt,
+    this.updatedAt,
   });
 
+  int id;
   String name;
+  String address;
+  String coordinates;
+  int extension;
+  DateTime createdAt;
+  DateTime updatedAt;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
+    id: json["id"],
     name: json["name"],
+    address: json["address"],
+    coordinates: json["coordinates"],
+    extension: json["extension"],
+    createdAt: DateTime.parse(json["CreatedAt"]),
+    updatedAt: DateTime.parse(json["UpdatedAt"]),
   );
 
   Map<String, dynamic> toJson() => {
+    "id": id,
     "name": name,
+    "address": address,
+    "coordinates": coordinates,
+    "extension": extension,
+    "CreatedAt": createdAt.toIso8601String(),
+    "UpdatedAt": updatedAt.toIso8601String(),
   };
 }
