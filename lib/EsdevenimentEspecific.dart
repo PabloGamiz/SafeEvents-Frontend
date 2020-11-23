@@ -29,14 +29,12 @@ TextEditingController controllerfeedback = new TextEditingController();
 bool _esperaCarrega = true;
 MyInfo mi;
 
-
 void main() => runApp(MaterialApp(
-
       title: "EsdevenimentEspecific",
       home: Mostra(/*idfake*/),
     ));
 
-class MyInfo{
+class MyInfo {
   int id;
   String title;
   String description;
@@ -48,7 +46,8 @@ class MyInfo{
   dynamic services;
   int preu;
 
-  MyInfo(int id, String title, String desc, int cap, DateTime date,Location location, dynamic organizers, dynamic services, int preu) {
+  MyInfo(int id, String title, String desc, int cap, DateTime date,
+      Location location, dynamic organizers, dynamic services, int preu) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -59,7 +58,6 @@ class MyInfo{
     this.organizers = organizers;
     this.services = services;
     this.preu = preu;
-
   }
 }
 
@@ -83,12 +81,8 @@ class _MostraState extends State<Mostra> {
     super.initState();
   }
 
-  Future<bool> _onBackPressed() async{
-    return showDialog(
-      context: context,
-      builder: (context) =>
-          _goBack()
-    );
+  Future<bool> _onBackPressed() async {
+    return showDialog(context: context, builder: (context) => _goBack());
   }
 
   @override
@@ -98,405 +92,400 @@ class _MostraState extends State<Mostra> {
         onWillPop: _onBackPressed,
         child: Container(
           child: Scaffold(
-            body: _esperaCarrega?
-            Align(alignment: Alignment.center,child: CircularProgressIndicator())
+            body: _esperaCarrega
+                ? Align(
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator())
                 : Container(
-              margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue),
-                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                            color: Colors.blue),
+                    margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: SingleChildScrollView(
                         child: Column(
-                          children: [
-                            Container(
-                              height: 13,
-                              child: IconButton(
-                                icon: Icon(Icons.favorite),
-                                color: _colorFav,
-                                onPressed: () => {_doFav()},
+                          children: <Widget>[
+                            Positioned(
+                              left: 8.0,
+                              top: 70.0,
+                              child: InkWell(
+                                onTap: () {
+                                  runApp(MaterialApp(
+                                    home: EventsGeneral(),
+                                  ));
+                                },
+                                child:
+                                    Icon(Icons.arrow_back, color: Colors.black),
                               ),
-                              alignment: Alignment(1, 1),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 10.0, right: 10.0, bottom: 10.0, top: 20),
-                              child: Row(
-                                children: <Widget>[
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    child: Image.network(
-                                      //'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
-                                      'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
-                                      width: 120,
-                                      loadingBuilder: (context, child, progress) {
-                                        return progress == null
-                                            ? child
-                                            : LinearProgressIndicator();
-                                      },
+                            Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.blue),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20.0)),
+                                  color: Colors.blue),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 13,
+                                    child: IconButton(
+                                      icon: Icon(Icons.favorite),
+                                      color: _colorFav,
+                                      onPressed: () => {_doFav()},
                                     ),
+                                    alignment: Alignment(1, 1),
                                   ),
                                   Padding(
-                                      padding: const EdgeInsets.all(10.0),
-                                      child: Container(
-                                        width: 150,
-                                        child: Column(children: <Widget>[
-                                          Text(
-                                            mi.title,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 3,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                                color:
-                                                    Colors.white.withOpacity(1)),
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0,
+                                        right: 10.0,
+                                        bottom: 10.0,
+                                        top: 20),
+                                    child: Row(
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          child: Image.network(
+                                            //'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
+                                            'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
+                                            width: 120,
+                                            loadingBuilder:
+                                                (context, child, progress) {
+                                              return progress == null
+                                                  ? child
+                                                  : LinearProgressIndicator();
+                                            },
                                           ),
-                                          Text(
-                                            mi.location.name,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: TextStyle(
-                                                fontSize: 11,
-                                                color:
-                                                    Colors.white.withOpacity(1)),
-                                          ),
-                                          Text(
-                                            //'11/04/2021 - 20:30\n',
-                                            mi.checkInDate + '\n',
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                color:
-                                                    Colors.white.withOpacity(1)),
-                                          ),
-                                          Text(
-                                            mi.preu.toString() == 'null' ? '0€' : mi.preu.toString()+'€',
-
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(
-                                                fontSize: 25,
-                                                color:
-                                                    Colors.white.withOpacity(1)),
-                                          ),
-                                          Column(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Container(
-                                                    width: 70,
-                                                    child: Text(
-
-                                                      mi.organizers.toString() == '[]' ? 'No hi ha organitzador' : mi.organizers.toString()[0],
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 20,
-                                                      style: TextStyle(
-                                                          fontSize: 11,
-                                                          color: Colors.white
-                                                              .withOpacity(1)),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8, top: 10),
-                                                    child: SmoothStarRating(
-                                                        allowHalfRating: false,
-                                                        onRated: (v) {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder: (_) =>
-                                                                new Container(
-                                                              margin:
-                                                                  EdgeInsets.only(
-                                                                      top: 100,
-                                                                      left: 50,
-                                                                      right: 50,
-                                                                      bottom:
-                                                                          100),
-                                                              decoration: BoxDecoration(
-                                                                  border: Border.all(
-                                                                      color: Colors
-                                                                          .blue),
-                                                                  borderRadius: BorderRadius
-                                                                      .all(Radius
-                                                                          .circular(
-                                                                              20.0)),
-                                                                  color: Colors
-                                                                      .blue),
-                                                              child: Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        top: 45),
-                                                                child: Column(
-                                                                  children: <
-                                                                      Widget>[
-                                                                    Text(
-                                                                      'PUNTUA L\'ESDEVENIMENT',
-                                                                      style:
-                                                                          TextStyle(
-                                                                        decoration:
-                                                                            TextDecoration
-                                                                                .none,
-                                                                        color: Colors
-                                                                            .white,
-                                                                        fontSize:
-                                                                            13,
-                                                                      ),
-                                                                      maxLines: 1,
-                                                                    ),
-                                                                    SmoothStarRating(
-                                                                        allowHalfRating:
-                                                                            false,
-                                                                        starCount:
-                                                                            5,
-                                                                        rating: v,
-                                                                        onRated:
-                                                                            (r) {
-                                                                          _rate =
-                                                                              r;
-                                                                        },
-                                                                        isReadOnly:
-                                                                            false,
-                                                                        color: Colors
-                                                                            .white,
-                                                                        borderColor:
-                                                                            Colors
-                                                                                .white,
-                                                                        spacing:
-                                                                            1.0),
-                                                                    Align(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      child:
-                                                                          Container(
-                                                                        margin: EdgeInsets
-                                                                            .only(
-                                                                                top: 30),
+                                        ),
+                                        Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Container(
+                                              width: 150,
+                                              child: Column(children: <Widget>[
+                                                Text(
+                                                  mi.title,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 3,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white
+                                                          .withOpacity(1)),
+                                                ),
+                                                Text(
+                                                  mi.location.name,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: Colors.white
+                                                          .withOpacity(1)),
+                                                ),
+                                                Text(
+                                                  //'11/04/2021 - 20:30\n',
+                                                  mi.checkInDate + '\n',
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.white
+                                                          .withOpacity(1)),
+                                                ),
+                                                Text(
+                                                  mi.preu.toString() == 'null'
+                                                      ? '0€'
+                                                      : mi.preu.toString() +
+                                                          '€',
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                      fontSize: 25,
+                                                      color: Colors.white
+                                                          .withOpacity(1)),
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          width: 70,
+                                                          child: Text(
+                                                            mi.organizers
+                                                                        .toString() ==
+                                                                    '[]'
+                                                                ? 'No hi ha organitzador'
+                                                                : mi.organizers
+                                                                    .toString()[0],
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
+                                                            maxLines: 20,
+                                                            style: TextStyle(
+                                                                fontSize: 11,
+                                                                color: Colors
+                                                                    .white
+                                                                    .withOpacity(
+                                                                        1)),
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 8,
+                                                                  top: 10),
+                                                          child:
+                                                              SmoothStarRating(
+                                                                  allowHalfRating:
+                                                                      false,
+                                                                  onRated: (v) {
+                                                                    showDialog(
+                                                                      context:
+                                                                          context,
+                                                                      builder:
+                                                                          (_) =>
+                                                                              new Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            top:
+                                                                                100,
+                                                                            left:
+                                                                                50,
+                                                                            right:
+                                                                                50,
+                                                                            bottom:
+                                                                                100),
+                                                                        decoration: BoxDecoration(
+                                                                            border:
+                                                                                Border.all(color: Colors.blue),
+                                                                            borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                                                            color: Colors.blue),
                                                                         child:
-                                                                            Text(
-                                                                          'DONA\'NS FEEDBACK DE L\'ESDEVENIMENT',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            decoration:
-                                                                                TextDecoration.none,
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontSize:
-                                                                                13,
-                                                                          ),
-                                                                          maxLines:
-                                                                              1,
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    Card(
-                                                                      margin: EdgeInsets.only(
-                                                                          top: 18,
-                                                                          right:
-                                                                              20,
-                                                                          left:
-                                                                              20,
-                                                                          bottom:
-                                                                              20),
-                                                                      child:
-                                                                          Container(
-                                                                        color: Colors
-                                                                            .blue,
-                                                                        child:
-                                                                            Container(
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            borderRadius:
-                                                                                new BorderRadius.only(
-                                                                              topLeft:
-                                                                                  const Radius.circular(25.0),
-                                                                              topRight:
-                                                                                  const Radius.circular(25.0),
-                                                                              bottomLeft:
-                                                                                  const Radius.circular(25.0),
-                                                                              bottomRight:
-                                                                                  const Radius.circular(25.0),
-                                                                            ),
-                                                                          ),
+                                                                            Padding(
+                                                                          padding:
+                                                                              EdgeInsets.only(top: 45),
                                                                           child:
                                                                               Column(
-                                                                            children: <
-                                                                                Widget>[
-                                                                              TextField(
-                                                                                  controller: controllerfeedback,
-                                                                                  decoration: InputDecoration(
-                                                                                      border: OutlineInputBorder(
-                                                                                    borderRadius: BorderRadius.circular(25.0),
-                                                                                    borderSide: BorderSide(),
-                                                                                  )),
-                                                                                  maxLines: 12),
+                                                                            children: <Widget>[
+                                                                              Text(
+                                                                                'PUNTUA L\'ESDEVENIMENT',
+                                                                                style: TextStyle(
+                                                                                  decoration: TextDecoration.none,
+                                                                                  color: Colors.white,
+                                                                                  fontSize: 13,
+                                                                                ),
+                                                                                maxLines: 1,
+                                                                              ),
+                                                                              SmoothStarRating(
+                                                                                  allowHalfRating: false,
+                                                                                  starCount: 5,
+                                                                                  rating: v,
+                                                                                  onRated: (r) {
+                                                                                    _rate = r;
+                                                                                  },
+                                                                                  isReadOnly: false,
+                                                                                  color: Colors.white,
+                                                                                  borderColor: Colors.white,
+                                                                                  spacing: 1.0),
+                                                                              Align(
+                                                                                alignment: Alignment.center,
+                                                                                child: Container(
+                                                                                  margin: EdgeInsets.only(top: 30),
+                                                                                  child: Text(
+                                                                                    'DONA\'NS FEEDBACK DE L\'ESDEVENIMENT',
+                                                                                    style: TextStyle(
+                                                                                      decoration: TextDecoration.none,
+                                                                                      color: Colors.white,
+                                                                                      fontSize: 13,
+                                                                                    ),
+                                                                                    maxLines: 1,
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              Card(
+                                                                                margin: EdgeInsets.only(top: 18, right: 20, left: 20, bottom: 20),
+                                                                                child: Container(
+                                                                                  color: Colors.blue,
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: Colors.white,
+                                                                                      borderRadius: new BorderRadius.only(
+                                                                                        topLeft: const Radius.circular(25.0),
+                                                                                        topRight: const Radius.circular(25.0),
+                                                                                        bottomLeft: const Radius.circular(25.0),
+                                                                                        bottomRight: const Radius.circular(25.0),
+                                                                                      ),
+                                                                                    ),
+                                                                                    child: Column(
+                                                                                      children: <Widget>[
+                                                                                        TextField(
+                                                                                            controller: controllerfeedback,
+                                                                                            decoration: InputDecoration(
+                                                                                                border: OutlineInputBorder(
+                                                                                              borderRadius: BorderRadius.circular(25.0),
+                                                                                              borderSide: BorderSide(),
+                                                                                            )),
+                                                                                            maxLines: 12),
+                                                                                      ],
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              ),
+                                                                              RaisedButton(
+                                                                                color: Colors.white,
+                                                                                shape: RoundedRectangleBorder(
+                                                                                  borderRadius: new BorderRadius.circular(18.0),
+                                                                                ),
+                                                                                child: Text(
+                                                                                  'Publica',
+                                                                                  style: TextStyle(
+                                                                                    fontSize: 13,
+                                                                                    color: Colors.blue,
+                                                                                  ),
+                                                                                ),
+                                                                                onPressed: () => {
+                                                                                  _doFeedback()
+                                                                                },
+                                                                              )
                                                                             ],
                                                                           ),
                                                                         ),
                                                                       ),
-                                                                    ),
-                                                                    RaisedButton(
-                                                                      color: Colors
+                                                                    );
+                                                                  },
+                                                                  starCount: 5,
+                                                                  size: 13.0,
+                                                                  rating: _rate,
+                                                                  isReadOnly:
+                                                                      false,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  borderColor:
+                                                                      Colors
                                                                           .white,
-                                                                      shape:
-                                                                          RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            new BorderRadius.circular(
-                                                                                18.0),
-                                                                      ),
-                                                                      child: Text(
-                                                                        'Publica',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              13,
-                                                                          color: Colors
-                                                                              .blue,
-                                                                        ),
-                                                                      ),
-                                                                      onPressed:
-                                                                          () => {
-                                                                        _doFeedback()
-                                                                      },
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
+                                                                  spacing: 0.0),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerLeft,
+                                                      child: ButtonTheme(
+                                                        minWidth: 1,
+                                                        height: 20,
+                                                        child: RaisedButton(
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                new BorderRadius
+                                                                        .circular(
+                                                                    18.0),
+                                                          ),
+                                                          child: Text(
+                                                            'CONTACTA',
+                                                            style: TextStyle(
+                                                              fontSize: 9,
+                                                              color:
+                                                                  Colors.blue,
                                                             ),
-                                                          );
-                                                        },
-                                                        starCount: 5,
-                                                        size: 13.0,
-                                                        rating: _rate,
-                                                        isReadOnly: false,
-                                                        color: Colors.white,
-                                                        borderColor: Colors.white,
-                                                        spacing: 0.0),
-                                                  ),
-                                                ],
-                                              ),
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: ButtonTheme(
-                                                  minWidth: 1,
-                                                  height: 20,
-                                                  child: RaisedButton(
-                                                    color: Colors.white,
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          new BorderRadius
-                                                              .circular(18.0),
-                                                    ),
-                                                    child: Text(
-                                                      'CONTACTA',
-                                                      style: TextStyle(
-                                                        fontSize: 9,
-                                                        color: Colors.blue,
+                                                          ),
+                                                          onPressed: () =>
+                                                              {_contacta()},
+                                                        ),
                                                       ),
-                                                    ),
-                                                    onPressed: () =>
-                                                        {_contacta()},
-                                                  ),
+                                                    )
+                                                  ],
                                                 ),
-                                              )
-                                            ],
-                                          ),
-                                        ]),
-                                      )),
+                                              ]),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20.0),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20.0),
+                                child: Image.network(
+                                  'https://www.adslzone.net/app/uploads-adslzone.net/2017/06/google-maps.jpg',
+                                  loadingBuilder: (context, child, progress) {
+                                    return progress == null
+                                        ? child
+                                        : LinearProgressIndicator();
+                                  },
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 500,
+                              margin: EdgeInsets.only(top: 20.0),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.blue),
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(
+                                          20.0) //         <--- border radius here
+                                      ),
+                                  color: Colors.blue),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      'MESURES\n',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white.withOpacity(1)),
+                                    ),
+                                    Text(
+                                      "-Mascareta obligatòria\n"
+                                      "-Dispensador de gel hidroalcohòlic\n"
+                                      "-Aforament reduït al 60%\n",
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 20,
+                                      style: TextStyle(
+                                        color: Colors.white.withOpacity(1),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Visibility(
+                                visible: mostrar,
+                                child: Container(
+                                  width: 500,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.blue),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            20.0) //         <--- border radius here
+                                        ),
+                                  ),
+                                  margin: EdgeInsets.only(top: 20.0),
+                                  child: RaisedButton(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(20.0),
+                                    ),
+                                    child: Text(
+                                      'RESERVA / COMPRA',
+                                      style: TextStyle(
+                                          color: Colors.blue, fontSize: 20),
+                                    ),
+                                    onPressed: () => {_contrata()},
+                                  ),
+                                ))
                           ],
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 20.0),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image.network(
-                            'https://www.adslzone.net/app/uploads-adslzone.net/2017/06/google-maps.jpg',
-                            loadingBuilder: (context, child, progress) {
-                              return progress == null
-                                  ? child
-                                  : LinearProgressIndicator();
-                            },
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 500,
-                        margin: EdgeInsets.only(top: 20.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue),
-                            borderRadius: BorderRadius.all(Radius.circular(
-                                    20.0) //         <--- border radius here
-                                ),
-                            color: Colors.blue),
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                'MESURES\n',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white.withOpacity(1)),
-                              ),
-                              Text(
-                                "-Mascareta obligatòria\n"
-                                "-Dispensador de gel hidroalcohòlic\n"
-                                "-Aforament reduït al 60%\n",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 20,
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(1),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                          visible: mostrar,
-                          child: Container(
-                            width: 500,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.blue),
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                      20.0) //         <--- border radius here
-                                  ),
-                            ),
-                            margin: EdgeInsets.only(top: 20.0),
-                            child: RaisedButton(
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(20.0),
-                              ),
-                              child: Text(
-                                'RESERVA / COMPRA',
-                                style:
-                                    TextStyle(color: Colors.blue, fontSize: 20),
-                              ),
-                              onPressed: () => {_contrata()},
-                            ),
-                          ))
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
             floatingActionButton: Visibility(
               visible: esDeLaEmpresa(),
               child: FloatingActionButton(
@@ -529,8 +518,8 @@ class _MostraState extends State<Mostra> {
   }
 
   void _initEvent(int id) async {
-
-    final EsdevenimentEspecificModel event = await http_esdevenimentespecific(id);
+    final EsdevenimentEspecificModel event =
+        await http_esdevenimentespecific(id);
     /*_rate = event.controller.rating;
     print(event.controller.title);
     print(event.controller.description);
@@ -542,7 +531,6 @@ class _MostraState extends State<Mostra> {
 
      */
 
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     setState(() {
@@ -551,13 +539,20 @@ class _MostraState extends State<Mostra> {
       else
         mostrar = false;
 
-      if(event.controller.title != null)_esperaCarrega = false;
+      if (event.controller.title != null) _esperaCarrega = false;
       print(_esperaCarrega);
     });
 
-
-    mi = MyInfo(event.controller.id, event.controller.title, event.controller.description, event.controller.capacity, event.controller.checkInDate,event.controller.location, event.controller.organizers, event.controller.services, event.controller.price );
-
+    mi = MyInfo(
+        event.controller.id,
+        event.controller.title,
+        event.controller.description,
+        event.controller.capacity,
+        event.controller.checkInDate,
+        event.controller.location,
+        event.controller.organizers,
+        event.controller.services,
+        event.controller.price);
   }
 
   bool esDeLaEmpresa() {
@@ -586,11 +581,10 @@ class _MostraState extends State<Mostra> {
   }
 
   _goBack() {
-    Navigator.pop(context,false);
-    runApp(
-        MaterialApp(
-          home: EventsGeneral(),
-        ));
+    Navigator.pop(context, false);
+    runApp(MaterialApp(
+      home: EventsGeneral(),
+    ));
   }
 }
 

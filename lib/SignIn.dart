@@ -65,6 +65,7 @@ class _SignInState extends State<SignIn> {
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
+
     final SignInModel session = await http_SignIn(googleAuth.idToken);
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
