@@ -217,13 +217,15 @@ class _ClientInfoState extends State<ClientInfo> {
 }
 
 Future<Client> fetchClient(String email) async {
-  var queryParameters = {'email': email};
-  var uri = Uri.http('10.4.41.148:9090', '/clientInfo/', queryParameters);
+  var queryParameters = {'id': '2'};
+  var uri = Uri.http('10.4.41.148:8080', '/clientinfo', queryParameters);
   final response = await http.get(uri);
+  print(response.statusCode);
   if (response.statusCode == 200) {
+    print(response.body);
     return Client.fromJson(jsonDecode(response.body));
   } else {
-    throw Exception('Failed to load album');
+    print(response.statusCode);
   }
 }
 

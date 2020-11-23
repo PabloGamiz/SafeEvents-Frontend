@@ -311,11 +311,8 @@ class _PantallaReserva extends State<Reserves> {
     print('reserva');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    print('1');
     final RespostaReservaModel session =
         await http_reserva(stringValue, id, numero);
-    print('1');
-
     if (session != null)
       prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
     Navigator.of(context).pop();
@@ -327,10 +324,8 @@ class _PantallaReserva extends State<Reserves> {
     print('compra');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    print('1');
     final RespostaReservaModel session =
         await http_reserva(stringValue, id, numero);
-    print('1');
 
     if (session != null)
       prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
