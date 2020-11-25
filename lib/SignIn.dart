@@ -8,6 +8,7 @@ import 'http_requests/http_signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
+//esto es chat
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
