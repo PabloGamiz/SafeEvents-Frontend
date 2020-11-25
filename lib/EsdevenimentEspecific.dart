@@ -21,7 +21,7 @@ import 'package:safeevents/reserves.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 //Variables globals
-//int idfake = 20;
+int idfake = 20;
 var _colorFav = Colors.white;
 //TO DO: quan connectem amb back, aquest valor serà el que ens dona per darrere
 var _rate = 0.0;
@@ -31,7 +31,7 @@ MyInfo mi;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(/*idfake*/),
+      home: Mostra(),
     ));
 
 class MyInfo {
@@ -62,7 +62,8 @@ class MyInfo {
 }
 
 class Mostra extends StatefulWidget {
-  Mostra(/*id,*/ {Key key}) : super(key: key);
+  Mostra( {Key key}) : super(key: key);
+
   @override
   _MostraState createState() => _MostraState();
 }
@@ -104,17 +105,20 @@ class _MostraState extends State<Mostra> {
                       child: SingleChildScrollView(
                         child: Column(
                           children: <Widget>[
-                            Positioned(
-                              left: 8.0,
-                              top: 70.0,
-                              child: InkWell(
-                                onTap: () {
-                                  runApp(MaterialApp(
-                                    home: EventsGeneral(),
-                                  ));
-                                },
-                                child:
-                                    Icon(Icons.arrow_back, color: Colors.black),
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: Positioned(
+                                left: 8.0,
+                                top: 70.0,
+                                child: InkWell(
+                                  onTap: () {
+                                    runApp(MaterialApp(
+                                      home: EventsGeneral(),
+                                    ));
+                                  },
+                                  child:
+                                      Icon(Icons.arrow_back, color: Colors.blue),
+                                ),
                               ),
                             ),
                             Container(

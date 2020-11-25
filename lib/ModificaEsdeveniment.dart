@@ -14,6 +14,9 @@ TextEditingController dircontroller = new TextEditingController();
 TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
 
+var idfake = 20;
+
+
 void main() => runApp(MaterialApp(
   title: "ModificaEvents",
   home: Modifica(),
@@ -449,6 +452,7 @@ class _ModificaState extends State<Modifica> {
     //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if(!someError){
       //Envia data al backend i redirecciona
+
       runApp(MaterialApp(
         home: Mostra(),
       ));

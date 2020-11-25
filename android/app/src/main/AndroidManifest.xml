@@ -33,6 +33,8 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+            <meta-data android:name="com.google.android.maps.v2.API_KEY"
+                       android:value="AIzaSyC1-wM9WdvzJ7MfXeTV4xdu5NymV3gOWTM"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
