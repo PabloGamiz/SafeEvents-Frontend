@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/Favourite_model.dart';
 
-Future<Favourite> http_SignIn(String cookie, int eventid) async {
+Future<Favourite> http_addfavourite(String cookie, int eventid) async {
   print('dentro future');
   final String apitUrl = "http://10.4.41.148:8080/addfav";
   var queryParamaters = {
