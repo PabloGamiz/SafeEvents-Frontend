@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'EventsGeneral.dart';
 import 'no_login.dart';
+import 'chatgeneral_screen.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -37,10 +38,7 @@ class _StructureState extends State<Structure> {
       'Index 3: Map',
       style: optionStyle,
     ),
-    Text(
-      'Index 3: Chat',
-      style: optionStyle,
-    ),
+    ChatGeneralScreen(),
     ClientInfo('paco@gmail.com')
   ];
 
