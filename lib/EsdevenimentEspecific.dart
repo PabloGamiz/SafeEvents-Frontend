@@ -1,19 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EventsGeneral.dart';
-import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
 
+import 'Structure.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
-import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/reserves.dart';
@@ -110,7 +103,7 @@ class _MostraState extends State<Mostra> {
                               child: InkWell(
                                 onTap: () {
                                   runApp(MaterialApp(
-                                    home: EventsGeneral(),
+                                    home: Structure(),
                                   ));
                                 },
                                 child:

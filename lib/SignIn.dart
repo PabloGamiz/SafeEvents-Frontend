@@ -80,6 +80,9 @@ class _SignInState extends State<SignIn> {
 
   _launchStructure() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('cookie', null);
+    preferences.setInt('timeout', null);
+
     await preferences.clear();
 
     runApp(MaterialApp(

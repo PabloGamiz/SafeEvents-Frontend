@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_app/models/message_model.dart';
-import 'package:flutter_chat_app/models/user_model.dart';
+
+import 'http_models/message_model.dart';
+import 'http_models/user_model.dart';
 
 class ChatScreen extends StatefulWidget {
   final User user;
@@ -68,10 +69,6 @@ class _ChatScreenState extends State<ChatScreen> {
                           ),
                         ],
                       ),
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundImage: AssetImage(message.sender.imageUrl),
-                      ),
                     ),
                   ],
                 )
@@ -123,10 +120,6 @@ class _ChatScreenState extends State<ChatScreen> {
                             blurRadius: 5,
                           ),
                         ],
-                      ),
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundImage: AssetImage(message.sender.imageUrl),
                       ),
                     ),
                     SizedBox(
@@ -199,23 +192,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     fontSize: 16,
                     fontWeight: FontWeight.w400,
                   )),
-              TextSpan(text: '\n'),
-              widget.user.isOnline ?
-              TextSpan(
-                text: 'Online',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                ),
-              )
-              :
-              TextSpan(
-                text: 'Offline',
-                style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                ),
-              )
             ],
           ),
         ),
