@@ -5,11 +5,11 @@ import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/http_requests/http_generalevents.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PublishEvents.dart';
-import 'PublishEvents.dart';
-import 'http_models/GeneralEventsModel.dart';
-import 'http_models/GeneralEventsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_requests/http_generalevents.dart';
+import 'http_models/Favourite_model.dart';
+import 'http_requests/http_addfavourite.dart';
+import 'http_requests/http_delfavourite.dart';
 
 class Debouncer {
   final int milliseconds;
@@ -46,7 +46,7 @@ class _GeneralEventsState extends State {
       registered = false;
   }
 
-  List likeds = List.filled(100, false);
+  List<bool> likeds = List();
 
   String _defaultValue;
 
@@ -71,6 +71,7 @@ class _GeneralEventsState extends State {
       setState(() {
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
+        likeds = List.filled(filteredEvents.length, false);
       });
     });
   }
@@ -169,6 +170,12 @@ class _GeneralEventsState extends State {
                                       likeds[index] ? Colors.red : Colors.white,
                                 ),
                                 onPressed: () => setState(() {
+                                  if(likeds[index]) {
+                                    http_delfavourite(cookie, filteredEvents[index].controller.id);
+                                  }
+                                  else {
+                                    http_addfavourite(cookie, filteredEvents[index].controller.id);
+                                  }
                                   likeds[index] = !likeds[index];
                                 }),
                               ),
