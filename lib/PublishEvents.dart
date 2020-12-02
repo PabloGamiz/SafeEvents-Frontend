@@ -15,6 +15,7 @@ TextEditingController descrcontroller = new TextEditingController();
 TextEditingController dircontroller = new TextEditingController();
 TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
+TextEditingController capcontroller = new TextEditingController();
 
 void main() => runApp(MaterialApp(
   title: "PublicaEvents",
@@ -35,6 +36,7 @@ class _PublishState extends State<Publish> {
   String errorPreu = '';
   String errorPicklist = '';
   String errorDataHora = '';
+  String errorCap = '';
 
   var showerror = false;
   var showerrorNom = false;
@@ -42,6 +44,7 @@ class _PublishState extends State<Publish> {
   var showerrorPreu = false;
   var showerrorPicklist = false;
   var showerrorDataHora = false;
+  var showerrorCap = false;
 
   String tipus ='Escull el tipus d\'esdeveniment';
 
@@ -85,6 +88,7 @@ class _PublishState extends State<Publish> {
               child: SingleChildScrollView(
                 child: Column(
                 children: <Widget>[TextField(
+                  key: Key('nomesdeveniment'),
                   controller: nomcontroller,
                   decoration: InputDecoration(
                     labelText: "Nom Esdeveniment",
@@ -97,9 +101,12 @@ class _PublishState extends State<Publish> {
                   maxLines: 1
                 ),
                   Container(
+
                     child:Visibility (
                         visible: showerrorNom,
+                        key: Key('nomerr'),
                         child: Column(
+
                           children: <Widget>[
                             Text(
                               errorNom,
@@ -131,6 +138,7 @@ class _PublishState extends State<Publish> {
                     margin: EdgeInsets.only(top: 20.0),
                     child: Column(
                       children: <Widget>[TextFormField(
+                          key: Key('diresdeveniment'),
                         controller: dircontroller,
                         decoration: InputDecoration(
                             labelText: "Direcció de l\'Esdeveniment",
@@ -148,6 +156,7 @@ class _PublishState extends State<Publish> {
                   ),Container(
                     margin: EdgeInsets.only(left: 15.0),
                     child:Visibility (
+                        key: Key('direrr'),
 
                         visible: showerrorDir,
                         child: Column(
@@ -190,6 +199,41 @@ class _PublishState extends State<Publish> {
                           children: <Widget>[
                             Text(
                               errorPreu,
+                              style: TextStyle(
+                                color: Colors.red[700],
+                              ),
+                            ),
+                          ],
+                        )
+                    ),
+                  ),Container(
+                    margin: EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      children: <Widget>[TextFormField(
+                        controller:capcontroller,
+                        decoration: InputDecoration(
+                            labelText: "Capacitat de l'esdeveniment",
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              borderSide: BorderSide(),
+                            )
+                        ),
+                        maxLines: 1,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                      ),
+
+                      ],
+                    ),
+                  ),Container(
+                    child:Visibility (
+                        visible: showerrorCap,
+                        child: Column(
+                          children: <Widget>[
+                            Text(
+                              errorCap,
                               style: TextStyle(
                                 color: Colors.red[700],
                               ),
@@ -351,6 +395,7 @@ class _PublishState extends State<Publish> {
                     child: Row(
                       children: <Widget>[
                         RaisedButton(
+                          key: Key('bott'),
                             color: Colors.blue,
                           shape: RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(18.0),
@@ -387,7 +432,7 @@ class _PublishState extends State<Publish> {
     var data = '';
     var hora = '';
     var img = imgcontroller.text;
-    int capacity = 10;
+    var capacity = capcontroller.text;
 
     if(_data.toString() != 'null') data = _data.toString().split(' ')[0];
     else data = 'null';
@@ -427,7 +472,13 @@ class _PublishState extends State<Publish> {
       }
       else showerrorDataHora = false;
 
-      if(showerrorDataHora || showerrorDir ||showerrorNom || showerrorPicklist || showerrorPreu)someError = true;
+      if(capacity == ''){
+        errorCap = 'La capacitat ha d\'estar informada';
+        showerrorCap = true;
+      }
+      else showerrorCap = false;
+
+      if(showerrorDataHora || showerrorDir ||showerrorNom || showerrorPicklist || showerrorPreu || showerrorCap)someError = true;
       else someError = false;
     });
       //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
@@ -441,10 +492,10 @@ class _PublishState extends State<Publish> {
     }
 
     }
-  _cridabackend(String nom, String descripcio,int capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
+  _cridabackend(String nom, String descripcio,String capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
     String datahora = data+'T'+hora+'Z';
     print('datahora '+datahora);
-    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,capacity,datahora,int.parse(preu),direc);
+    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc);
 
   }
   seleccionaImatge() {
