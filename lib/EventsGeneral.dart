@@ -184,7 +184,6 @@ class _GeneralEventsState extends State {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              /*'KIKO RIVERA ON CONCERT',*/
                               filteredEvents[index].controller.title,
                               style:
                                   TextStyle(fontSize: 24, color: Colors.white),
@@ -203,21 +202,18 @@ class _GeneralEventsState extends State {
                             width: 25,
                           ),
                           Expanded(
-                            child: Text('45€',
-                                /*sumadelpreu(filteredEvents[index]).toString(),*/
+                            child: Text(
+                                filteredEvents[index].controller.price.toString(),
                                 style: TextStyle(
                                     fontSize: 40, color: Colors.white)),
                           ),
                           Expanded(
-                            //color: Colors.red,
-                            //height: 80,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Center(
                                   child: Container(
                                     child: Text(
-                                      /*'Palau Sant Jordi',*/
                                       filteredEvents[index]
                                           .controller
                                           .location

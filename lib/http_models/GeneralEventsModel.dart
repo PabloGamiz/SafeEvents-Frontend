@@ -44,6 +44,15 @@ class Controller {
     this.updatedAt,
   });
 
+  Controller({
+    this.id,
+    this.title,
+    this.description,
+    this.capacity,
+    this.price,
+    this.location,
+  });
+
   int id;
   String title;
   String description;
@@ -97,6 +106,12 @@ class Location {
     this.extension,
     this.createdAt,
     this.updatedAt,
+  });
+
+  Location({
+    this.id,
+    this.name,
+    this.address,
   });
 
   int id;
