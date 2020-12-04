@@ -18,7 +18,7 @@ Future<int> http_entradas(int id) async {
 
 Future<RespostaReservaModel> http_reserva(
     String stringValue, int id, int howmany) async {
-  final String apitUrl = "http://10.4.41.148:8080/purchase";
+  final String apitUrl = "http://10.4.41.148:8080/ticket/purchase";
   var queryParamaters = {
     'clientId': stringValue,
     'eventId': id.toString(),
@@ -41,7 +41,7 @@ Future<RespostaReservaModel> http_reserva(
 
 Future<RespostaReservaModel> http_compra(
     String stringValue, int id, int howmany) async {
-  final String apitUrl = "http://10.4.41.148:8080/purchase";
+  final String apitUrl = "http://10.4.41.148:8080/ticket/purchase";
   var queryParamaters = {
     'clientId': stringValue,
     'eventId': id.toString(),
@@ -54,6 +54,7 @@ Future<RespostaReservaModel> http_compra(
   final response = await http.post(apitUrl, body: jsonCliend);
   print(response.statusCode);
   if (response.statusCode == 201 || response.statusCode == 200) {
+    print(response.body);
     return respostaReservaModelFromJson(response.body);
   } else if (response.statusCode == 400) {
     return null;
@@ -61,3 +62,7 @@ Future<RespostaReservaModel> http_compra(
     return null;
   }
 }
+
+/*
+APIActivatePath = "/ticket/activate"
+*/
