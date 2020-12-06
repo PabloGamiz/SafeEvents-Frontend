@@ -13,6 +13,7 @@ TextEditingController descrcontroller = new TextEditingController();
 TextEditingController dircontroller = new TextEditingController();
 TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
+TextEditingController capcontroller = new TextEditingController();
 
 var idfake = 20;
 
@@ -36,6 +37,7 @@ class _ModificaState extends State<Modifica> {
   String errorPreu = '';
   String errorPicklist = '';
   String errorDataHora = '';
+  String errorCap = '';
 
   var showerror = false;
   var showerrorNom = false;
@@ -43,6 +45,7 @@ class _ModificaState extends State<Modifica> {
   var showerrorPreu = false;
   var showerrorPicklist = false;
   var showerrorDataHora = false;
+  var showerrorCap = false;
 
   String tipus ='';
 
@@ -215,6 +218,41 @@ class _ModificaState extends State<Modifica> {
                             ],
                           )
                       ),
+                    ),Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: Column(
+                        children: <Widget>[TextFormField(
+                          controller:capcontroller,
+                          decoration: InputDecoration(
+                              labelText: "Capacitat de l'esdeveniment",
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(),
+                              )
+                          ),
+                          maxLines: 1,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                        ),
+
+                        ],
+                      ),
+                    ),Container(
+                      child:Visibility (
+                          visible: showerrorCap,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                errorCap,
+                                style: TextStyle(
+                                  color: Colors.red[700],
+                                ),
+                              ),
+                            ],
+                          )
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 20.0),
@@ -276,7 +314,7 @@ class _ModificaState extends State<Modifica> {
                                 tipus = newValue;
                               });
                             },
-                            items: <String>['Escull el tipus d\'esdeveniment','Concert', 'Teatre','Esdeveniment Esportiu','Altres'].map<DropdownMenuItem<String>>((String value) {
+                            items: <String>['Escull el tipus d\'esdeveniment','Musica', 'Teatre','Esdeveniment Esportiu','Altres'].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: new Text(value),
@@ -407,6 +445,7 @@ class _ModificaState extends State<Modifica> {
     var data = '';
     var hora = '';
     var img = imgcontroller.text;
+    var capacity = capcontroller.text;
 
     if(_data.toString() != 'null') data = _data.toString().split(' ')[0];
     else data = 'null';
@@ -446,7 +485,13 @@ class _ModificaState extends State<Modifica> {
       }
       else showerrorDataHora = false;
 
-      if(showerrorDataHora || showerrorDir ||showerrorNom || showerrorPicklist || showerrorPreu)someError = true;
+      if(capacity == ''){
+        errorCap = 'La capacitat ha d\'estar informada';
+        showerrorCap = true;
+      }
+      else showerrorCap = false;
+
+      if(showerrorDataHora || showerrorDir ||showerrorNom || showerrorPicklist || showerrorPreu || showerrorCap)someError = true;
       else someError = false;
     });
     //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
