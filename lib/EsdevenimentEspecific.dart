@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EventsGeneral.dart';
@@ -28,6 +29,7 @@ var _rate = 0.0;
 TextEditingController controllerfeedback = new TextEditingController();
 bool _esperaCarrega = true;
 MyInfo mi;
+
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -62,7 +64,10 @@ class MyInfo {
 }
 
 class Mostra extends StatefulWidget {
-  Mostra( {Key key}) : super(key: key);
+  //final String idevent
+  Mostra( {Key key
+    /*@required this.idevent*/
+  }) : super(key: key);
 
   @override
   _MostraState createState() => _MostraState();
@@ -70,8 +75,9 @@ class Mostra extends StatefulWidget {
 
 class _MostraState extends State<Mostra> {
   Controller event;
+  Completer<GoogleMapController> _controller = Completer();
 
-  @override
+
   bool mostrar = false;
   int id = 20;
 
@@ -144,6 +150,7 @@ class _MostraState extends State<Mostra> {
                                         right: 10.0,
                                         bottom: 10.0,
                                         top: 20),
+
                                     child: Row(
                                       children: <Widget>[
                                         ClipRRect(
@@ -160,6 +167,7 @@ class _MostraState extends State<Mostra> {
                                                   : LinearProgressIndicator();
                                             },
                                           ),
+
                                         ),
                                         Padding(
                                             padding: const EdgeInsets.all(10.0),
@@ -420,6 +428,17 @@ class _MostraState extends State<Mostra> {
                                         : LinearProgressIndicator();
                                   },
                                 ),
+                                /*SizedBox(
+                                  width: 200,
+                                  height: 200,
+                                  child: GoogleMap(
+                                    onMapCreated: _onMapCreated,
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(37.42796133580664, -122.085749655962),
+                                      zoom: 14.4746,
+                                    ),
+                                  ),
+                              ),*/
                               ),
                             ),
                             Container(
@@ -544,6 +563,7 @@ class _MostraState extends State<Mostra> {
         mostrar = false;
 
       if (event.controller.title != null) _esperaCarrega = false;
+      //test _esperaCarrega = false;
       print(_esperaCarrega);
     });
 
@@ -556,7 +576,18 @@ class _MostraState extends State<Mostra> {
         event.controller.location,
         event.controller.organizers,
         event.controller.services,
-        event.controller.price);
+        event.controller.price
+    );
+    /*test mi = MyInfo(
+        20,
+        'event.controller.title',
+        'event.controller.description',
+        20,
+        DateTime(30),
+        null,
+        'event.controller.organizers',
+        'event.controller.services',
+        2);*/
   }
 
   bool esDeLaEmpresa() {
@@ -590,7 +621,15 @@ class _MostraState extends State<Mostra> {
       home: EventsGeneral(),
     ));
   }
+
+  _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+  _initialPosition(){
+
+  }
 }
+
 
 _contacta() {
   //saltar a la pestanya de Xat amb la empresa
