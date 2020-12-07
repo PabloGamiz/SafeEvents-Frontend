@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'services/database.dart';
 import 'http_models/message_model.dart';
 import 'http_models/user_model.dart';
+
+final DatabaseMethods database = DatabaseMethods();
 
 class ChatScreen extends StatefulWidget {
   final User user;
@@ -167,7 +169,9 @@ class _ChatScreenState extends State<ChatScreen> {
             icon: Icon(Icons.send),
             iconSize: 25,
             color: Theme.of(context).primaryColor,
-            onPressed: () {},
+            onPressed: () {
+              _sendMessage();
+            },
           ),
         ],
       ),
@@ -222,5 +226,15 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       ),
     );
+  }
+
+  _sendMessage() {
+    Map<String, dynamic> messageMap = {
+      "message": message,
+      "sendBy": Constants.myName,
+      "time": DateTime.now().millisecondsSinceEpoch
+    };
+    database.addConversationMessages(chatRoomId, messageMap);
+    //limpiar la pantalla donde se escribe el mensaje
   }
 }

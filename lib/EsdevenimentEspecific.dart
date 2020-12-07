@@ -13,6 +13,8 @@ import 'package:safeevents/reserves.dart';
 
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+import 'services/database.dart';
+
 //Variables globals
 //int idfake = 20;
 var _colorFav = Colors.white;
@@ -21,6 +23,7 @@ var _rate = 0.0;
 TextEditingController controllerfeedback = new TextEditingController();
 bool _esperaCarrega = true;
 MyInfo mi;
+final DatabaseMethods database = DatabaseMethods();
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -382,8 +385,9 @@ class _MostraState extends State<Mostra> {
                                                                   Colors.blue,
                                                             ),
                                                           ),
-                                                          onPressed: () =>
-                                                              {_contacta()},
+                                                          onPressed: () => {
+                                                            _contacta(/*pasar userName de la empresa*/);
+                                                           },
                                                         ),
                                                       ),
                                                     )
@@ -581,8 +585,12 @@ class _MostraState extends State<Mostra> {
   }
 }
 
-_contacta() {
-  //saltar a la pestanya de Xat amb la empresa
+_contacta(String userName) {
+  String chatRoomId = database.getChatRoomId(userName, Constants.myName);
+  List<String> users = [userName, Constants.myName];
+  Map<String, dynamic> chatRoomMap = {"users": users, "chatroomId": chatRoomId};
+  database.createChatRoom(chatRoomId, chatRoomMap);
+  //enviar a la pantalla de chat con persona
 }
 
 class ReservaModel {

@@ -2,10 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'Structure.dart';
-import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'services/database.dart';
 import 'package:http/http.dart' as http;
 
 //esto es chat
@@ -16,6 +16,7 @@ class SignIn extends StatefulWidget {
 
 final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final DatabaseMethods database = new DatabaseMethods();
 
 class _SignInState extends State<SignIn> {
   @override
@@ -73,6 +74,14 @@ class _SignInState extends State<SignIn> {
     prefs.setString('cookie', session.cookie);
     prefs.setInt('timeout', session.deadline);
 
+    if (database.getUserByUsername(/*pasar el nombre de inicio de sesion*/) == null) { //mirar que el usuario no este en la base de datos
+      Map<String, String> userInfoMap = {
+        "name": //obtener nombre del perfil de google,
+        "email": //obtener email del perfil de google
+      };
+      database.uploadUserInfo(userInfoMap);
+    }
+
     runApp(MaterialApp(
       home: Structure(),
     ));
@@ -90,3 +99,4 @@ class _SignInState extends State<SignIn> {
     ));
   }
 }
+
