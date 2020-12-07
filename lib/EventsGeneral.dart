@@ -11,6 +11,21 @@ import 'http_models/Favourite_model.dart';
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
 
+List<ListEsdevenimentsModel> filtrarEsdeveniments(
+    List<ListEsdevenimentsModel> esdev, String paraula, int tipus) {
+  List<ListEsdevenimentsModel> filtered = List();
+  if (tipus == 0) {
+    //filtrar per ciutat
+    filtered = esdev
+        .where((e) => (e.controller.location.name.contains(paraula)))
+        .toList();
+  } else {
+    //filtrar per categoria
+    //return esdev.where((e) => (e.controller.categoria.contains(paraula))).toList();
+  }
+  return filtered;
+}
+
 class Debouncer {
   final int milliseconds;
   VoidCallback action;
@@ -37,12 +52,15 @@ class _GeneralEventsState extends State {
 
   bool registered = false;
 
+  String cookie;
+
   _comprovarSessio() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    if (stringValue != null)
+    if (stringValue != null) {
       registered = true;
-    else
+      cookie = stringValue;
+    } else
       registered = false;
   }
 
@@ -53,7 +71,7 @@ class _GeneralEventsState extends State {
   int counter = 0;
 
   List categories = [
-    ' ',
+    '',
     'Música',
     'Teatro',
     'Deporte',
@@ -75,16 +93,6 @@ class _GeneralEventsState extends State {
       });
     });
   }
-/*
-  int sumadelpreu(ListEsdevenimentsModel l) {
-    int suma = 0;
-    for (Service s in l.controller.services) {
-      for (Product p in s.products) {
-        suma = suma + p.price;
-      }
-    }
-    return suma;
-  }*/
 
   Widget build(BuildContext context) {
     if (registered && filteredEvents.length > 0) {
@@ -106,10 +114,12 @@ class _GeneralEventsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  filteredEvents = generalEvents
+                  filteredEvents =
+                      filtrarEsdeveniments(generalEvents, string, 0);
+                  /*generalEvents
                       .where(
                           (e) => (e.controller.location.name.contains(string)))
-                      .toList();
+                      .toList();*/
                 });
               });
             },
@@ -130,7 +140,7 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  /*filteredEvents = generalEvents
+                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))
                             .toList();*/
                 });
@@ -170,11 +180,12 @@ class _GeneralEventsState extends State {
                                       likeds[index] ? Colors.red : Colors.white,
                                 ),
                                 onPressed: () => setState(() {
-                                  if(likeds[index]) {
-                                    http_delfavourite(cookie, filteredEvents[index].controller.id);
-                                  }
-                                  else {
-                                    http_addfavourite(cookie, filteredEvents[index].controller.id);
+                                  if (likeds[index]) {
+                                    http_delfavourite(cookie,
+                                        filteredEvents[index].controller.id);
+                                  } else {
+                                    http_addfavourite(cookie,
+                                        filteredEvents[index].controller.id);
                                   }
                                   likeds[index] = !likeds[index];
                                 }),
@@ -203,7 +214,10 @@ class _GeneralEventsState extends State {
                           ),
                           Expanded(
                             child: Text(
-                                filteredEvents[index].controller.price.toString(),
+                                filteredEvents[index]
+                                    .controller
+                                    .price
+                                    .toString(),
                                 style: TextStyle(
                                     fontSize: 40, color: Colors.white)),
                           ),

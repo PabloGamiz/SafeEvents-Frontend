@@ -1,8 +1,9 @@
+import 'package:safeevents/EventsGeneral.dart';
 import 'package:test/test.dart';
-import 'EventsGeneral.dart';
 import 'http_model/GeneralEventsModel.dart';
 
 void main() {
+
   List<ListEsdevenimentsModel> esdeveniments = List();
   esdeveniments.add(ListEsdevenimentsModel({Controller({1, 'KIKO RIVERA ON CONCERT', 'descripción de ejemplo', 30, 30, Location({1, 'Palau Sant Jordi', 'Palau Sant Jordi, Barcelona'})})});
   esdeveniments.add(ListEsdevenimentsModel({Controller({2, 'El clasico', 'FC Barcelona vs Real Madrid', 30, 30, Location({2, 'Camp Nou', 'Camp Nou, Pedralbes'})})});
