@@ -14,17 +14,16 @@ class ConsultaFavortis extends StatefulWidget {
 }
 
 class _ConsultaFavoritsState extends State<ConsultaFavortis> {
-  List<FavsModel> favs;
+  Future<List<FavsModel>> favs;
 
   @override
   void initState() {
     super.initState();
-    fetchFavEvents();
+    favs = fetchFavEvents();
   }
 
   Future<List<FavsModel>> fetchFavEvents() async {
-    favs = await http_Favs();
-    return favs;
+    return await http_Favs();
   }
 
   Widget createListEventWidget(AsyncSnapshot<List<FavsModel>> snapshot) {
@@ -45,6 +44,7 @@ class _ConsultaFavoritsState extends State<ConsultaFavortis> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<FavsModel>>(
+      future: favs,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return createListEventWidget(snapshot);
@@ -83,7 +83,6 @@ Widget _buildEventWidget(FavsModel event) {
               alignment: Alignment.centerLeft,
               child: Text(
                 event.title,
-                /*filteredEvents[index].title,*/
                 style: TextStyle(fontSize: 24, color: Colors.white),
                 maxLines: 2,
                 overflow: TextOverflow.fade,
@@ -96,12 +95,16 @@ Widget _buildEventWidget(FavsModel event) {
         ),
         subtitle: Row(
           children: [
+            Image.network(
+              event.image,
+              height: 80,
+              fit: BoxFit.fitHeight,
+            ),
             SizedBox(
               width: 25,
             ),
             Expanded(
-              child: Text(event.price.toString(),
-                  /*sumadelpreu(filteredEvents[index]).toString(),*/
+              child: Text(event.price.toString() + '€',
                   style: TextStyle(fontSize: 40, color: Colors.white)),
             ),
             Expanded(
@@ -125,7 +128,6 @@ Widget _buildEventWidget(FavsModel event) {
                     height: 5,
                   ),
                   Text(event.closureDate.toString(),
-                      /*filteredEvents[index].date.toString(),*/
                       style: TextStyle(color: Colors.white)),
                   Container(
                     height: 5,

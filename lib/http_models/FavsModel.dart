@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'dart:convert';
-
 List<FavsModel> favsModelFromJson(String str) =>
     List<FavsModel>.from(json.decode(str).map((x) => FavsModel.fromJson(x)));
 
@@ -19,8 +17,6 @@ class FavsModel {
     this.checkInDate,
     this.closureDate,
     this.location,
-    this.feedbacks,
-    this.services,
     this.createdAt,
     this.updatedAt,
     this.image,
@@ -36,8 +32,6 @@ class FavsModel {
   DateTime checkInDate;
   DateTime closureDate;
   String location;
-  dynamic feedbacks;
-  dynamic services;
   DateTime createdAt;
   DateTime updatedAt;
   String image;
@@ -53,8 +47,6 @@ class FavsModel {
         checkInDate: DateTime.parse(json["checkInDate"]),
         closureDate: DateTime.parse(json["closureDate"]),
         location: json["location"],
-        feedbacks: json["feedbacks"],
-        services: json["services"],
         createdAt: DateTime.parse(json["createdAt"]),
         updatedAt: DateTime.parse(json["updatedAt"]),
         image: json["image"],
@@ -71,8 +63,6 @@ class FavsModel {
         "checkInDate": checkInDate.toIso8601String(),
         "closureDate": closureDate.toIso8601String(),
         "location": location,
-        "feedbacks": feedbacks,
-        "services": services,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
         "image": image,
