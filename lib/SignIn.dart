@@ -74,13 +74,24 @@ class _SignInState extends State<SignIn> {
     prefs.setString('cookie', session.cookie);
     prefs.setInt('timeout', session.deadline);
 
-    if (database.getUserByUsername(/*pasar el nombre de inicio de sesion*/) == null) { //mirar que el usuario no este en la base de datos
+    AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    FirebaseUser user =
+        (await firebaseAuth.signInWithCredential(credential)).user;
+
+    if (database.getUserByUsername(user.displayName) == null) {
+      //mirar que el usuario no este en la base de datos
       Map<String, String> userInfoMap = {
-        "name": //obtener nombre del perfil de google,
-        "email": //obtener email del perfil de google
+        "name": user.displayName, //obtener nombre del perfil de google,
+        "email": user.email //obtener email del perfil de google
       };
       database.uploadUserInfo(userInfoMap);
     }
+
+    prefs.setString('email', user.email);
+    prefs.setString('user', user.displayName);
 
     runApp(MaterialApp(
       home: Structure(),
@@ -99,4 +110,3 @@ class _SignInState extends State<SignIn> {
     ));
   }
 }
-

@@ -145,18 +145,13 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   _sendMessageArea() {
+    //MODIFICAR PARA PONERLO COMO EL TUTORIAL
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
       height: 70,
       color: Colors.white,
       child: Row(
         children: <Widget>[
-          IconButton(
-            icon: Icon(Icons.photo),
-            iconSize: 25,
-            color: Theme.of(context).primaryColor,
-            onPressed: () {},
-          ),
           Expanded(
             child: TextField(
               decoration: InputDecoration.collapsed(
