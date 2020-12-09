@@ -95,9 +95,16 @@ class _MostraState extends State<Mostra> {
   Future<bool> _onBackPressed() async {
     return showDialog(context: context, builder: (context) => _goBack());
   }
-
+  final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
+
+    final Marker marker = Marker(
+      markerId: MarkerId('palau'),
+      position: LatLng(41.3580319012, 2.1515327272),
+      infoWindow: InfoWindow(title: 'Palau', snippet: '*')
+    ) ;
+    _markers.add(marker);
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -438,9 +445,10 @@ class _MostraState extends State<Mostra> {
                                   child: GoogleMap(
                                     onMapCreated: _onMapCreated,
                                     initialCameraPosition: CameraPosition(
-                                      target: LatLng(41.390205, 2.154007),
-                                      zoom: 18.4746,
+                                      target: LatLng(41.3580319012, 2.1515327272),//location.coordenates
+                                      zoom: 15.4746,
                                     ),
+                                    markers: _markers,
                                   ),
                               ),
                               ),
