@@ -95,11 +95,6 @@ Widget _buildEventWidget(FavsModel event) {
         ),
         subtitle: Row(
           children: [
-            Image.network(
-              event.image,
-              height: 80,
-              fit: BoxFit.fitHeight,
-            ),
             SizedBox(
               width: 25,
             ),
