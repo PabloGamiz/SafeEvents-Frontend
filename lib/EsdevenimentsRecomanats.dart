@@ -72,12 +72,36 @@ class _EsdevenimentsRecomanatsState extends State {
   void initState() {
     super.initState();
     _comprovarSessio();
-    http_GeneralEvents().then((eventsFromServer) {
+    /*http_GeneralEvents().then((eventsFromServer) {
       setState(() {
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
       });
+    });*/
+    final list = new List<ListEsdevenimentsModel>();
+    Controller c = new Controller();
+
+    c.id = 20;
+    c.title = 'Esdeveniment';
+    c.description = 'Kiko Rivera on tour';
+    c.capacity = 200;
+    c.checkInDate = DateTime(20-10-2020);
+    c.price = 20;
+    c.services = ['Música'];
+    c.location = new Location();
+    c.location.name = 'Palau Sant Jordi';
+    ListEsdevenimentsModel liste = new ListEsdevenimentsModel();
+    liste.controller = c;
+    List<ListEsdevenimentsModel> lModel = new List<ListEsdevenimentsModel>();
+    lModel.add(liste);
+
+
+
+    setState(() {
+      generalEvents = lModel;
+      filteredEvents = generalEvents;
     });
+    print('LLISTA : '+generalEvents.toString());
   }
 /*
   int sumadelpreu(ListEsdevenimentsModel l) {
@@ -371,7 +395,8 @@ class _EsdevenimentsRecomanatsState extends State {
                                   children: [
                                     Center(
                                       child: Container(
-                                        child: Text(
+                                        child:
+                                        Text(
                                           /*'Palau Sant Jordi',*/
                                           filteredEvents[index]
                                               .controller
@@ -481,7 +506,7 @@ class _EsdevenimentsRecomanatsState extends State {
 
   _esdevenimentEspecific() {
     runApp(MaterialApp(
-      home: Mostra(),
+      home: Mostra(idevent:20),
     ));
   }
 }

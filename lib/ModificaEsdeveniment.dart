@@ -454,7 +454,7 @@ class _ModificaState extends State<Modifica> {
       //Envia data al backend i redirecciona
 
       runApp(MaterialApp(
-        home: Mostra(),
+        home: Mostra(idevent: idfake),
       ));
 
     }
@@ -469,7 +469,7 @@ class _ModificaState extends State<Modifica> {
     Navigator.pop(context,false);
     runApp(
         MaterialApp(
-          home: Mostra(),
+          home: Mostra(idevent: idfake),
         ));
   }
 

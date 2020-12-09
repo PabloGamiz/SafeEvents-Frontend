@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,7 +37,7 @@ MyInfo mi;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(),
+      home: Mostra(idevent: 20),
     ));
 
 class MyInfo {
@@ -67,9 +68,11 @@ class MyInfo {
 }
 
 class Mostra extends StatefulWidget {
+  var idevent;
+
   //final String idevent
-  Mostra( {Key key
-    /*@required this.idevent*/
+  Mostra( {Key key,
+    @required this.idevent
   }) : super(key: key);
 
   @override
@@ -93,7 +96,7 @@ class _MostraState extends State<Mostra> {
   }
 
   Future<bool> _onBackPressed() async {
-    return showDialog(context: context, builder: (context) => _goBack());
+    return showDialog(context: context, builder: (context) => _goBackButt());
   }
   final Set<Marker> _markers = Set();
   @override
@@ -129,9 +132,7 @@ class _MostraState extends State<Mostra> {
                                 top: 70.0,
                                 child: InkWell(
                                   onTap: () {
-                                    runApp(MaterialApp(
-                                      home: EventsGeneral(),
-                                    ));
+                                    _goBack();
                                   },
                                   child:
                                       Icon(Icons.arrow_back, color: Colors.blue),
@@ -634,12 +635,23 @@ class _MostraState extends State<Mostra> {
 
     //saltar a la pestanya de Comprar / Reservar
   }
-
-  _goBack() {
+  _goBackButt(){
     Navigator.pop(context, false);
-    runApp(MaterialApp(
-      home: EventsGeneral(),
-    ));
+    _goBack();
+  }
+  _goBack() {
+
+    //Depenent de si venim de events generals o de recomanats anar a un o altre
+    bool veDeRecomanats = true;
+    if(!veDeRecomanats) {
+      runApp(MaterialApp(
+        home: EventsGeneral(),
+      ));
+    }else {
+      runApp(MaterialApp(
+        home: EsdevenimentsRecomanats(),
+      ));
+    }
   }
 
   _onMapCreated(GoogleMapController controller) {
