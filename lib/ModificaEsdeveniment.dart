@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
@@ -22,6 +23,34 @@ void main() => runApp(MaterialApp(
   title: "ModificaEvents",
   home: Modifica(),
 ));
+class MyInfo {
+  int id;
+  String title;
+  String description;
+  int capacity;
+  String checkInDate;
+  String location;
+  String address;
+  dynamic organizers;
+  dynamic services;
+  int preu;
+  String img;
+
+  MyInfo(int id, String title, String desc, int cap, DateTime date,
+      String location, dynamic organizers, dynamic services, int preu,String img) {
+    this.id = id;
+    this.title = title;
+    this.description = desc;
+    this.capacity = cap;
+    this.checkInDate = date.toString().split('.')[0];
+    this.location = location;
+    this.address = location;
+    this.organizers = organizers;
+    this.services = services;
+    this.preu = preu;
+    this.img = img;
+  }
+}
 class Modifica extends StatefulWidget {
   Modifica({Key key}) : super(key: key);
   @override
@@ -51,21 +80,23 @@ class _ModificaState extends State<Modifica> {
 
   var _data;
   var _hora;
+  MyInfo mi;
 
   @override
   void initState() {
     // TODO: implement initState
+    int id;
     setState(() {
-      _data = DateTime.parse('2018-09-27 13:27:00');
-      _hora = DateTime.parse('2018-09-27 13:27:00');
-      log('Holas _'+_data.toString());
-      log('Datetime ');
-      nomcontroller.text = 'Kiko Rivera on Tour';
-      dircontroller.text = 'Palau Sant Jordi';
-      descrcontroller.text = 'El Kiko Rivera torna a Barcelona en el seu tour per Europa';
-      preucontroller.text = '25';
-      imgcontroller.text = 'kikorivera.com/assets/img21';
-      tipus = 'Teatre';
+      _initEvent(id);
+      _data = DateTime.parse(mi.checkInDate);
+      _hora = DateTime.parse(mi.checkInDate);
+      nomcontroller.text = mi.title;
+      dircontroller.text = mi.location;
+      descrcontroller.text = mi.description;
+      preucontroller.text = mi.preu.toString();
+      imgcontroller.text = mi.img;
+      tipus = mi.services;
+      capcontroller.text = mi.capacity.toString();
     });
     super.initState();
   }
@@ -437,6 +468,49 @@ class _ModificaState extends State<Modifica> {
       ) ,
     );
   }
+
+  void _initEvent(int id) async {
+    /*final EsdevenimentEspecificModel event =
+    await http_esdevenimentespecific(id);*/
+    List<String> event;
+    /*_rate = event.controller.rating;
+    print(event.controller.title);
+    print(event.controller.description);
+    print(event.controller.capacity);
+    print(event.controller.checkInDate);
+    print(event.controller.location);
+    //print(event.controller.organizers);
+    //print(event.controller.services);
+
+     */
+
+    /*SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    setState(() {
+      if (stringValue != null)
+        mostrar = true;
+      else
+        mostrar = false;
+
+      /*if (event.controller.title != null) _esperaCarrega = false;
+      print(_esperaCarrega);*/
+    });*/
+
+    mi = MyInfo(
+        /*event.controller.id,
+        event.controller.title,
+        event.controller.description,
+        event.controller.capacity,
+        event.controller.checkInDate,
+        event.controller.location,
+        event.controller.organizers,
+        event.controller.services,
+        event.controller.price*/
+        id,'Kiko Rivera on Tour',
+        'El Kiko Rivera torna a Barcelona en el seu tour per Europa',
+        12,DateTime.parse('2018-09-27 13:27:00'), 'Palau Sant Jordi',"club","Teatre",25, "google.com/foto");
+  }
+
   publicaEsdeveniment() {
     var nom = nomcontroller.text;
     var descripcio = descrcontroller.text;
