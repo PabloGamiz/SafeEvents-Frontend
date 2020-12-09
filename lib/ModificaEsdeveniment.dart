@@ -345,7 +345,7 @@ class _ModificaState extends State<Modifica> {
                                 tipus = newValue;
                               });
                             },
-                            items: <String>['Escull el tipus d\'esdeveniment','Musica', 'Teatre','Esdeveniment Esportiu','Altres'].map<DropdownMenuItem<String>>((String value) {
+                            items: <String>['Escull el tipus d\'esdeveniment','Musica', 'Teatre','Esport','Art','Altres'].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
                                 child: new Text(value),
