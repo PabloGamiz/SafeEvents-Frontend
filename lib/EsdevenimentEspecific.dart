@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:permission/permission.dart';
+//import 'package:permission_handler/permission_handler.dart';
+
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
@@ -42,21 +45,21 @@ class MyInfo {
   String description;
   int capacity;
   String checkInDate;
-  Location location;
+  String location;
   String address;
   dynamic organizers;
   dynamic services;
   int preu;
 
   MyInfo(int id, String title, String desc, int cap, DateTime date,
-      Location location, dynamic organizers, dynamic services, int preu) {
+      String location, dynamic organizers, dynamic services, int preu) {
     this.id = id;
     this.title = title;
     this.description = desc;
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
     this.location = location;
-    this.address = location.address;
+    this.address = location;
     this.organizers = organizers;
     this.services = services;
     this.preu = preu;
@@ -75,6 +78,7 @@ class Mostra extends StatefulWidget {
 
 class _MostraState extends State<Mostra> {
   Controller event;
+  //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
 
 
@@ -187,7 +191,7 @@ class _MostraState extends State<Mostra> {
                                                           .withOpacity(1)),
                                                 ),
                                                 Text(
-                                                  mi.location.name,
+                                                  mi.location,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
@@ -420,25 +424,25 @@ class _MostraState extends State<Mostra> {
                               margin: EdgeInsets.only(top: 20.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
-                                child: Image.network(
+                                child: /*Image.network(
                                   'https://www.adslzone.net/app/uploads-adslzone.net/2017/06/google-maps.jpg',
                                   loadingBuilder: (context, child, progress) {
                                     return progress == null
                                         ? child
                                         : LinearProgressIndicator();
                                   },
-                                ),
-                                /*SizedBox(
-                                  width: 200,
-                                  height: 200,
+                                ),*/
+                                SizedBox(
+                                  width: 320,
+                                  height: 220,
                                   child: GoogleMap(
                                     onMapCreated: _onMapCreated,
                                     initialCameraPosition: CameraPosition(
-                                      target: LatLng(37.42796133580664, -122.085749655962),
-                                      zoom: 14.4746,
+                                      target: LatLng(41.390205, 2.154007),
+                                      zoom: 18.4746,
                                     ),
                                   ),
-                              ),*/
+                              ),
                               ),
                             ),
                             Container(
@@ -530,6 +534,10 @@ class _MostraState extends State<Mostra> {
       ),
     );
   }
+  /*void setPermissions() async{
+    Map<PermissionGroup, PermissionStatus> permissions =
+    await PermissionHandler().requestPermissions([PermissionGroup.location]);
+  }*/
 
   _doFav() {
     //do something
@@ -562,12 +570,25 @@ class _MostraState extends State<Mostra> {
       else
         mostrar = false;
 
-      if (event.controller.title != null) _esperaCarrega = false;
-      //test _esperaCarrega = false;
+      //if (event.controller.title != null) _esperaCarrega = false;
+      //test
+
       print(_esperaCarrega);
+      /*test */
+      mi = MyInfo(
+          20,
+          'event.controller.title',
+          'event.controller.description',
+          20,
+          DateTime(30-12-2020),
+          'null',
+          'event.controller.organizers',
+          'event.controller.services',
+          2);
+      _esperaCarrega = false;
     });
 
-    mi = MyInfo(
+    /*mi = MyInfo(
         event.controller.id,
         event.controller.title,
         event.controller.description,
@@ -577,17 +598,8 @@ class _MostraState extends State<Mostra> {
         event.controller.organizers,
         event.controller.services,
         event.controller.price
-    );
-    /*test mi = MyInfo(
-        20,
-        'event.controller.title',
-        'event.controller.description',
-        20,
-        DateTime(30),
-        null,
-        'event.controller.organizers',
-        'event.controller.services',
-        2);*/
+    );*/
+
   }
 
   bool esDeLaEmpresa() {
