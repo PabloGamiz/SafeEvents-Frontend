@@ -102,7 +102,7 @@ class _MostraState extends State<Mostra> {
     final Marker marker = Marker(
       markerId: MarkerId('palau'),
       position: LatLng(41.3580319012, 2.1515327272),
-      infoWindow: InfoWindow(title: 'Palau', snippet: '*')
+      infoWindow: InfoWindow(title: 'Palau Sant Jordi', snippet: 'Kiko Rivera on Tour')
     ) ;
     _markers.add(marker);
     return MaterialApp(
@@ -238,7 +238,7 @@ class _MostraState extends State<Mostra> {
                                                                     '[]'
                                                                 ? 'No hi ha organitzador'
                                                                 : mi.organizers
-                                                                    .toString()[0],
+                                                                    .toString(),
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -585,14 +585,14 @@ class _MostraState extends State<Mostra> {
       /*test */
       mi = MyInfo(
           20,
-          'event.controller.title',
-          'event.controller.description',
+          'KIKO RIVERA ON TOUR',
+          'El Kiko Rivera es una bestia',
           20,
-          DateTime(30-12-2020),
-          'null',
-          'event.controller.organizers',
-          'event.controller.services',
-          2);
+          DateTime(2020-12-10),
+          'Palau Sant Jordi',
+          'KIKO&Co',
+          'Música',
+          25);
       _esperaCarrega = false;
     });
 
