@@ -163,9 +163,11 @@ _tancarSessio() async {
 
 //This page shows the information of a selected user
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'http_requests/http_clientInfo.dart';
+import 'http_models/ClientInfoModel.dart';
 
 /*
 void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
@@ -173,24 +175,24 @@ void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
 */
 
 class ClientInfo extends StatefulWidget {
-  final String email;
+  final int id;
 
-  ClientInfo(this.email);
+  ClientInfo(this.id);
 
-  _ClientInfoState createState() => _ClientInfoState(email);
+  _ClientInfoState createState() => _ClientInfoState(id);
 }
 
 class _ClientInfoState extends State<ClientInfo> {
-  String email;
+  int id;
 
-  _ClientInfoState(this.email);
+  _ClientInfoState(this.id);
 
   Future<Client> futureClient;
 
   @override
   void initState() {
     super.initState();
-    futureClient = fetchClient(email);
+    futureClient = fetchClient(id);
   }
 
   @override
@@ -207,35 +209,6 @@ class _ClientInfoState extends State<ClientInfo> {
         // By default, show a loading spinner.
         return CircularProgressIndicator();
       },
-    );
-  }
-}
-
-Future<Client> fetchClient(String email) async {
-  var queryParameters = {'email': email};
-  var uri = Uri.http('10.4.41.148:9090', '/clientInfo/', queryParameters);
-  final response = await http.get(uri);
-  if (response.statusCode == 200) {
-    return Client.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load album');
-  }
-}
-
-class Client {
-  final String clientname;
-  final String email;
-  final bool verified;
-  final events;
-
-  Client({this.clientname, this.email, this.verified, this.events});
-
-  factory Client.fromJson(Map<String, dynamic> json) {
-    return Client(
-      clientname: json['username'],
-      email: json['email'],
-      verified: json['verified'] == 'true',
-      events: json['events'],
     );
   }
 }
