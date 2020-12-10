@@ -179,29 +179,26 @@ class ClientInfo extends StatefulWidget {
 
   ClientInfo(this.id);
 
-  _ClientInfoState createState() => _ClientInfoState(id);
+  _ClientInfoState createState() => _ClientInfoState();
 }
 
 class _ClientInfoState extends State<ClientInfo> {
-  int id;
-
-  _ClientInfoState(this.id);
-
-  Future<Client> futureClient;
+  Future<ClientInfoMod> futureClient;
 
   @override
   void initState() {
     super.initState();
-    futureClient = fetchClient(id);
+    futureClient = fetchClient(widget.id);
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Client>(
+    return FutureBuilder<ClientInfoMod>(
       future: futureClient,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return createClientWidget(snapshot);
+          //return createClientWidget(snapshot);
+          return Text("ola k ase");
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
@@ -211,51 +208,6 @@ class _ClientInfoState extends State<ClientInfo> {
       },
     );
   }
-}
-
-Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
-  return Scaffold(
-    body: Column(children: [
-      Text(
-        'Username',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Text(snapshot.data.clientname),
-      Text(
-        'Email',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Text(snapshot.data.email),
-      Text(
-        'Verified',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      if (snapshot.data.verified)
-        Text('This user is verified')
-      else
-        Text('This user is not verified'),
-      Text(
-        'Events',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Expanded(
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(snapshot.data.events[index]['eventName']),
-              subtitle: Text(snapshot.data.events[index]['Date']),
-            );
-          },
-          itemCount: snapshot.data.events.length,
-          shrinkWrap: true,
-        ),
-      ),
-    ]),
-  );
 }
 
 /*
