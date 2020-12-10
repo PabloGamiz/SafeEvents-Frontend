@@ -184,11 +184,13 @@ class ClientInfo extends StatefulWidget {
 
 class _ClientInfoState extends State<ClientInfo> {
   Future<ClientInfoMod> futureClient;
+  var dropdownValue = "Reservas";
+  List<Purchased> selected = new List();
 
   @override
   void initState() {
     super.initState();
-    futureClient = fetchClient(widget.id);
+    futureClient = fetchLocalClient(widget.id);
   }
 
   @override
@@ -197,16 +199,256 @@ class _ClientInfoState extends State<ClientInfo> {
       future: futureClient,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          //return createClientWidget(snapshot);
-          return Text("ola k ase");
+          if (widget.id == 0)
+            return buildProfileWidget(snapshot);
+          else
+            return buildClientInfoWidget(snapshot);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
-
         // By default, show a loading spinner.
         return CircularProgressIndicator();
       },
     );
+  }
+
+  Widget buildProfileWidget(AsyncSnapshot<ClientInfoMod> snapshot) {
+    var client = snapshot.data;
+    var assistant = client.assists;
+    selected = _selectTicket(dropdownValue, assistant);
+    return Column(
+      children: [
+        generalInfo(client),
+        DropdownButton(
+          value: dropdownValue,
+          elevation: 16,
+          items: ["Reservas", "Entradas"].map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          style: TextStyle(color: Colors.lightBlue),
+          underline: Container(
+            height: 2,
+            color: Colors.lightBlue,
+          ),
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+              selected = _selectTicket(dropdownValue, assistant);
+            });
+          },
+        ),
+        if (selected.length != 0)
+          Expanded(
+            child: ListView(
+              children: selected.map(_buildTicketWidget).toList(),
+              shrinkWrap: true,
+            ),
+          )
+        else
+          Text("No tienes " + dropdownValue),
+      ],
+    );
+  }
+
+  Widget buildClientInfoWidget(AsyncSnapshot<ClientInfoMod> snapshot) {
+    var client = snapshot.data;
+    var organizer = client.organize;
+    return Column(
+      children: [
+        generalInfo(client),
+        Text("Eventos organizados"),
+        if (organizer.organizes.length != 0)
+          Expanded(
+            child: ListView(
+              children: organizer.organizes.map(_buildEventWidget).toList(),
+              shrinkWrap: true,
+            ),
+          )
+        else
+          Expanded(
+            child: Text("No organiza ningun evento"),
+          ),
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
+  }
+
+  Widget generalInfo(client) {
+    return Card(
+      color: Colors.lightBlue,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                'Email:',
+              ),
+              Text(
+                client.email,
+              ),
+              FlatButton(
+                onPressed: null,
+                child: Icon(
+                  Icons.qr_code,
+                  color: Colors.white,
+                ),
+              ),
+              FlatButton(
+                onPressed: null,
+                child: Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEventWidget(Fav event) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 1.0,
+        horizontal: 4.0,
+      ),
+      child: Card(
+        color: Colors.lightBlue,
+        child: ListTile(
+          onTap: () {
+            //_esdevenimentEspecific();
+          },
+          title: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  event.title,
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+          subtitle: Row(
+            children: [
+              SizedBox(
+                width: 25,
+              ),
+              Expanded(
+                child: Text(event.price.toString() + '€',
+                    style: TextStyle(fontSize: 40, color: Colors.white)),
+              ),
+              Expanded(
+                //color: Colors.red,
+                //height: 80,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Container(
+                        child: Text(
+                          event.location,
+                          /*filteredEvents[index].location.name,*/
+                          style: TextStyle(color: Colors.white),
+                          maxLines: 2,
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 5,
+                    ),
+                    Text(event.closureDate.toString(),
+                        style: TextStyle(color: Colors.white)),
+                    Container(
+                      height: 5,
+                    ),
+                    Text(event.tipus, //filteredEvents[index].category,
+                        style: TextStyle(color: Colors.white)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTicketWidget(Purchased purchase) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 1.0,
+        horizontal: 4.0,
+      ),
+      child: Card(
+        color: Colors.lightBlue,
+        child: ListTile(
+          onTap: () {
+            //_esdevenimentEspecific();
+          },
+          title: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  purchase.id.toString(),
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+          subtitle: Row(
+            children: [
+              SizedBox(
+                width: 25,
+              ),
+              Expanded(
+                child: Text(purchase.description.toString(),
+                    style: TextStyle(fontSize: 40, color: Colors.white)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Purchased> _selectTicket(String type, Assists assistant) {
+    selected.clear();
+    if (type == "Reservas") {
+      if (assistant.purchased.length != 0) {
+        for (int i = 0; i < assistant.purchased.length; ++i) {
+          if (assistant.purchased[i].option == 0) {
+            selected.add(assistant.purchased[i]);
+          }
+        }
+      }
+    } else if (type == "Entradas") {
+      if (assistant.purchased.length != 0) {
+        for (int i = 0; i < assistant.purchased.length; ++i) {
+          if (assistant.purchased[i].option == 1) {
+            selected.add(assistant.purchased[i]);
+          }
+        }
+      }
+    }
+    return selected;
   }
 }
 
