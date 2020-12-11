@@ -1,11 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:permission/permission.dart';
+//import 'package:permission_handler/permission_handler.dart';
+
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,9 +34,10 @@ TextEditingController controllerfeedback = new TextEditingController();
 bool _esperaCarrega = true;
 MyInfo mi;
 
+
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(),
+      home: Mostra(idevent: 20),
     ));
 
 class MyInfo {
@@ -40,21 +46,21 @@ class MyInfo {
   String description;
   int capacity;
   String checkInDate;
-  Location location;
+  String location;
   String address;
   dynamic organizers;
   dynamic services;
   int preu;
 
   MyInfo(int id, String title, String desc, int cap, DateTime date,
-      Location location, dynamic organizers, dynamic services, int preu) {
+      String location, dynamic organizers, dynamic services, int preu) {
     this.id = id;
     this.title = title;
     this.description = desc;
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
     this.location = location;
-    this.address = location.address;
+    this.address = location;
     this.organizers = organizers;
     this.services = services;
     this.preu = preu;
@@ -62,7 +68,12 @@ class MyInfo {
 }
 
 class Mostra extends StatefulWidget {
-  Mostra( {Key key}) : super(key: key);
+  var idevent;
+
+  //final String idevent
+  Mostra( {Key key,
+    @required this.idevent
+  }) : super(key: key);
 
   @override
   _MostraState createState() => _MostraState();
@@ -70,8 +81,10 @@ class Mostra extends StatefulWidget {
 
 class _MostraState extends State<Mostra> {
   Controller event;
+  //PermissionName permissionName = PermissionName.Internet;
+  Completer<GoogleMapController> _controller = Completer();
 
-  @override
+
   bool mostrar = false;
   int id = 20;
 
@@ -83,11 +96,18 @@ class _MostraState extends State<Mostra> {
   }
 
   Future<bool> _onBackPressed() async {
-    return showDialog(context: context, builder: (context) => _goBack());
+    return showDialog(context: context, builder: (context) => _goBackButt());
   }
-
+  final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
+
+    final Marker marker = Marker(
+      markerId: MarkerId('palau'),
+      position: LatLng(41.3580319012, 2.1515327272),
+      infoWindow: InfoWindow(title: 'Palau Sant Jordi', snippet: 'Kiko Rivera on Tour')
+    ) ;
+    _markers.add(marker);
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -112,9 +132,7 @@ class _MostraState extends State<Mostra> {
                                 top: 70.0,
                                 child: InkWell(
                                   onTap: () {
-                                    runApp(MaterialApp(
-                                      home: EventsGeneral(),
-                                    ));
+                                    _goBack();
                                   },
                                   child:
                                       Icon(Icons.arrow_back, color: Colors.blue),
@@ -144,6 +162,7 @@ class _MostraState extends State<Mostra> {
                                         right: 10.0,
                                         bottom: 10.0,
                                         top: 20),
+
                                     child: Row(
                                       children: <Widget>[
                                         ClipRRect(
@@ -160,6 +179,7 @@ class _MostraState extends State<Mostra> {
                                                   : LinearProgressIndicator();
                                             },
                                           ),
+
                                         ),
                                         Padding(
                                             padding: const EdgeInsets.all(10.0),
@@ -179,7 +199,7 @@ class _MostraState extends State<Mostra> {
                                                           .withOpacity(1)),
                                                 ),
                                                 Text(
-                                                  mi.location.name,
+                                                  mi.location,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
@@ -219,7 +239,7 @@ class _MostraState extends State<Mostra> {
                                                                     '[]'
                                                                 ? 'No hi ha organitzador'
                                                                 : mi.organizers
-                                                                    .toString()[0],
+                                                                    .toString(),
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -412,14 +432,26 @@ class _MostraState extends State<Mostra> {
                               margin: EdgeInsets.only(top: 20.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
-                                child: Image.network(
+                                child: /*Image.network(
                                   'https://www.adslzone.net/app/uploads-adslzone.net/2017/06/google-maps.jpg',
                                   loadingBuilder: (context, child, progress) {
                                     return progress == null
                                         ? child
                                         : LinearProgressIndicator();
                                   },
-                                ),
+                                ),*/
+                                SizedBox(
+                                  width: 320,
+                                  height: 220,
+                                  child: GoogleMap(
+                                    onMapCreated: _onMapCreated,
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(41.3580319012, 2.1515327272),//location.coordenates
+                                      zoom: 15.4746,
+                                    ),
+                                    markers: _markers,
+                                  ),
+                              ),
                               ),
                             ),
                             Container(
@@ -511,6 +543,10 @@ class _MostraState extends State<Mostra> {
       ),
     );
   }
+  /*void setPermissions() async{
+    Map<PermissionGroup, PermissionStatus> permissions =
+    await PermissionHandler().requestPermissions([PermissionGroup.location]);
+  }*/
 
   _doFav() {
     //do something
@@ -543,11 +579,25 @@ class _MostraState extends State<Mostra> {
       else
         mostrar = false;
 
-      if (event.controller.title != null) _esperaCarrega = false;
+      //if (event.controller.title != null) _esperaCarrega = false;
+      //test
+
       print(_esperaCarrega);
+      /*test */
+      mi = MyInfo(
+          20,
+          'KIKO RIVERA ON TOUR',
+          'El Kiko Rivera es una bestia',
+          20,
+          DateTime(2020-12-10),
+          'Palau Sant Jordi',
+          'KIKO&Co',
+          'Música',
+          25);
+      _esperaCarrega = false;
     });
 
-    mi = MyInfo(
+    /*mi = MyInfo(
         event.controller.id,
         event.controller.title,
         event.controller.description,
@@ -556,7 +606,9 @@ class _MostraState extends State<Mostra> {
         event.controller.location,
         event.controller.organizers,
         event.controller.services,
-        event.controller.price);
+        event.controller.price
+    );*/
+
   }
 
   bool esDeLaEmpresa() {
@@ -583,14 +635,33 @@ class _MostraState extends State<Mostra> {
 
     //saltar a la pestanya de Comprar / Reservar
   }
-
-  _goBack() {
+  _goBackButt(){
     Navigator.pop(context, false);
-    runApp(MaterialApp(
-      home: EventsGeneral(),
-    ));
+    _goBack();
+  }
+  _goBack() {
+
+    //Depenent de si venim de events generals o de recomanats anar a un o altre
+    bool veDeRecomanats = true;
+    if(!veDeRecomanats) {
+      runApp(MaterialApp(
+        home: EventsGeneral(),
+      ));
+    }else {
+      runApp(MaterialApp(
+        home: EsdevenimentsRecomanats(),
+      ));
+    }
+  }
+
+  _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
+  }
+  _initialPosition(){
+
   }
 }
+
 
 _contacta() {
   //saltar a la pestanya de Xat amb la empresa
