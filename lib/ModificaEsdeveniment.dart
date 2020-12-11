@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
+import 'package:safeevents/http_requests/http_modificaesdeveniment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
 
@@ -57,6 +58,8 @@ class Modifica extends StatefulWidget {
   _ModificaState createState() => _ModificaState();
 }
 class _ModificaState extends State<Modifica> {
+
+  var cookie = "";
   DateTime selectedDate = DateTime.now();
 
   final format = DateFormat("yyyy-MM-dd");
@@ -484,17 +487,14 @@ class _ModificaState extends State<Modifica> {
 
      */
 
-    /*SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     setState(() {
-      if (stringValue != null)
-        mostrar = true;
-      else
-        mostrar = false;
 
+      cookie = stringValue;
       /*if (event.controller.title != null) _esperaCarrega = false;
       print(_esperaCarrega);*/
-    });*/
+    });
 
     mi = MyInfo(
         /*event.controller.id,
@@ -520,6 +520,7 @@ class _ModificaState extends State<Modifica> {
     var hora = '';
     var img = imgcontroller.text;
     var capacity = capcontroller.text;
+    var services = ['Gel hidroalcòlic'];
 
     if(_data.toString() != 'null') data = _data.toString().split(' ')[0];
     else data = 'null';
@@ -571,7 +572,7 @@ class _ModificaState extends State<Modifica> {
     //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if(!someError){
       //Envia data al backend i redirecciona
-
+      http_modificaesdeveniment(cookie, idfake, nom, descripcio, int.parse(capacity), int.parse(preu), data, dir , services, img, tipus);
       runApp(MaterialApp(
         home: Mostra(idevent: idfake),
       ));

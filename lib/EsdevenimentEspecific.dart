@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
+import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
@@ -83,6 +84,7 @@ class _MostraState extends State<Mostra> {
   Controller event;
   //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
+  var cookie = "";
 
 
   bool mostrar = false;
@@ -573,6 +575,7 @@ class _MostraState extends State<Mostra> {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
+    cookie = stringValue;
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -620,6 +623,7 @@ class _MostraState extends State<Mostra> {
     //Aqui comunicarem amb el backend per enviar les dades del feedback, estrelles(1-5), missatge, id esdeveniment, usuari
     print(controllerfeedback.text);
     print(_rate);
+    http_afegeixfeedback(_rate.toInt(), controllerfeedback.text, cookie, id);
     Navigator.pop(context);
   }
 
