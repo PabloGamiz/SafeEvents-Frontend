@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'EventsGeneral.dart';
 import 'no_login.dart';
+import 'reserves.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _StructureState extends State<Structure> {
       'Index 3: Chat',
       style: optionStyle,
     ),
-    ClientInfo('paco@gmail.com')
+    ClientInfo(0),
   ];
 
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
@@ -161,5 +162,14 @@ class _StructureState extends State<Structure> {
         ),
       );
     }
+  }
+
+  static callreserva() {
+    runApp(MaterialApp(
+      home: Reserves(
+        entradas: 25,
+        id: 12,
+      ),
+    ));
   }
 }

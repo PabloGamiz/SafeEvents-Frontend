@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import 'EsdevenimentEspecific.dart';
+import 'Qr.dart';
 import 'Structure.dart';
 import 'http_models/resposta_reserva_model.dart';
 import 'http_requests/http_entrades.dart';
@@ -313,10 +314,17 @@ class _PantallaReserva extends State<Reserves> {
     String stringValue = prefs.getString('cookie');
     final RespostaReservaModel session =
         await http_reserva(stringValue, id, numero);
-    if (session != null)
-      prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
-    Navigator.of(context).pop();
-    showConfirmationDialog(context);
+    if (session != null) {
+      /*for (int i = 0; i < session.tickets.length; ++i)
+        prefs.setStringList(
+            'entrades_' + id.toString(), session.tickets[i].controller.id);*/
+      Navigator.of(context).pop();
+      print(session.tickets[0].controller.id);
+      showConfirmationDialog(context);
+    } else {
+      Navigator.of(context).pop();
+      showErrorDialog(context);
+    }
   }
 
   _compra() async {
@@ -325,12 +333,51 @@ class _PantallaReserva extends State<Reserves> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     final RespostaReservaModel session =
-        await http_reserva(stringValue, id, numero);
+        await http_compra(stringValue, id, numero);
 
-    if (session != null)
-      prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
-    Navigator.of(context).pop();
-    showConfirmationDialogCompra(context);
+    if (session != null) {
+      //prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
+      Navigator.of(context).pop();
+      showConfirmationDialogCompra(
+          context, session.tickets[0].controller.qrCode);
+      print(session.tickets[0].controller.qrCode);
+    } else {
+      Navigator.of(context).pop();
+      showErrorDialog(context);
+    }
+  }
+
+  showErrorDialog(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text("Continuar"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: Reserves(
+                  entradas: entradas,
+                  id: id,
+                ),
+              )),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Avis"),
+      content: Text("No s'ha pogut fer l'acció si us plau torna a intentar-ho"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   showConfirmationDialog(BuildContext context) {
@@ -341,7 +388,7 @@ class _PantallaReserva extends State<Reserves> {
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
-                home: Structure(),
+                home: LectorQr(),
               )),
             });
 
@@ -365,7 +412,7 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 
-  showConfirmationDialogCompra(BuildContext context) {
+  showConfirmationDialogCompra(BuildContext context, qrCode) {
     // set up the button
 
     Widget okButton = FlatButton(
@@ -373,7 +420,9 @@ class _PantallaReserva extends State<Reserves> {
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
-                home: Structure(),
+                home: QR(
+                  qrCode: qrCode,
+                ),
               )),
             });
 
@@ -397,6 +446,23 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 }
+
+/*
+_compra_reserva() async {
+  sleep(const Duration(seconds: 2));
+  print('compra');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String stringValue = prefs.getString('cookie');
+  final RespostaReservaModel session =
+      await http_compra_reserva(stringValue, id, numero);
+
+  if (session != null)
+    prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
+  Navigator.of(context).pop();
+  showConfirmationDialogCompra(context);
+}
+*/
+
 /*
   
 // Request

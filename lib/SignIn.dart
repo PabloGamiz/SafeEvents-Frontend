@@ -63,8 +63,10 @@ class _SignInState extends State<SignIn> {
   _signInWithGoogle() async {
     // pop up del usuario que eliges para iniciar sesion
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
+
     print(googleAuth.idToken);
     final SignInModel session = await http_SignIn(googleAuth.idToken);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -86,3 +88,26 @@ class _SignInState extends State<SignIn> {
     ));
   }
 }
+
+/*
+
+_tancarSessio() async {
+  print('5');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String stringValue = prefs.getString('cookie');
+  print(stringValue);
+  SignInModel session = await http_SignOut(stringValue);
+  /*var now;
+    do {
+      session = await http_SignOut(stringValue);
+      now = new DateTime.now();
+    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  runApp(MaterialApp(
+    home: SignIn(),
+  ));
+}
+
+*/
