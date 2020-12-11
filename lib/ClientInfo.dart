@@ -215,6 +215,7 @@ class _ClientInfoState extends State<ClientInfo> {
   Widget buildProfileWidget(AsyncSnapshot<ClientInfoMod> snapshot) {
     var client = snapshot.data;
     var assistant = client.assists;
+    var organizer = client.organize;
     selected = _selectTicket(dropdownValue, assistant);
     return Column(
       children: [
@@ -222,7 +223,8 @@ class _ClientInfoState extends State<ClientInfo> {
         DropdownButton(
           value: dropdownValue,
           elevation: 16,
-          items: ["Reservas", "Entradas"].map((String value) {
+          items: ["Reservas", "Entradas", "Eventos organizados"]
+              .map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -236,21 +238,43 @@ class _ClientInfoState extends State<ClientInfo> {
           onChanged: (String newValue) {
             setState(() {
               dropdownValue = newValue;
-              selected = _selectTicket(dropdownValue, assistant);
+              if (dropdownValue != "Eventos organizados")
+                selected = _selectTicket(dropdownValue, assistant);
             });
           },
         ),
-        if (selected.length != 0)
-          Expanded(
-            child: ListView(
-              children: selected.map(_buildTicketWidget).toList(),
-              shrinkWrap: true,
-            ),
-          )
+        if (dropdownValue != "Eventos organizados")
+          _ticketsList()
         else
-          Text("No tienes " + dropdownValue),
+          _eventsList(organizer)
       ],
     );
+  }
+
+  Widget _ticketsList() {
+    if (selected.length != 0)
+      return Expanded(
+        child: ListView(
+          children: selected.map(_buildTicketWidget).toList(),
+          shrinkWrap: true,
+        ),
+      );
+    else
+      return Text("No tienes " + dropdownValue);
+  }
+
+  Widget _eventsList(Organize organizer) {
+    if (organizer.organizes.length != 0)
+      return Expanded(
+        child: ListView(
+          children: organizer.organizes.map(_buildEventWidget).toList(),
+          shrinkWrap: true,
+        ),
+      );
+    else
+      return Expanded(
+        child: Text("No organiza ningun evento"),
+      );
   }
 
   Widget buildClientInfoWidget(AsyncSnapshot<ClientInfoMod> snapshot) {
@@ -289,20 +313,22 @@ class _ClientInfoState extends State<ClientInfo> {
               Text(
                 client.email,
               ),
-              FlatButton(
-                onPressed: null,
-                child: Icon(
-                  Icons.qr_code,
-                  color: Colors.white,
+              if (widget.id == 0)
+                FlatButton(
+                  onPressed: null,
+                  child: Icon(
+                    Icons.qr_code,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              FlatButton(
-                onPressed: null,
-                child: Icon(
-                  Icons.logout,
-                  color: Colors.white,
+              if (widget.id == 0)
+                FlatButton(
+                  onPressed: null,
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           )
