@@ -140,25 +140,6 @@ Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
     else
       return createWidget();*/
 
-/*
-_tancarSessio() async {
-  print('5');
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String stringValue = prefs.getString('cookie');
-  print(stringValue);
-  SignInModel session = await http_SignOut(stringValue);
-  /*var now;
-    do {
-      session = await http_SignOut(stringValue);
-      now = new DateTime.now();
-    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
-
-  runApp(MaterialApp(
-    home: SignIn(),
-  ));
-}
-
-*/
 */
 
 //This page shows the information of a selected user
@@ -166,8 +147,12 @@ _tancarSessio() async {
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:safeevents/SignIn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
+import 'http_requests/http_signout.dart';
 
 /*
 void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
@@ -323,7 +308,7 @@ class _ClientInfoState extends State<ClientInfo> {
                 ),
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: null,
+                  onPressed: () => _tancarSessio(),
                   child: Icon(
                     Icons.logout,
                     color: Colors.white,
@@ -475,6 +460,23 @@ class _ClientInfoState extends State<ClientInfo> {
       }
     }
     return selected;
+  }
+
+  _tancarSessio() async {
+    print('cerrar session');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    print(stringValue);
+    SignInModel session = await http_SignOut(stringValue);
+    /*var now;
+    do {
+      session = await http_SignOut(stringValue);
+      now = new DateTime.now();
+    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
+    prefs.setString('cookie', null);
+    runApp(MaterialApp(
+      home: SignIn(),
+    ));
   }
 }
 

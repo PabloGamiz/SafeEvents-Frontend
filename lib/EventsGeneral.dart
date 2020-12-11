@@ -71,6 +71,7 @@ class _GeneralEventsState extends State {
       setState(() {
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
+        print(filteredEvents.length);
       });
     });
   }
