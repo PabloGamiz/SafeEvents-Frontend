@@ -20,6 +20,9 @@ import 'package:safeevents/reserves.dart';
 
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+import 'http_requests/http_addfavourite.dart';
+import 'http_requests/http_delfavourite.dart';
+
 //Variables globals
 int idfake = 20;
 var _colorFav = Colors.white;
@@ -62,7 +65,7 @@ class MyInfo {
 }
 
 class Mostra extends StatefulWidget {
-  Mostra( {Key key}) : super(key: key);
+  Mostra({Key key}) : super(key: key);
 
   @override
   _MostraState createState() => _MostraState();
@@ -116,8 +119,8 @@ class _MostraState extends State<Mostra> {
                                       home: EventsGeneral(),
                                     ));
                                   },
-                                  child:
-                                      Icon(Icons.arrow_back, color: Colors.blue),
+                                  child: Icon(Icons.arrow_back,
+                                      color: Colors.blue),
                                 ),
                               ),
                             ),
@@ -512,9 +515,20 @@ class _MostraState extends State<Mostra> {
     );
   }
 
-  _doFav() {
+  _doFav() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String cookie = prefs.getString('cookie');
     //do something
     setState(() {
+      if (liked) {
+        http_delfavourite(
+            cookie,
+            filteredEvents[index]
+                .id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
+      } else {
+        http_addfavourite(cookie, filteredEvents[index].id);
+      }
+      liked != liked;
       if (_colorFav == Colors.white)
         _colorFav = Colors.red;
       else if (_colorFav == Colors.red) _colorFav = Colors.white;

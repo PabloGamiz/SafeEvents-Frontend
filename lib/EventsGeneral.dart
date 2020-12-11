@@ -5,7 +5,9 @@ import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/http_requests/http_generalevents.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PublishEvents.dart';
+import 'http_models/FavsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
+import 'http_requests/http_favs.dart';
 import 'http_requests/http_generalevents.dart';
 import 'http_models/Favourite_model.dart';
 import 'http_requests/http_addfavourite.dart';
@@ -17,11 +19,11 @@ List<ListEsdevenimentsModel> filtrarEsdeveniments(
   if (tipus == 0) {
     //filtrar per ciutat
     filtered = esdev
-        .where((e) => (e.controller.location.name.contains(paraula)))
+        .where((e) => (e.location.contains(paraula))) //MIRAR SI ESTO ESTA BIEN
         .toList();
   } else {
     //filtrar per categoria
-    //return esdev.where((e) => (e.controller.categoria.contains(paraula))).toList();
+    filtered = esdev.where((e) => (e.tipus.contains(paraula))).toList();
   }
   return filtered;
 }
@@ -64,7 +66,8 @@ class _GeneralEventsState extends State {
       registered = false;
   }
 
-  List<bool> likeds = List();
+  List<bool> likeds;
+  List<FavsModel> favs;
 
   String _defaultValue;
 
@@ -78,6 +81,18 @@ class _GeneralEventsState extends State {
     'Arte'
   ]; //nombre de las categorias
 
+  void obtenirLikeds() {
+    likeds = List.filled(filteredEvents.length, false);
+    for (int i = 0; i < filteredEvents.length; ++i) {
+      for (int j = 0; i < favs.length; ++j) {
+        if (filteredEvents[i].id == favs[j].id) {
+          likeds[i] = true;
+          j = (favs.length - 1);
+        }
+      }
+    }
+  }
+
   List<ListEsdevenimentsModel> generalEvents = List();
 
   List<ListEsdevenimentsModel> filteredEvents = List();
@@ -89,9 +104,14 @@ class _GeneralEventsState extends State {
       setState(() {
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
-        likeds = List.filled(filteredEvents.length, false);
       });
     });
+    http_Favs().then((favourites) {
+      setState(() {
+        favs = favourites;
+      });
+    });
+    obtenirLikeds();
   }
 
   Widget build(BuildContext context) {
@@ -140,6 +160,8 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
+                  filteredEvents =
+                      filtrarEsdeveniments(generalEvents, newValue, 1);
                   /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))
                             .toList();*/
@@ -163,7 +185,7 @@ class _GeneralEventsState extends State {
                     color: Colors.lightBlue,
                     child: ListTile(
                       onTap: () {
-                        _esdevenimentEspecific();
+                        //_esdevenimentEspecific();
                       },
                       title: Column(
                         children: [
@@ -181,11 +203,11 @@ class _GeneralEventsState extends State {
                                 ),
                                 onPressed: () => setState(() {
                                   if (likeds[index]) {
-                                    http_delfavourite(cookie,
-                                        filteredEvents[index].controller.id);
+                                    http_delfavourite(
+                                        cookie, filteredEvents[index].id);
                                   } else {
-                                    http_addfavourite(cookie,
-                                        filteredEvents[index].controller.id);
+                                    http_addfavourite(
+                                        cookie, filteredEvents[index].id);
                                   }
                                   likeds[index] = !likeds[index];
                                 }),
@@ -195,7 +217,7 @@ class _GeneralEventsState extends State {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              filteredEvents[index].controller.title,
+                              filteredEvents[index].title,
                               style:
                                   TextStyle(fontSize: 24, color: Colors.white),
                               maxLines: 2,
@@ -213,11 +235,7 @@ class _GeneralEventsState extends State {
                             width: 25,
                           ),
                           Expanded(
-                            child: Text(
-                                filteredEvents[index]
-                                    .controller
-                                    .price
-                                    .toString(),
+                            child: Text(filteredEvents[index].price.toString(),
                                 style: TextStyle(
                                     fontSize: 40, color: Colors.white)),
                           ),
@@ -229,9 +247,7 @@ class _GeneralEventsState extends State {
                                   child: Container(
                                     child: Text(
                                       filteredEvents[index]
-                                          .controller
-                                          .location
-                                          .name,
+                                          .location, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
                                       style: TextStyle(color: Colors.white),
                                       maxLines: 2,
                                       overflow: TextOverflow.fade,
@@ -244,7 +260,6 @@ class _GeneralEventsState extends State {
                                 Text(
                                     /*'25/10/2020, 19:50',*/
                                     filteredEvents[index]
-                                        .controller
                                         .closureDate
                                         .toString(),
                                     style: TextStyle(color: Colors.white)),
@@ -297,10 +312,12 @@ class _GeneralEventsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  filteredEvents = generalEvents
+                  filteredEvents =
+                      filtrarEsdeveniments(generalEvents, string, 0);
+                  /*filteredEvents = generalEvents
                       .where(
-                          (e) => (e.controller.location.name.contains(string)))
-                      .toList();
+                          (e) => (e.location.characters(string)))         //MIRAR QUE ESTO ESTE BIEN
+                      .toList();*/
                 });
               });
             },
@@ -321,6 +338,8 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
+                  filteredEvents =
+                      filtrarEsdeveniments(generalEvents, newValue, 1);
                   /*filteredEvents = generalEvents
                           .where((e) => e.category.contains(newValue))
                           .toList();*/
@@ -344,7 +363,7 @@ class _GeneralEventsState extends State {
                     color: Colors.lightBlue,
                     child: ListTile(
                       onTap: () {
-                        _esdevenimentEspecific();
+                        //_esdevenimentEspecific();
                       },
                       title: Column(
                         children: [
@@ -352,7 +371,7 @@ class _GeneralEventsState extends State {
                             alignment: Alignment.centerLeft,
                             child: Text(
                               /*'KIKO RIVERA ON CONCERT',*/
-                              filteredEvents[index].controller.title,
+                              filteredEvents[index].title,
                               style:
                                   TextStyle(fontSize: 24, color: Colors.white),
                               maxLines: 2,
@@ -385,10 +404,7 @@ class _GeneralEventsState extends State {
                                   child: Container(
                                     child: Text(
                                       /*'Palau Sant Jordi',*/
-                                      filteredEvents[index]
-                                          .controller
-                                          .location
-                                          .name,
+                                      filteredEvents[index].location,
                                       style: TextStyle(color: Colors.white),
                                       maxLines: 2,
                                       overflow: TextOverflow.fade,
@@ -401,7 +417,6 @@ class _GeneralEventsState extends State {
                                 Text(
                                     /*'25/10/2020, 19:50',*/
                                     filteredEvents[index]
-                                        .controller
                                         .closureDate
                                         .toString(),
                                     style: TextStyle(color: Colors.white)),
@@ -443,9 +458,10 @@ class _GeneralEventsState extends State {
           onChanged: (string) {
             _debouncer.run(() {
               setState(() {
-                filteredEvents = generalEvents
-                    .where((e) => (e.controller.location.name.contains(string)))
-                    .toList();
+                filteredEvents = filtrarEsdeveniments(generalEvents, string, 0);
+                /* filteredEvents = generalEvents
+                    .where((e) => (e.location.contains(string)))
+                    .toList();*/
               });
             });
           },
@@ -466,6 +482,8 @@ class _GeneralEventsState extends State {
             _debouncer.run(() {
               setState(() {
                 _defaultValue = newValue;
+                filteredEvents =
+                    filtrarEsdeveniments(generalEvents, newValue, 1);
                 /*filteredEvents = generalEvents
                           .where((e) => e.category.contains(newValue))
                           .toList();*/
@@ -494,9 +512,9 @@ class _GeneralEventsState extends State {
     ));
   }
 
-  _esdevenimentEspecific() {
+  /* _esdevenimentEspecific() {
     runApp(MaterialApp(
       home: Mostra(),
     ));
-  }
+  }*/
 }
