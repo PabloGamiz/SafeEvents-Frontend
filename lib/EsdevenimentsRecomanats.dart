@@ -2,14 +2,13 @@ import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
-import 'package:safeevents/http_requests/http_generalevents.dart';
+import 'package:safeevents/http_requests/http_esdevenimentsrecomanats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PublishEvents.dart';
 import 'PublishEvents.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
-import 'http_requests/http_generalevents.dart';
 
 void main() => runApp(MaterialApp(
   title: "EsdevenimentsRecomanats",
@@ -39,12 +38,14 @@ class EsdevenimentsRecomanats extends StatefulWidget {
 class _EsdevenimentsRecomanatsState extends State {
   /*OBTENER LISTA DE EVENTOS*/
   final _debouncer = Debouncer(milliseconds: 500);
+  String cookie = "";
 
   bool registered = false;
 
   _comprovarSessio() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
+    cookie = stringValue;
     if (stringValue != null)
       registered = true;
     else
@@ -72,12 +73,12 @@ class _EsdevenimentsRecomanatsState extends State {
   void initState() {
     super.initState();
     _comprovarSessio();
-    /*http_GeneralEvents().then((eventsFromServer) {
+    http_esdevenimentsrecomanats(cookie).then((eventsFromServer) {
       setState(() {
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
       });
-    });*/
+    });/*
     final list = new List<ListEsdevenimentsModel>();
     Controller c = new Controller();
 
@@ -100,7 +101,7 @@ class _EsdevenimentsRecomanatsState extends State {
     setState(() {
       generalEvents = lModel;
       filteredEvents = generalEvents;
-    });
+    });*/
     print('LLISTA : '+generalEvents.toString());
   }
 /*
@@ -290,7 +291,7 @@ class _EsdevenimentsRecomanatsState extends State {
               foregroundColor: Colors.white,
             ),
           ));
-    } else if (!registered && filteredEvents.length > 0) {
+    } else if (!registered && ( filteredEvents != null && filteredEvents.length > 0) ) {
       return MaterialApp(
           home: Scaffold(
             body: Column(children: <Widget>[
@@ -345,7 +346,7 @@ class _EsdevenimentsRecomanatsState extends State {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: filteredEvents.length,
+                  itemCount: filteredEvents == null ? 0: filteredEvents.length  ,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
