@@ -5,6 +5,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:address_search_text_field/address_search_text_field.dart';
 
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/PublicaEsdevenimentsModel.dart';
@@ -50,6 +51,7 @@ class _PublishState extends State<Publish> {
 
   var _data;
   var _hora;
+  var coordenades;
   Future<bool> _onBackPressed() async{
     return showDialog(
       context: context,
@@ -137,7 +139,8 @@ class _PublishState extends State<Publish> {
                   Container(
                     margin: EdgeInsets.only(top: 20.0),
                     child: Column(
-                      children: <Widget>[TextFormField(
+                      children: <Widget>[
+                        /*TextFormField(
                           key: Key('diresdeveniment'),
                         controller: dircontroller,
                         decoration: InputDecoration(
@@ -149,7 +152,27 @@ class _PublishState extends State<Publish> {
                             )
                         ),
                         maxLines: 1
-                      ),
+                      ),*/AddressSearchTextField(
+                          country: "Spain",//TODO passar pais
+                          controller: dircontroller,
+                          hintText: 'Introdueix la direcció',
+                          decoration: InputDecoration(
+                              labelText: "Direcció de l\'Esdeveniment",
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(),
+                              )
+                          ),
+                          noResultsText: "No hi han resultats",
+                          onDone: (AddressPoint point){
+                            print(point.latitude);
+                            print(point.longitude);
+                            coordenades = point.latitude.toString() + ';' + point.longitude.toString();
+                            print(coordenades);
+                            if (point.latitude.toString() != '0.0') Navigator.of(context).pop();
+                          },
+                        )
 
                       ],
                     ),
@@ -167,6 +190,7 @@ class _PublishState extends State<Publish> {
                                 color: Colors.red[700],
                               ),
                             ),
+
                           ],
                         )
                     ),
@@ -484,6 +508,7 @@ class _PublishState extends State<Publish> {
       //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if(!someError){
       //Envia data al backend i redirecciona
+
       _cridabackend(nom,descripcio,capacity,dir,preu,data,hora,img,tipus);
       //SI LA CAPACITAT ESTA TOTA OCUPADA PUES SHA DE DESACTIVAR
       runApp(MaterialApp(
@@ -495,7 +520,7 @@ class _PublishState extends State<Publish> {
   _cridabackend(String nom, String descripcio,String capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
     String datahora = data+'T'+hora+'Z';
     print('datahora '+datahora);
-    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc);
+    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades);
 
   }
   seleccionaImatge() {
