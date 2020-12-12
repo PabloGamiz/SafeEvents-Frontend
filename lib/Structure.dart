@@ -30,6 +30,7 @@ class _StructureState extends State<Structure> {
 
   static List<Widget> _widgetOptionsIfRegistered = <Widget>[
     EventsGeneral(),
+    //ClientInfo(0),
     Text(
       'Index 2: Favourites',
       style: optionStyle,
@@ -47,6 +48,7 @@ class _StructureState extends State<Structure> {
 
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
     EventsGeneral(),
+    //ClientInfo(0),
     Nologin(),
     Text(
       'Index 3: Map',

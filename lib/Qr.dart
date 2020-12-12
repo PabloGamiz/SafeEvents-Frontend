@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'Structure.dart';
+//import 'package:barcode_scanner/barcode_scanning_data.dart';
 
 class QR extends StatefulWidget {
   var qrCode;

@@ -146,12 +146,15 @@ Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
 
 import 'dart:io';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
+import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
 
 /*
@@ -171,11 +174,41 @@ class _ClientInfoState extends State<ClientInfo> {
   Future<ClientInfoMod> futureClient;
   var dropdownValue = "Reservas";
   List<Purchased> selected = new List();
+  String result = "Hey there !";
 
   @override
   void initState() {
     super.initState();
     futureClient = fetchLocalClient(widget.id);
+  }
+
+  Future _scanQr() async {
+    try {
+      String qrResult = await BarcodeScanner.scan();
+      setState(() {
+        result = qrResult;
+        int event_id = 1;
+        Future<int> ok = http_pasarQr(result, event_id);
+      });
+    } on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          result = "Camera permission was denied";
+        });
+      } else {
+        setState(() {
+          result = "Unknown Error $ex";
+        });
+      }
+    } on FormatException {
+      setState(() {
+        result = "You pressed the back button before scanning anything";
+      });
+    } catch (ex) {
+      setState(() {
+        result = "Unknown Error $ex";
+      });
+    }
   }
 
   @override
@@ -300,7 +333,7 @@ class _ClientInfoState extends State<ClientInfo> {
               ),
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: null,
+                  onPressed: () => _scanQr(),
                   child: Icon(
                     Icons.qr_code,
                     color: Colors.white,
