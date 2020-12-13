@@ -1,4 +1,4 @@
-// To parse this JSON data, do
+/*// To parse this JSON data, do
 //
 //     final listEsdevenimentsModel = listEsdevenimentsModelFromJson(jsonString);
 
@@ -42,6 +42,15 @@ class Controller {
     this.services,
     this.createdAt,
     this.updatedAt,
+  });
+
+  Controller({
+    this.id,
+    this.title,
+    this.description,
+    this.capacity,
+    this.price,
+    this.location,
   });
 
   int id;
@@ -99,6 +108,12 @@ class Location {
     this.updatedAt,
   });
 
+  Location({
+    this.id,
+    this.name,
+    this.address,
+  });
+
   int id;
   String name;
   String address;
@@ -125,5 +140,128 @@ class Location {
         "extension": extension,
         "CreatedAt": createdAt.toIso8601String(),
         "UpdatedAt": updatedAt.toIso8601String(),
+      };
+}*/
+
+// To parse this JSON data, do
+//
+//     final listEsdevenimentsModel = listEsdevenimentsModelFromMap(jsonString);
+
+// To parse this JSON data, do
+//
+//     final listEsdevenimentsModel = listEsdevenimentsModelFromJson(jsonString);
+
+import 'dart:convert';
+
+List<ListEsdevenimentsModel> listEsdevenimentsModelFromJson(String str) =>
+    List<ListEsdevenimentsModel>.from(
+        json.decode(str).map((x) => ListEsdevenimentsModel.fromJson(x)));
+
+String listEsdevenimentsModelToJson(List<ListEsdevenimentsModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class ListEsdevenimentsModel {
+  ListEsdevenimentsModel({
+    this.id,
+    this.title,
+    this.description,
+    this.capacity,
+    this.taken,
+    this.price,
+    this.checkInDate,
+    this.closureDate,
+    this.location,
+    this.feedbacks,
+    this.services,
+    this.createdAt,
+    this.updatedAt,
+    this.image,
+    this.tipus,
+  });
+
+  int id;
+  String title;
+  String description;
+  int capacity;
+  int taken;
+  int price;
+  DateTime checkInDate;
+  DateTime closureDate;
+  String location;
+  List<Feedback> feedbacks;
+  List<dynamic> services;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String image;
+  String tipus;
+
+  factory ListEsdevenimentsModel.fromJson(Map<String, dynamic> json) =>
+      ListEsdevenimentsModel(
+        id: json["id"],
+        title: json["title"],
+        description: json["description"],
+        capacity: json["capacity"],
+        taken: json["taken"],
+        price: json["price"],
+        checkInDate: DateTime.parse(json["checkInDate"]),
+        closureDate: DateTime.parse(json["closureDate"]),
+        location: json["location"],
+        feedbacks: List<Feedback>.from(
+            json["feedbacks"].map((x) => Feedback.fromJson(x))),
+        services: List<dynamic>.from(json["services"].map((x) => x)),
+        createdAt: DateTime.parse(json["createdAt"]),
+        updatedAt: DateTime.parse(json["updatedAt"]),
+        image: json["image"],
+        tipus: json["tipus"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "title": title,
+        "description": description,
+        "capacity": capacity,
+        "taken": taken,
+        "price": price,
+        "checkInDate": checkInDate.toIso8601String(),
+        "closureDate": closureDate.toIso8601String(),
+        "location": location,
+        "feedbacks": List<dynamic>.from(feedbacks.map((x) => x.toJson())),
+        "services": List<dynamic>.from(services.map((x) => x)),
+        "createdAt": createdAt.toIso8601String(),
+        "updatedAt": updatedAt.toIso8601String(),
+        "image": image,
+        "tipus": tipus,
+      };
+}
+
+class Feedback {
+  Feedback({
+    this.id,
+    this.rating,
+    this.message,
+    this.assistant,
+    this.updatedAt,
+  });
+
+  int id;
+  int rating;
+  String message;
+  dynamic assistant;
+  DateTime updatedAt;
+
+  factory Feedback.fromJson(Map<String, dynamic> json) => Feedback(
+        id: json["id"],
+        rating: json["rating"],
+        message: json["message"],
+        assistant: json["assistant"],
+        updatedAt: DateTime.parse(json["updatedAt"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "rating": rating,
+        "message": message,
+        "assistant": assistant,
+        "updatedAt": updatedAt.toIso8601String(),
       };
 }
