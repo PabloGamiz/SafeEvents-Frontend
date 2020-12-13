@@ -164,7 +164,9 @@ class _PantallaReserva extends State<Reserves> {
           child: InkWell(
             onTap: () {
               runApp(MaterialApp(
-                home: Mostra(),
+                home: Mostra(
+                  idevent: id,
+                ),
               ));
             },
             child: Icon(Icons.arrow_back, color: Colors.white),
