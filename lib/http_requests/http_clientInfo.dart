@@ -26,7 +26,7 @@ Future<ClientInfoMod> fetchClient(int id) async {
 }
 
 Future<ClientInfoMod> fetchLocalClient(int id) async {
-  return clientInfoModFromJson(json.encode(testClient));
+  return clientInfoModFromJson(json.encode(testClient2));
 }
 
 var testClient = {
@@ -328,4 +328,49 @@ var testClient = {
       "tipus": ""
     }
   ]
+};
+
+var testClient2 = {
+  "id": 1,
+  "email": "testing@gmail.com",
+  "organizer": {
+    "id": 1,
+    "organizes": [
+      {
+        "cookie": "",
+        "id": 0,
+        "title": "EventExample - Demo",
+        "description": "Its an event for example",
+        "capacity": 15000,
+        "organizers": "",
+        "checkInDate": "2020-11-29T11:11:36.55+01:00",
+        "closureDate": "2020-11-29T11:11:36.55+01:00",
+        "price": 0,
+        "location": "Barcelona",
+        "services": null,
+        "image": "",
+        "tipus": "",
+        "Faved": false,
+        "Taken": 35
+      },
+      {
+        "cookie": "",
+        "id": 0,
+        "title": "Kiko Rivera on Tour",
+        "description": "A quemar el Palau",
+        "capacity": 10,
+        "organizers": "",
+        "checkInDate": "2024-12-01T18:01:10+01:00",
+        "closureDate": "2024-12-01T18:01:10+01:00",
+        "price": 5000,
+        "location": "Palau San Jorge",
+        "services": null,
+        "image":
+            "https://t0.gstatic.com/images?q=tbn:ANd9GcRr7G1QfG8LzmZ8dSJ22t3x51JuPf5JvPvV0DVMjwljCN1CQyMM_ytwSBboIUd6",
+        "tipus": "",
+        "Faved": false,
+        "Taken": 0
+      }
+    ]
+  }
 };
