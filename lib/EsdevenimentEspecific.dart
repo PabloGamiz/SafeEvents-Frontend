@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:permission/permission.dart';
 //import 'package:permission_handler/permission_handler.dart';
 
-
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,7 +33,6 @@ var _rate = 0.0;
 TextEditingController controllerfeedback = new TextEditingController();
 bool _esperaCarrega = true;
 MyInfo mi;
-
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -72,9 +70,7 @@ class Mostra extends StatefulWidget {
   var idevent;
 
   //final String idevent
-  Mostra( {Key key,
-    @required this.idevent
-  }) : super(key: key);
+  Mostra({Key key, @required this.idevent}) : super(key: key);
 
   @override
   _MostraState createState() => _MostraState();
@@ -85,7 +81,6 @@ class _MostraState extends State<Mostra> {
   //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
   var cookie = "";
-
 
   bool mostrar = false;
   int id = 20;
@@ -100,15 +95,15 @@ class _MostraState extends State<Mostra> {
   Future<bool> _onBackPressed() async {
     return showDialog(context: context, builder: (context) => _goBackButt());
   }
+
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-
     final Marker marker = Marker(
-      markerId: MarkerId('palau'),
-      position: LatLng(41.3580319012, 2.1515327272),
-      infoWindow: InfoWindow(title: 'Palau Sant Jordi', snippet: 'Kiko Rivera on Tour')
-    ) ;
+        markerId: MarkerId('palau'),
+        position: LatLng(41.3580319012, 2.1515327272),
+        infoWindow: InfoWindow(
+            title: 'Palau Sant Jordi', snippet: 'Kiko Rivera on Tour'));
     _markers.add(marker);
     return MaterialApp(
       home: WillPopScope(
@@ -136,8 +131,8 @@ class _MostraState extends State<Mostra> {
                                   onTap: () {
                                     _goBack();
                                   },
-                                  child:
-                                      Icon(Icons.arrow_back, color: Colors.blue),
+                                  child: Icon(Icons.arrow_back,
+                                      color: Colors.blue),
                                 ),
                               ),
                             ),
@@ -164,7 +159,6 @@ class _MostraState extends State<Mostra> {
                                         right: 10.0,
                                         bottom: 10.0,
                                         top: 20),
-
                                     child: Row(
                                       children: <Widget>[
                                         ClipRRect(
@@ -181,7 +175,6 @@ class _MostraState extends State<Mostra> {
                                                   : LinearProgressIndicator();
                                             },
                                           ),
-
                                         ),
                                         Padding(
                                             padding: const EdgeInsets.all(10.0),
@@ -434,7 +427,8 @@ class _MostraState extends State<Mostra> {
                               margin: EdgeInsets.only(top: 20.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
-                                child: /*Image.network(
+                                child:
+                                    /*Image.network(
                                   'https://www.adslzone.net/app/uploads-adslzone.net/2017/06/google-maps.jpg',
                                   loadingBuilder: (context, child, progress) {
                                     return progress == null
@@ -442,18 +436,19 @@ class _MostraState extends State<Mostra> {
                                         : LinearProgressIndicator();
                                   },
                                 ),*/
-                                SizedBox(
+                                    SizedBox(
                                   width: 320,
                                   height: 220,
                                   child: GoogleMap(
                                     onMapCreated: _onMapCreated,
                                     initialCameraPosition: CameraPosition(
-                                      target: LatLng(41.3580319012, 2.1515327272),//location.coordenates
+                                      target: LatLng(41.3580319012,
+                                          2.1515327272), //location.coordenates
                                       zoom: 15.4746,
                                     ),
                                     markers: _markers,
                                   ),
-                              ),
+                                ),
                               ),
                             ),
                             Container(
@@ -592,7 +587,7 @@ class _MostraState extends State<Mostra> {
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
           20,
-          DateTime(2020-12-10),
+          DateTime(2020 - 12 - 10),
           'Palau Sant Jordi',
           'KIKO&Co',
           'Música',
@@ -611,7 +606,6 @@ class _MostraState extends State<Mostra> {
         event.controller.services,
         event.controller.price
     );*/
-
   }
 
   bool esDeLaEmpresa() {
@@ -639,19 +633,20 @@ class _MostraState extends State<Mostra> {
 
     //saltar a la pestanya de Comprar / Reservar
   }
-  _goBackButt(){
+
+  _goBackButt() {
     Navigator.pop(context, false);
     _goBack();
   }
-  _goBack() {
 
+  _goBack() {
     //Depenent de si venim de events generals o de recomanats anar a un o altre
     bool veDeRecomanats = true;
-    if(!veDeRecomanats) {
+    if (!veDeRecomanats) {
       runApp(MaterialApp(
         home: EventsGeneral(),
       ));
-    }else {
+    } else {
       runApp(MaterialApp(
         home: EsdevenimentsRecomanats(),
       ));
@@ -661,11 +656,9 @@ class _MostraState extends State<Mostra> {
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
-  _initialPosition(){
 
-  }
+  _initialPosition() {}
 }
-
 
 _contacta() {
   //saltar a la pestanya de Xat amb la empresa
