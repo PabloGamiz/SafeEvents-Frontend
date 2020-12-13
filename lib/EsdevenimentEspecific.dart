@@ -55,7 +55,7 @@ class MyInfo {
   int preu;
 
   MyInfo(int id, String title, String desc, int cap, DateTime date,
-      String location, dynamic organizers, dynamic services, int preu) {
+      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved ) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -80,7 +80,7 @@ class Mostra extends StatefulWidget {
 }
 
 class _MostraState extends State<Mostra> {
-  Controller event;
+  EsdevenimentEspecificModel event;
   //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
   var cookie = "";
@@ -552,7 +552,7 @@ class _MostraState extends State<Mostra> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String cookie = prefs.getString('cookie');
     //do something
-    setState(() {
+    /*setState(() {
       if (liked) {
         http_delfavourite(
             cookie,
@@ -565,12 +565,15 @@ class _MostraState extends State<Mostra> {
       if (_colorFav == Colors.white)
         _colorFav = Colors.red;
       else if (_colorFav == Colors.red) _colorFav = Colors.white;
-    });
+    });*/
   }
 
   void _initEvent(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    cookie = stringValue;
     final EsdevenimentEspecificModel event =
-        await http_esdevenimentespecific(id);
+    await http_esdevenimentespecific(id, cookie);
     /*_rate = event.controller.rating;
     print(event.controller.title);
     print(event.controller.description);
@@ -582,9 +585,7 @@ class _MostraState extends State<Mostra> {
 
      */
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('cookie');
-    cookie = stringValue;
+
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -596,7 +597,7 @@ class _MostraState extends State<Mostra> {
 
       print(_esperaCarrega);
       /*test */
-      mi = MyInfo(
+      /* mi = MyInfo(
           20,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
@@ -607,19 +608,23 @@ class _MostraState extends State<Mostra> {
           'Música',
           25);
       _esperaCarrega = false;
-    });
+    });*/
 
-    /*mi = MyInfo(
-        event.controller.id,
-        event.controller.title,
-        event.controller.description,
-        event.controller.capacity,
-        event.controller.checkInDate,
-        event.controller.location,
-        event.controller.organizers,
-        event.controller.services,
-        event.controller.price
-    );*/
+      mi = MyInfo(
+          null,
+          event.title,
+          event.description,
+          event.capacity,
+          event.checkInDate,
+          event.location,
+          event.organizers,
+          event.services,
+          event.price,
+          event.image,
+          event.tipus,
+          event.faved
+      );
+    });
   }
 
   bool esDeLaEmpresa() {

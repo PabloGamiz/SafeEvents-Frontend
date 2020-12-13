@@ -137,7 +137,7 @@ class _EsdevenimentsRecomanatsState extends State {
                     setState(() {
                       filteredEvents = generalEvents
                           .where(
-                              (e) => (e.controller.location.name.contains(string)))
+                              (e) => (e.location.contains(string)))
                           .toList();
                     });
                   });
@@ -208,7 +208,7 @@ class _EsdevenimentsRecomanatsState extends State {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   /*'KIKO RIVERA ON CONCERT',*/
-                                  filteredEvents[index].controller.title,
+                                  filteredEvents[index].title,
                                   style:
                                   TextStyle(fontSize: 24, color: Colors.white),
                                   maxLines: 2,
@@ -241,10 +241,8 @@ class _EsdevenimentsRecomanatsState extends State {
                                       child: Container(
                                         child: Text(
                                           /*'Palau Sant Jordi',*/
-                                          filteredEvents[index]
-                                              .controller
-                                              .location
-                                              .name,
+                                          filteredEvents[index].location
+                                              ,
                                           style: TextStyle(color: Colors.white),
                                           maxLines: 2,
                                           overflow: TextOverflow.fade,
@@ -257,7 +255,7 @@ class _EsdevenimentsRecomanatsState extends State {
                                     Text(
                                       /*'25/10/2020, 19:50',*/
                                         filteredEvents[index]
-                                            .controller
+
                                             .closureDate
                                             .toString(),
                                         style: TextStyle(color: Colors.white)),
@@ -312,7 +310,7 @@ class _EsdevenimentsRecomanatsState extends State {
                     setState(() {
                       filteredEvents = generalEvents
                           .where(
-                              (e) => (e.controller.location.name.contains(string)))
+                              (e) => (e.location.contains(string)))
                           .toList();
                     });
                   });
@@ -365,7 +363,7 @@ class _EsdevenimentsRecomanatsState extends State {
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   /*'KIKO RIVERA ON CONCERT',*/
-                                  filteredEvents[index].controller.title,
+                                  filteredEvents[index].title,
                                   style:
                                   TextStyle(fontSize: 24, color: Colors.white),
                                   maxLines: 2,
@@ -400,9 +398,8 @@ class _EsdevenimentsRecomanatsState extends State {
                                         Text(
                                           /*'Palau Sant Jordi',*/
                                           filteredEvents[index]
-                                              .controller
-                                              .location
-                                              .name,
+                                                                                            .location
+                                              ,
                                           style: TextStyle(color: Colors.white),
                                           maxLines: 2,
                                           overflow: TextOverflow.fade,
@@ -415,7 +412,7 @@ class _EsdevenimentsRecomanatsState extends State {
                                     Text(
                                       /*'25/10/2020, 19:50',*/
                                         filteredEvents[index]
-                                            .controller
+
                                             .closureDate
                                             .toString(),
                                         style: TextStyle(color: Colors.white)),
@@ -458,7 +455,7 @@ class _EsdevenimentsRecomanatsState extends State {
                     _debouncer.run(() {
                       setState(() {
                         filteredEvents = generalEvents
-                            .where((e) => (e.controller.location.name.contains(string)))
+                            .where((e) => (e.location.contains(string)))
                             .toList();
                       });
                     });

@@ -2,12 +2,17 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/EsdevenimentEspecificModel.dart';
 
-Future<EsdevenimentEspecificModel> http_esdevenimentespecific(int id) async {
+Future<EsdevenimentEspecificModel> http_esdevenimentespecific(int id, String cookie) async {
   print('hola');
-  final String apitUrl = "http://10.4.41.148:8080/event/single?id=";
+  final String apitUrl = "http://10.4.41.148:8080/event/single";
   /*var queryParamaters = {'id': id};
   final jsonID = json.encode(queryParamaters);*/
-  final response = await http.get(apitUrl + id.toString());
+  var queryParamaters = {
+    'id': id,
+    'cookie' : cookie
+  };
+  final jsonID = json.encode(queryParamaters);
+  final response = await http.post(apitUrl, body: jsonID);
   if (response.statusCode == 201 || response.statusCode == 200) {
     print('Status code = '+response.statusCode.toString());
     final EsdevenimentEspecificModel list = esdevenimentEspecificModelFromJson(response.body);

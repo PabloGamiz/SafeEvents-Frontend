@@ -10,6 +10,7 @@ import 'package:address_search_text_field/address_search_text_field.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/PublicaEsdevenimentsModel.dart';
 import 'package:safeevents/http_requests/http_publishevents.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
@@ -520,7 +521,9 @@ class _PublishState extends State<Publish> {
   _cridabackend(String nom, String descripcio,String capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
     String datahora = data+'T'+hora+'Z';
     print('datahora '+datahora);
-    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String cookie = prefs.getString('cookie');
+    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus);
 
   }
   seleccionaImatge() {
