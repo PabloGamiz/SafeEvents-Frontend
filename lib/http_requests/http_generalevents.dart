@@ -16,6 +16,23 @@ Future<List<ListEsdevenimentsModel>> http_GeneralEvents() async {
   }
 }
 
+Future<List<ListEsdevenimentsModel>> http_CategoryFilter(String tipus) async {
+  final String apitUrl = "http://10.4.41.148:8080/event/listByType";
+  var queryParamaters = {"eventType": tipus};
+  final jsonCliend = json.encode(queryParamaters);
+  final response = await http.post(apitUrl,
+      body: jsonCliend); //MIRAR COMO PASAR UN BODY AL BACKEND
+  if (response.statusCode == 201 || response.statusCode == 200) {
+    final listEsdevenimentsModel =
+        listEsdevenimentsModelFromJson(response.body);
+    return listEsdevenimentsModel;
+  } else if (response.statusCode == 400) {
+    return null;
+  } else {
+    return null;
+  }
+}
+
 /*
 final String apitUrl = "http://10.4.41.148:8080/event/list";
     print(await http.get(apitUrl));
