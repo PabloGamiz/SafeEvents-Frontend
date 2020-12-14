@@ -55,20 +55,12 @@ class MyInfo {
   dynamic organizers;
   dynamic services;
   int preu;
+  String image;
+  String tipus;
+  bool faved;
 
-  MyInfo(
-      int id,
-      String title,
-      String desc,
-      int cap,
-      DateTime date,
-      String location,
-      dynamic organizers,
-      dynamic services,
-      int preu,
-      String image,
-      String tipus,
-      bool faved) {
+  MyInfo(int id, String title, String desc, int cap, DateTime date,
+      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved ) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -79,6 +71,9 @@ class MyInfo {
     this.organizers = organizers;
     this.services = services;
     this.preu = preu;
+    this.image = image;
+    this.tipus = tipus;
+    this.faved = faved;
   }
 }
 
@@ -88,7 +83,6 @@ class Mostra extends StatefulWidget {
 
   //final String idevent
   Mostra({Key key, @required this.idevent}) : super(key: key);
-
   @override
   _MostraState createState() => _MostraState(idevent);
 }
@@ -187,7 +181,8 @@ class _MostraState extends State<Mostra> {
                                               BorderRadius.circular(20.0),
                                           child: Image.network(
                                             //'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
-                                            'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
+                                            //'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
+                                            mi.image,
                                             width: 120,
                                             loadingBuilder:
                                                 (context, child, progress) {
@@ -602,6 +597,7 @@ class _MostraState extends State<Mostra> {
 
      */
 
+
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -613,8 +609,8 @@ class _MostraState extends State<Mostra> {
 
       print(_esperaCarrega);
       /*test */
-      /* mi = MyInfo(
-          20,
+       /*mi = MyInfo(
+          id,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
           20,
@@ -622,9 +618,14 @@ class _MostraState extends State<Mostra> {
           'Palau Sant Jordi',
           'KIKO&Co',
           'Música',
-          25);
-      _esperaCarrega = false;
-    });*/
+          25,
+          'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
+          'Música',
+         true
+
+       );
+      _esperaCarrega = false;*/
+//    });
 
       mi = MyInfo(
           null,
@@ -638,7 +639,8 @@ class _MostraState extends State<Mostra> {
           event.price,
           event.image,
           event.tipus,
-          event.faved);
+          event.faved
+      );
     });
   }
 

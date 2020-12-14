@@ -61,9 +61,10 @@ class _EsdevenimentsRecomanatsState extends State {
   List categories = [
     ' ',
     'Música',
-    'Teatro',
-    'Deporte',
-    'Arte'
+    'Teatre',
+    'Esport',
+    'Art',
+    'Altres'
   ]; //nombre de las categorias
 
   List<ListEsdevenimentsModel> generalEvents = List();

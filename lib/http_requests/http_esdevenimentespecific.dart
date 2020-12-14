@@ -22,6 +22,7 @@ Future<EsdevenimentEspecificModel> http_esdevenimentespecific(int id, String coo
     return null;
   } else {
     print('Status code = '+response.statusCode.toString());
+    print('Status body = '+response.body.toString());
     return null;
   }
 }
