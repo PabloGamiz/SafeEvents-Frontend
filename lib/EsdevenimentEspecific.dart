@@ -583,7 +583,7 @@ class _MostraState extends State<Mostra> {
   _doFav() {
     //do something
     setState(() {
-      if (liked) {
+      if (like) {
         http_delfavourite(cookie,
             id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
       } else {
@@ -625,7 +625,7 @@ class _MostraState extends State<Mostra> {
 
       print(_esperaCarrega);
       /*test */
-       mi = MyInfo(
+       /*mi = MyInfo(
           id,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
@@ -650,10 +650,10 @@ class _MostraState extends State<Mostra> {
         print(loc2);
         print(loc1);
 
-      _esperaCarrega = false;
+      _esperaCarrega = false;*/
 //    });
 
-      /*mi = MyInfo(
+      mi = MyInfo(
           null,
           event.title,
           event.description,
@@ -667,7 +667,7 @@ class _MostraState extends State<Mostra> {
           event.tipus,
           event.faved,
           event.taken,
-      );*/
+      );
 
     });
     final Marker marker = Marker(
