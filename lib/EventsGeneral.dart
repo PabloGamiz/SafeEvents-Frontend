@@ -49,7 +49,6 @@ class EventsGeneral extends StatefulWidget {
 }
 
 class _GeneralEventsState extends State {
-  /*OBTENER LISTA DE EVENTOS*/
   final _debouncer = Debouncer(milliseconds: 500);
 
   bool registered = false;
@@ -66,7 +65,6 @@ class _GeneralEventsState extends State {
       registered = false;
   }
 
-  List<bool> likeds;
   List<FavsModel> favs;
 
   String _defaultValue;
@@ -81,19 +79,11 @@ class _GeneralEventsState extends State {
     'Arte'
   ]; //nombre de las categorias
 
-  void obtenirLikeds() {
-    likeds = List.filled(filteredEvents.length, false);
-    print("likeds");
-    print(likeds.length);
-
-    for (int i = 0; i < filteredEvents.length; ++i) {
-      for (int j = 0; j < favs.length; ++j) {
-        if (filteredEvents[i].id == favs[j].id) {
-          likeds[i] = true;
-          j = (favs.length - 1);
-        }
-      }
+  bool liked(int id) {
+    for (int i = 0; i < favs.length; ++i) {
+      if (favs[i].id == id) return true;
     }
+    return false;
   }
 
   List<ListEsdevenimentsModel> generalEvents = List();
@@ -118,7 +108,6 @@ class _GeneralEventsState extends State {
   }
 
   Widget build(BuildContext context) {
-    obtenirLikeds();
     if (registered && filteredEvents.length > 0) {
       return MaterialApp(
           home: Scaffold(
@@ -193,36 +182,29 @@ class _GeneralEventsState extends State {
                       },
                       title: Column(
                         children: [
-                          /*Container(
+                          Container(
                             height: 30,
                             child: Align(
                               alignment: Alignment.centerRight,
                               child: IconButton(
                                 icon: Icon(
-                                  likeds[index]
-                                      ? Icons.favorite
-                                      : Icons.favorite,
-                                  color:
-                                      likeds[index] ? Colors.red : Colors.white,
+                                  Icons.favorite,
+                                  color: liked(filteredEvents[index].id)
+                                      ? Colors.red
+                                      : Colors.white,
                                 ),
                                 onPressed: () => setState(() {
-                                  if (favs.length == 0) {
-                                    http_addfavourite(
+                                  if (liked(filteredEvents[index].id)) {
+                                    http_delfavourite(
                                         cookie, filteredEvents[index].id);
                                   } else {
-                                    if (likeds[index]) {
-                                      http_delfavourite(
-                                          cookie, filteredEvents[index].id);
-                                    } else {
-                                      http_addfavourite(
-                                          cookie, filteredEvents[index].id);
-                                    }
-                                    likeds[index] = !likeds[index];
+                                    http_addfavourite(
+                                        cookie, filteredEvents[index].id);
                                   }
                                 }),
                               ),
                             ),
-                          ),*/
+                          ),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -523,7 +505,7 @@ class _GeneralEventsState extends State {
 
   _esdevenimentEspecific(int index) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('liked', likeds[index]);
+    prefs.setBool('liked', liked(filteredEvents[index].id));
     runApp(MaterialApp(
       home: Mostra(idevent: filteredEvents[index].id),
     ));
