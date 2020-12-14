@@ -59,9 +59,9 @@ class _ConsultaFavoritsState extends State<ConsultaFavortis> {
   }
 }
 
-_esdevenimentEspecific() {
+_esdevenimentEspecific(int id) {
   runApp(MaterialApp(
-    home: Mostra(),
+    home: Mostra(idevent: id),
   ));
 }
 
@@ -75,7 +75,7 @@ Widget _buildEventWidget(FavsModel event) {
       color: Colors.lightBlue,
       child: ListTile(
         onTap: () {
-          _esdevenimentEspecific();
+          _esdevenimentEspecific(event.id);
         },
         title: Column(
           children: [

@@ -186,7 +186,7 @@ class _GeneralEventsState extends State {
                     color: Colors.lightBlue,
                     child: ListTile(
                       onTap: () {
-                        //_esdevenimentEspecific();
+                        _esdevenimentEspecific(index);
                       },
                       title: Column(
                         children: [
@@ -364,7 +364,7 @@ class _GeneralEventsState extends State {
                     color: Colors.lightBlue,
                     child: ListTile(
                       onTap: () {
-                        //_esdevenimentEspecific();
+                        _esdevenimentEspecific(index);
                       },
                       title: Column(
                         children: [
@@ -513,9 +513,11 @@ class _GeneralEventsState extends State {
     ));
   }
 
-  /* _esdevenimentEspecific() {
+  _esdevenimentEspecific(int index) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('liked', likeds[index]);
     runApp(MaterialApp(
-      home: Mostra(),
+      home: Mostra(idevent: filteredEvents[index].id),
     ));
-  }*/
+  }
 }

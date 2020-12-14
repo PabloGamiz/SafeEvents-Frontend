@@ -36,6 +36,8 @@ var _rate = 0.0;
 TextEditingController controllerfeedback = new TextEditingController();
 bool _esperaCarrega = true;
 MyInfo mi;
+int ide;
+bool liked;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -54,8 +56,19 @@ class MyInfo {
   dynamic services;
   int preu;
 
-  MyInfo(int id, String title, String desc, int cap, DateTime date,
-      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved ) {
+  MyInfo(
+      int id,
+      String title,
+      String desc,
+      int cap,
+      DateTime date,
+      String location,
+      dynamic organizers,
+      dynamic services,
+      int preu,
+      String image,
+      String tipus,
+      bool faved) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -71,12 +84,13 @@ class MyInfo {
 
 class Mostra extends StatefulWidget {
   var idevent;
+  bool liked;
 
   //final String idevent
   Mostra({Key key, @required this.idevent}) : super(key: key);
 
   @override
-  _MostraState createState() => _MostraState();
+  _MostraState createState() => _MostraState(idevent);
 }
 
 class _MostraState extends State<Mostra> {
@@ -86,7 +100,11 @@ class _MostraState extends State<Mostra> {
   var cookie = "";
 
   bool mostrar = false;
-  int id = 20;
+  int id;
+
+  _MostraState(idevent) {
+    id = idevent;
+  }
 
   //int id = id que pasan desde general Events;
   Future<void> initState() {
@@ -527,7 +545,7 @@ class _MostraState extends State<Mostra> {
               child: FloatingActionButton(
                 onPressed: () {
                   runApp(MaterialApp(
-                    home: Modifica(),
+                    home: Modifica(idevent: id),
                   ));
                 },
                 tooltip: 'Publish event',
@@ -550,22 +568,21 @@ class _MostraState extends State<Mostra> {
 
   _doFav() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String cookie = prefs.getString('cookie');
+    bool like = prefs.getBool('liked');
+
     //do something
-    /*setState(() {
+    setState(() {
       if (liked) {
-        http_delfavourite(
-            cookie,
-            filteredEvents[index]
-                .id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
+        http_delfavourite(cookie,
+            id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
       } else {
-        http_addfavourite(cookie, filteredEvents[index].id);
+        http_addfavourite(cookie, id);
       }
-      liked != liked;
+      like != like;
       if (_colorFav == Colors.white)
         _colorFav = Colors.red;
       else if (_colorFav == Colors.red) _colorFav = Colors.white;
-    });*/
+    });
   }
 
   void _initEvent(int id) async {
@@ -573,7 +590,7 @@ class _MostraState extends State<Mostra> {
     String stringValue = prefs.getString('cookie');
     cookie = stringValue;
     final EsdevenimentEspecificModel event =
-    await http_esdevenimentespecific(id, cookie);
+        await http_esdevenimentespecific(id, cookie);
     /*_rate = event.controller.rating;
     print(event.controller.title);
     print(event.controller.description);
@@ -584,7 +601,6 @@ class _MostraState extends State<Mostra> {
     //print(event.controller.services);
 
      */
-
 
     setState(() {
       if (stringValue != null)
@@ -622,8 +638,7 @@ class _MostraState extends State<Mostra> {
           event.price,
           event.image,
           event.tipus,
-          event.faved
-      );
+          event.faved);
     });
   }
 
