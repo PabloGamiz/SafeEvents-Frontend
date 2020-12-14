@@ -45,7 +45,7 @@ bool liked;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(idevent: 20),
+      home: Mostra(idevent: 1),
     ));
 
 class MyInfo {
@@ -477,8 +477,8 @@ class _MostraState extends State<Mostra> {
                                   child: GoogleMap(
                                     onMapCreated: _onMapCreated,
                                     initialCameraPosition: CameraPosition(
-                                      target: LatLng(41.3580319012,
-                                          2.1515327272), //location.coordenates
+                                      target: LatLng(double.parse(mi.location.toString().split(';')[0]),
+                                          double.parse(mi.location.toString().split(';')[1])), //location.coordenates
                                       zoom: 15.4746,
                                     ),
                                     markers: _markers,
@@ -599,7 +599,8 @@ class _MostraState extends State<Mostra> {
   void _initEvent(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    cookie = stringValue;
+    //cookie = stringValue;
+    cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
     final EsdevenimentEspecificModel event =
         await http_esdevenimentespecific(id, cookie);
     /*_rate = event.controller.rating;
@@ -620,7 +621,7 @@ class _MostraState extends State<Mostra> {
       else
         mostrar = false;
 
-      //if (event.title != null) _esperaCarrega = false;
+      if (event.title != null) _esperaCarrega = false;
       //test
 
       print(_esperaCarrega);
