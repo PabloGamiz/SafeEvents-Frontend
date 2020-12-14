@@ -90,7 +90,22 @@ class _PublishState extends State<Publish> {
               padding: const EdgeInsets.all(10.0),
               child: SingleChildScrollView(
                 child: Column(
-                children: <Widget>[TextField(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Positioned(
+                      left: 8.0,
+                      top: 70.0,
+                      child: InkWell(
+                        onTap: () {
+                          _goBackDef();
+                        },
+                        child: Icon(Icons.arrow_back,
+                            color: Colors.blue),
+                      ),
+                    ),
+                  ),
+                  TextField(
                   key: Key('nomesdeveniment'),
                   controller: nomcontroller,
                   decoration: InputDecoration(
@@ -533,6 +548,10 @@ class _PublishState extends State<Publish> {
 
   _goBack() {
     Navigator.pop(context,false);
+    _goBackDef();
+  }
+  _goBackDef() {
+
     runApp(
         MaterialApp(
           home: EventsGeneral(),
