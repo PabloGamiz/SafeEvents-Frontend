@@ -84,7 +84,7 @@ class _GeneralEventsState extends State {
   void obtenirLikeds() {
     likeds = List.filled(filteredEvents.length, false);
     for (int i = 0; i < filteredEvents.length; ++i) {
-      for (int j = 0; i < favs.length; ++j) {
+      for (int j = 0; j < favs.length; ++j) {
         if (filteredEvents[i].id == favs[j].id) {
           likeds[i] = true;
           j = (favs.length - 1);
@@ -112,10 +112,10 @@ class _GeneralEventsState extends State {
         favs = favourites;
       });
     });
-    obtenirLikeds();
   }
 
   Widget build(BuildContext context) {
+    obtenirLikeds();
     if (registered && filteredEvents.length > 0) {
       return MaterialApp(
           home: Scaffold(
@@ -203,14 +203,19 @@ class _GeneralEventsState extends State {
                                       likeds[index] ? Colors.red : Colors.white,
                                 ),
                                 onPressed: () => setState(() {
-                                  if (likeds[index]) {
-                                    http_delfavourite(
-                                        cookie, filteredEvents[index].id);
-                                  } else {
+                                  if (favs.length == 0) {
                                     http_addfavourite(
                                         cookie, filteredEvents[index].id);
+                                  } else {
+                                    if (likeds[index]) {
+                                      http_delfavourite(
+                                          cookie, filteredEvents[index].id);
+                                    } else {
+                                      http_addfavourite(
+                                          cookie, filteredEvents[index].id);
+                                    }
+                                    likeds[index] = !likeds[index];
                                   }
-                                  likeds[index] = !likeds[index];
                                 }),
                               ),
                             ),
