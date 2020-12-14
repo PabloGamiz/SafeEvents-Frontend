@@ -150,6 +150,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:safeevents/SignIn.dart';
+import 'package:safeevents/Structure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
@@ -200,15 +201,49 @@ class _ClientInfoState extends State<ClientInfo> {
           result = "Unknown Error $ex";
         });
       }
+      showAlertDialog(context);
     } on FormatException {
       setState(() {
         result = "You pressed the back button before scanning anything";
       });
+      showAlertDialog(context);
     } catch (ex) {
       setState(() {
         result = "Unknown Error $ex";
       });
+      showAlertDialog(context);
     }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text("Okey"),
+        key: Key("showAlertDialog"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: Structure(),
+              )),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text(result),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
