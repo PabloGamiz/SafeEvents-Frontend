@@ -64,33 +64,22 @@ class MyInfo {
   bool faved;
   int taken;
 
-  MyInfo(
-      int id,
-      String title,
-      String desc,
-      int cap,
-      DateTime date,
-      String location,
-      dynamic organizers,
-      dynamic services,
-      int preu,
-      String image,
-      String tipus,
-      bool faved,
-      int taken) {
+  MyInfo(int id, String title, String desc, int cap, DateTime date,
+      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved, int taken ) {
     this.id = id;
     this.title = title;
     this.description = desc;
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
     //format String location esdeveniment=> nom localitzacio + '--' + lat + ';' + long
-    if (location != null) {
+    if(location != null){
       var loc = location.split('--');
       var loc2 = loc[1];
       var loc1 = loc[0];
       this.location = loc2;
       this.address = loc1;
-    } else {
+    }
+    else{
       this.location = location;
       this.address = location;
     }
@@ -149,12 +138,7 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-    final Marker marker = Marker(
-        markerId: MarkerId('palau'),
-        position: LatLng(double.parse(mi.location.toString().split(';')[0]),
-            double.parse(mi.location.toString().split(';')[1])),
-        infoWindow: InfoWindow(title: mi.address, snippet: mi.title));
-    _markers.add(marker);
+
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -245,7 +229,7 @@ class _MostraState extends State<Mostra> {
                                                           .withOpacity(1)),
                                                 ),
                                                 Text(
-                                                  mi.location,
+                                                  mi.address,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
@@ -629,51 +613,70 @@ class _MostraState extends State<Mostra> {
 
      */
 
+
     setState(() {
       if (stringValue != null)
         mostrar = true;
       else
         mostrar = false;
 
-      if (event.title != null) _esperaCarrega = false;
+      //if (event.title != null) _esperaCarrega = false;
       //test
 
       print(_esperaCarrega);
       /*test */
-      /*mi = MyInfo(
+       /*mi = MyInfo(
           id,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
           20,
           DateTime(2020 - 12 - 10),
-          'Palau Sant Jordi',
+          'Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593',
           'KIKO&Co',
           'Música',
           25,
           'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
           'Música',
-         true
+         true,
+         20
 
        );
+
+       String a = "Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593";
+       print(a);
+        var loc = a.split('--');
+        var loc2 = loc[1];
+        var loc1 = loc[0];
+        print(loc2);
+        print(loc1);
+
       _esperaCarrega = false;*/
 //    });
 
       mi = MyInfo(
-        null,
-        event.title,
-        event.description,
-        event.capacity,
-        event.checkInDate,
-        event.location,
-        event.organizers,
-        event.services,
-        event.price,
-        event.image,
-        event.tipus,
-        event.faved,
-        event.taken,
+          null,
+          event.title,
+          event.description,
+          event.capacity,
+          event.checkInDate,
+          event.location,
+          event.organizers,
+          event.services,
+          event.price,
+          event.image,
+          event.tipus,
+          event.faved,
+          event.taken,
       );
+
     });
+    final Marker marker = Marker(
+        markerId: MarkerId('palau'),
+        position: LatLng(double.parse(mi.location.toString().split(';')[0]),
+            double.parse(mi.location.toString().split(';')[1])),
+        infoWindow: InfoWindow(
+            title: mi.address, snippet: mi.title));
+    _markers.add(marker);
   }
 
   bool esDeLaEmpresa() {
@@ -690,6 +693,7 @@ class _MostraState extends State<Mostra> {
   }
 
   _contrata() async {
+
     runApp(MaterialApp(
       home: Reserves(
         entradas: (mi.capacity - mi.taken),
@@ -722,6 +726,7 @@ class _MostraState extends State<Mostra> {
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
+
 }
 
 _contacta() {
