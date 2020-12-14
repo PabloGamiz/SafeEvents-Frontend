@@ -585,9 +585,11 @@ class _MostraState extends State<Mostra> {
   }
 }
 
-_contacta(String userName) {
-  String chatRoomId = database.getChatRoomId(userName, Constants.myName);
-  List<String> users = [userName, Constants.myName];
+_contacta(String userName) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String myName = prefs.getString('user');
+  String chatRoomId = database.getChatRoomId(userName, myName);
+  List<String> users = [userName, myName];
   Map<String, dynamic> chatRoomMap = {"users": users, "chatroomId": chatRoomId};
   database.createChatRoom(chatRoomId, chatRoomMap);
   //enviar a la pantalla de chat con persona

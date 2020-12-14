@@ -482,13 +482,4 @@ class _GeneralEventsState extends State {
       home: Mostra(),
     ));
   }
-
-  Future<http.Response> fetchAlbum() {
-  return http.get(
-    'https://jsonplaceholder.typicode.com/albums/1',
-    // Send authorization headers to the backend.
-    headers: {HttpHeaders.authorizationHeader: "cookie"},
-  );
-  https://flutter.dev/docs/cookbook/networking/authenticated-requests
-}
 }
