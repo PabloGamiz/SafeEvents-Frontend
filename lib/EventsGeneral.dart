@@ -65,7 +65,7 @@ class _GeneralEventsState extends State {
       registered = false;
   }
 
-  List<FavsModel> favs;
+  List<FavsModel> favs = List();
 
   String _defaultValue;
 
