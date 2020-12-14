@@ -28,6 +28,10 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
 
+import 'http_requests/http_favs.dart';
+
+import 'http_models/FavsModel.dart';
+
 //Variables globals
 int idfake = 20;
 var _colorFav = Colors.white;
@@ -68,7 +72,6 @@ class MyInfo {
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
     //format String location esdeveniment=> nom localitzacio + '--' + lat + ';' + long
-
     if(location != null){
       var loc = location.split('--');
       var loc2 = loc[1];
@@ -117,7 +120,15 @@ class _MostraState extends State<Mostra> {
   Future<void> initState() {
     //TO DO: Passar l'event que em ve desde el general
     _initEvent(id);
+    liked();
     super.initState();
+  }
+
+  bool like;
+
+  void liked() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    like = prefs.getBool('liked');
   }
 
   Future<bool> _onBackPressed() async {
@@ -466,8 +477,8 @@ class _MostraState extends State<Mostra> {
                                   child: GoogleMap(
                                     onMapCreated: _onMapCreated,
                                     initialCameraPosition: CameraPosition(
-                                      target: LatLng(double.parse(mi.location.toString().split(';')[0]),
-                                          double.parse(mi.location.toString().split(';')[1])), //location.coordenates
+                                      target: LatLng(41.3580319012,
+                                          2.1515327272), //location.coordenates
                                       zoom: 15.4746,
                                     ),
                                     markers: _markers,
@@ -569,10 +580,7 @@ class _MostraState extends State<Mostra> {
     await PermissionHandler().requestPermissions([PermissionGroup.location]);
   }*/
 
-  _doFav() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool like = prefs.getBool('liked');
-
+  _doFav() {
     //do something
     setState(() {
       if (liked) {
