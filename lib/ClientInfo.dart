@@ -176,6 +176,7 @@ class _ClientInfoState extends State<ClientInfo> {
   var dropdownValue = "Reservas";
   List<Purchased> selected = new List();
   String result = "Hey there !";
+  int eventid = 1;
 
   @override
   void initState() {
@@ -183,12 +184,12 @@ class _ClientInfoState extends State<ClientInfo> {
     futureClient = fetchLocalClient(widget.id);
   }
 
-  Future _scanQr() async {
+  Future _scanQr(int event_id) async {
     try {
       String qrResult = await BarcodeScanner.scan();
       setState(() {
         result = qrResult;
-        int event_id = 1;
+
         Future<int> ok = http_pasarQr(result, event_id);
       });
     } on PlatformException catch (ex) {
@@ -368,7 +369,7 @@ class _ClientInfoState extends State<ClientInfo> {
               ),
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: () => _scanQr(),
+                  onPressed: () => _scanQr(eventid),
                   child: Icon(
                     Icons.qr_code,
                     color: Colors.white,
