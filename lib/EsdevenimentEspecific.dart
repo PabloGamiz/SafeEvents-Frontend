@@ -58,9 +58,10 @@ class MyInfo {
   String image;
   String tipus;
   bool faved;
+  int taken;
 
   MyInfo(int id, String title, String desc, int cap, DateTime date,
-      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved ) {
+      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved, int taken ) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -74,6 +75,7 @@ class MyInfo {
     this.image = image;
     this.tipus = tipus;
     this.faved = faved;
+    this.taken = taken;
   }
 }
 
@@ -639,7 +641,8 @@ class _MostraState extends State<Mostra> {
           event.price,
           event.image,
           event.tipus,
-          event.faved
+          event.faved,
+          event.taken,
       );
     });
   }
@@ -658,11 +661,10 @@ class _MostraState extends State<Mostra> {
   }
 
   _contrata() async {
-    final int entradas = 20; //await http_entradas(id);
 
     runApp(MaterialApp(
       home: Reserves(
-        entradas: entradas,
+        entradas: (mi.capacity - mi.taken),
         id: id,
       ),
     ));
@@ -677,7 +679,7 @@ class _MostraState extends State<Mostra> {
 
   _goBack() {
     //Depenent de si venim de events generals o de recomanats anar a un o altre
-    bool veDeRecomanats = true;
+    bool veDeRecomanats = false;
     if (!veDeRecomanats) {
       runApp(MaterialApp(
         home: EventsGeneral(),
@@ -693,7 +695,6 @@ class _MostraState extends State<Mostra> {
     _controller.complete(controller);
   }
 
-  _initialPosition() {}
 }
 
 _contacta() {
