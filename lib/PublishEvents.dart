@@ -521,6 +521,7 @@ class _PublishState extends State<Publish> {
   _cridabackend(String nom, String descripcio,String capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
     String datahora = data+'T'+hora+'Z';
     print('datahora '+datahora);
+    print(coordenades);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String cookie = prefs.getString('cookie');
     final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus);

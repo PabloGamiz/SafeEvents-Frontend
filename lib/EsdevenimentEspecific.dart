@@ -60,26 +60,25 @@ class MyInfo {
   bool faved;
   int taken;
 
-  MyInfo(
-      int id,
-      String title,
-      String desc,
-      int cap,
-      DateTime date,
-      String location,
-      dynamic organizers,
-      dynamic services,
-      int preu,
-      String image,
-      String tipus,
-      bool faved) {
+  MyInfo(int id, String title, String desc, int cap, DateTime date,
+      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved, int taken ) {
     this.id = id;
     this.title = title;
     this.description = desc;
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
-    this.location = location;
-    this.address = location;
+    //format String location esdeveniment=> nom localitzacio + '--' + lat + ';' + long
+    if(location != null){
+      var loc = location.split('--');
+      var loc2 = loc[1];
+      var loc1 = loc[0];
+      this.location = loc2;
+      this.address = loc1;
+    }
+    else{
+      this.location = location;
+      this.address = location;
+    }
     this.organizers = organizers;
     this.services = services;
     this.preu = preu;
@@ -129,9 +128,10 @@ class _MostraState extends State<Mostra> {
   Widget build(BuildContext context) {
     final Marker marker = Marker(
         markerId: MarkerId('palau'),
-        position: LatLng(41.3580319012, 2.1515327272),
+        position: LatLng(double.parse(mi.location.toString().split(';')[0]),
+            double.parse(mi.location.toString().split(';')[1])),
         infoWindow: InfoWindow(
-            title: 'Palau Sant Jordi', snippet: 'Kiko Rivera on Tour'));
+            title: mi.address, snippet: mi.title));
     _markers.add(marker);
     return MaterialApp(
       home: WillPopScope(
@@ -172,7 +172,7 @@ class _MostraState extends State<Mostra> {
                                   color: Colors.blue),
                               child: Column(
                                 children: [
-                                  /*Container(
+                                  Container(
                                     height: 13,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
@@ -180,7 +180,7 @@ class _MostraState extends State<Mostra> {
                                       onPressed: () => {_doFav()},
                                     ),
                                     alignment: Alignment(1, 1),
-                                  ),*/
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 10.0,
@@ -610,6 +610,7 @@ class _MostraState extends State<Mostra> {
 
      */
 
+
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -621,7 +622,7 @@ class _MostraState extends State<Mostra> {
 
       print(_esperaCarrega);
       /*test */
-      /*mi = MyInfo(
+       /*mi = MyInfo(
           id,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
@@ -651,7 +652,9 @@ class _MostraState extends State<Mostra> {
           event.price,
           event.image,
           event.tipus,
-          event.faved);
+          event.faved,
+          event.taken,
+      );
     });
   }
 
@@ -669,6 +672,7 @@ class _MostraState extends State<Mostra> {
   }
 
   _contrata() async {
+
     runApp(MaterialApp(
       home: Reserves(
         entradas: (mi.capacity - mi.taken),
@@ -701,6 +705,7 @@ class _MostraState extends State<Mostra> {
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
+
 }
 
 _contacta() {
