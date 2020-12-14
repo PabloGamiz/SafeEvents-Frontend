@@ -1,13 +1,16 @@
 import 'dart:developer';
 
+import 'package:address_search_text_field/address_search_text_field.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
+import 'package:safeevents/http_models/ModificaEsdevenimentModel.dart';
 import 'package:safeevents/http_requests/http_modificaesdeveniment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
+import 'http_requests/http_esdevenimentespecific.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
@@ -16,7 +19,8 @@ TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
 TextEditingController capcontroller = new TextEditingController();
 
-var idfake = 20;
+var idfake = 3;
+bool _esperaCarrega = true;
 
 void main() => runApp(MaterialApp(
       title: "ModificaEvents",
@@ -32,7 +36,7 @@ class MyInfo {
   String location;
   String address;
   dynamic organizers;
-  dynamic services;
+  dynamic tipus;
   int preu;
   String img;
 
@@ -55,7 +59,7 @@ class MyInfo {
     this.location = location;
     this.address = location;
     this.organizers = organizers;
-    this.services = services;
+    this.tipus = services;
     this.preu = preu;
     this.img = img;
   }
@@ -71,6 +75,7 @@ class Modifica extends StatefulWidget {
 class _ModificaState extends State<Modifica> {
   var cookie = "";
   DateTime selectedDate = DateTime.now();
+  var coordenades;
 
   final format = DateFormat("yyyy-MM-dd");
   final formath = DateFormat("HH:mm");
@@ -89,7 +94,7 @@ class _ModificaState extends State<Modifica> {
   var showerrorDataHora = false;
   var showerrorCap = false;
 
-  String tipus = '';
+  String tipus = 'Escull el tipus d\'esdeveniment';
 
   var _data;
   var _hora;
@@ -104,19 +109,8 @@ class _ModificaState extends State<Modifica> {
   @override
   void initState() {
     // TODO: implement initState
-    int id;
-    setState(() {
-      _initEvent(id);
-      _data = DateTime.parse(mi.checkInDate);
-      _hora = DateTime.parse(mi.checkInDate);
-      nomcontroller.text = mi.title;
-      dircontroller.text = mi.location;
-      descrcontroller.text = mi.description;
-      preucontroller.text = mi.preu.toString();
-      imgcontroller.text = mi.img;
-      tipus = mi.services;
-      capcontroller.text = mi.capacity.toString();
-    });
+    _initEvent(id);
+
     super.initState();
   }
 
@@ -146,7 +140,11 @@ class _ModificaState extends State<Modifica> {
       home: WillPopScope(
         onWillPop: _onBackPressed,
         child: Scaffold(
-          body: Container(
+          body: _esperaCarrega
+              ? Align(
+              alignment: Alignment.center,
+              child: CircularProgressIndicator())
+              :Container(
             margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -198,7 +196,7 @@ class _ModificaState extends State<Modifica> {
                       margin: EdgeInsets.only(top: 20.0),
                       child: Column(
                         children: <Widget>[
-                          TextFormField(
+                          /*TextFormField(
                               controller: dircontroller,
                               decoration: InputDecoration(
                                   labelText: "Direcció de l\'Esdeveniment",
@@ -207,7 +205,28 @@ class _ModificaState extends State<Modifica> {
                                     borderRadius: BorderRadius.circular(25.0),
                                     borderSide: BorderSide(),
                                   )),
-                              maxLines: 1),
+                              maxLines: 1),*/
+                          AddressSearchTextField(
+                            country: "Spain",//TODO passar pais
+                            controller: dircontroller,
+                            hintText: 'Introdueix la direcció',
+                            decoration: InputDecoration(
+                                labelText: "Direcció de l\'Esdeveniment",
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  borderSide: BorderSide(),
+                                )
+                            ),
+                            noResultsText: "No hi han resultats",
+                            onDone: (AddressPoint point){
+                              print(point.latitude);
+                              print(point.longitude);
+                              coordenades = point.latitude.toString() + ';' + point.longitude.toString();
+                              print(coordenades);
+                              if (point.latitude.toString() != '0.0') Navigator.of(context).pop();
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -477,9 +496,12 @@ class _ModificaState extends State<Modifica> {
   }
 
   void _initEvent(int id) async {
-    /*final EsdevenimentEspecificModel event =
-    await http_esdevenimentespecific(id);*/
-    List<String> event;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+
+    final EsdevenimentEspecificModel event =
+    await http_esdevenimentespecific(id,'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=');
+    //ModificaEsdevenimentModel event;
     /*_rate = event.controller.rating;
     print(event.controller.title);
     print(event.controller.description);
@@ -491,25 +513,28 @@ class _ModificaState extends State<Modifica> {
 
      */
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('cookie');
+
     setState(() {
-      cookie = stringValue;
-      /*if (event.controller.title != null) _esperaCarrega = false;
-      print(_esperaCarrega);*/
-    });
+      cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
+      /*if (event.controller.title != null) _esperaCarrega = false;*/
+      print('PRINTPRINT : '+event.checkInDate.toString().split('.')[0]);
+      print('PRINTPRINT : '+event.title.toString());
+      print('PRINTPRINT : '+_esperaCarrega.toString());
+      if (event.title != null) _esperaCarrega = false;
+      print('PRINTPRINT : '+_esperaCarrega.toString());
 
     mi = MyInfo(
-        /*event.controller.id,
-        event.controller.title,
-        event.controller.description,
-        event.controller.capacity,
-        event.controller.checkInDate,
-        event.controller.location,
-        event.controller.organizers,
-        event.controller.services,
-        event.controller.price*/
-        id,
+        null,
+        event.title,
+        event.description,
+        event.capacity,
+        event.checkInDate,
+        event.location,
+        'org',
+        event.tipus,
+        event.price,
+        event.image
+        /*id,
         'Kiko Rivera on Tour',
         'El Kiko Rivera torna a Barcelona en el seu tour per Europa',
         12,
@@ -518,7 +543,21 @@ class _ModificaState extends State<Modifica> {
         "club",
         "Teatre",
         25,
-        "google.com/foto");
+        "google.com/foto"*/);
+
+        _data = DateTime.parse(mi.checkInDate);
+        _hora = DateTime.parse(mi.checkInDate);
+
+        nomcontroller.text = mi.title;
+        dircontroller.text = mi.location.toString().split('--')[0];
+        var coord =  mi.location.toString().split('--')[1];
+        coordenades = coord;
+        descrcontroller.text = mi.description;
+        preucontroller.text = mi.preu.toString();
+        imgcontroller.text = mi.img;
+        tipus = mi.tipus;
+        capcontroller.text = mi.capacity.toString();
+    });
   }
 
   publicaEsdeveniment() {
@@ -598,18 +637,7 @@ class _ModificaState extends State<Modifica> {
     //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if (!someError) {
       //Envia data al backend i redirecciona
-      http_modificaesdeveniment(
-          cookie,
-          idfake,
-          nom,
-          descripcio,
-          int.parse(capacity),
-          int.parse(preu),
-          data,
-          dir,
-          services,
-          img,
-          tipus);
+      _callbackend( cookie,  id,  nom,  descripcio,  capacity,  preu,  data,hora,  dir,  services,  img,  tipus);
       runApp(MaterialApp(
         home: Mostra(idevent: id),
       ));
@@ -625,5 +653,23 @@ class _ModificaState extends State<Modifica> {
     runApp(MaterialApp(
       home: Mostra(idevent: idfake),
     ));
+  }
+
+  void _callbackend(String cookie, int id, String nom, String descripcio, String capacity, String preu, String data,String hora, String dir, List<String> services, String img, String tipus ) async {
+    String datahora = data+'T'+hora+'Z';
+    final ModificaEsdevenimentModel event =
+        await http_modificaesdeveniment(
+        cookie,
+        id,
+        nom,
+        descripcio,
+        int.parse(capacity),
+        int.parse(preu),
+            datahora,
+        dir,
+        coordenades,
+        services,
+        img,
+        tipus);
   }
 }

@@ -45,7 +45,7 @@ bool liked;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(idevent: 1),
+      home: Mostra(idevent: 3),
     ));
 
 class MyInfo {
