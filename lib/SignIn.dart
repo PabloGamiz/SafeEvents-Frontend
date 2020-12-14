@@ -40,6 +40,7 @@ class _SignInState extends State<SignIn> {
             color: Colors.lightBlue,
           ),
           Container(
+            key: Key("without_session"),
             width: 250.0,
             child: Align(
               alignment: Alignment.center,

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -51,6 +50,7 @@ class _PantallaReserva extends State<Reserves> {
     );
 
     final courseentrades = Container(
+      key: Key("courseentrades"),
       padding: const EdgeInsets.all(7.0),
       decoration: new BoxDecoration(
           border: new Border.all(color: Colors.white),
@@ -70,6 +70,7 @@ class _PantallaReserva extends State<Reserves> {
 
     final reservaButton = Container(
         padding: EdgeInsets.symmetric(vertical: 16.0),
+        key: Key("Reserva_reservaButton"),
         //width: MediaQuery.of(context).size.width,
         child: RaisedButton(
           onPressed: () => {
@@ -88,6 +89,7 @@ class _PantallaReserva extends State<Reserves> {
 
     final compraButton = Container(
         padding: EdgeInsets.symmetric(vertical: 16.0),
+        key: Key("Comprar_reservaButton"),
         // width: MediaQuery.of(context).size.width,
         child: RaisedButton(
           onPressed: () => {
@@ -131,6 +133,7 @@ class _PantallaReserva extends State<Reserves> {
         SizedBox(height: 30.0),
         Container(
             padding: EdgeInsets.symmetric(vertical: 10.0),
+            key: Key("seleccionar_N_entrades"),
             // width: MediaQuery.of(context).size.width,
             child: Center(
                 child: RaisedButton(
@@ -203,6 +206,7 @@ class _PantallaReserva extends State<Reserves> {
   showselectnumber(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
+      key: Key("Okey_selector"),
       child: Text("OK"),
       onPressed: () => Navigator.of(context).pop(),
     );
@@ -213,6 +217,7 @@ class _PantallaReserva extends State<Reserves> {
           initialValue: 0,
           minValue: 0,
           maxValue: entradas,
+          key: Key("numberpicker_N_entrades"),
           onChanged: (newValue) => setState(() => numero = newValue)),
     ]);
 
@@ -238,6 +243,7 @@ class _PantallaReserva extends State<Reserves> {
   showAlertDialogentrades(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
+      key: Key("Okey_button_alert_compra_1"),
       child: Text("OK"),
       onPressed: () => Navigator.of(context).pop(),
     );
@@ -265,6 +271,7 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
+      key: Key("Okey_button_alert_reserva"),
       onPressed: () => _reserva(),
     );
 
@@ -290,6 +297,7 @@ class _PantallaReserva extends State<Reserves> {
   showAlertDialogcompra(BuildContext context) {
     Widget okButton = FlatButton(
       child: Text("OK"),
+      key: Key("Okey_button_alert_compra_2"),
       onPressed: () => _compra(),
     );
     // set up the AlertDialog
@@ -354,6 +362,7 @@ class _PantallaReserva extends State<Reserves> {
 
     Widget okButton = FlatButton(
         child: Text("Continuar"),
+        key: Key("error_button_alert"),
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
@@ -387,6 +396,7 @@ class _PantallaReserva extends State<Reserves> {
 
     Widget okButton = FlatButton(
         child: Text("Continuar"),
+        key: Key("confirmation_button_alert_reserva"),
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
@@ -419,6 +429,7 @@ class _PantallaReserva extends State<Reserves> {
 
     Widget okButton = FlatButton(
         child: Text("Continuar"),
+        key: Key("confirmation_button_alert_compra"),
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(

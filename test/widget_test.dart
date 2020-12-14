@@ -4,28 +4,57 @@
 // utility that Flutter provides. For example, you can send tap and scroll
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
-/*
+import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:safeevents/main.dart';
+import 'package:safeevents/SignIn.dart';
+import 'package:safeevents/reserves.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+  testWidgets("selecciona nombre d'entrades", (WidgetTester tester) async {
+    //find all the widgets needed in first screen
+    final selectField = find.byKey(ValueKey("seleccionar_N_entrades"));
+    final reservaField = find.byKey(ValueKey("Reserva_reservaButton"));
+    final comprarField = find.byKey(ValueKey("Comprar_reservaButton"));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    //all the alert dialog widgets
+    //selectfield widgets
+    final selectnumberfield = find.byKey(ValueKey("numberpicker_N_entrades"));
+    final okeyField = find.byKey(ValueKey("Okey_selector"));
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    //errors and confirmation dialogs
+    final errorField = find.byKey(ValueKey("error_button_alert"));
+    final confirmacio_compraField =
+        find.byKey(ValueKey("confirmation_button_alert_compra"));
+    final confirmacio_reservaField =
+        find.byKey(ValueKey("confirmation_button_alert_reserva"));
+    final okey_comprar2Field =
+        find.byKey(ValueKey("Okey_button_alert_compra_2"));
+    final okey_comprar1Field =
+        find.byKey(ValueKey("Okey_button_alert_compra_1"));
+    final okey_reservaField = find.byKey(ValueKey("Okey_button_alert_reserva"));
+    final without_sessionfield = find.byKey(ValueKey("without_session"));
+    //the params needed
+    int id = 1;
+    int entrades = 1;
+    await tester.pumpWidget(MaterialApp(home: SignIn()));
+    await tester.tap(without_sessionfield);
+    await tester.pump(); //rebuild your widget
+    //expect(actual, matcher);
+    /*
+    //execute the actual test
+    await tester.pumpWidget(MaterialApp(
+        home: Reserves(
+      id: id,
+      entradas: entrades,
+    )));
+    await tester.tap(selectField);
+    // await tester.ensureVisible(selectnumberfield);
+    //await tester.
+    await tester.tap(okeyField);
+    await tester.pump(); //rebuild your widget
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    //check outputs
+    expect(find.text("Nombre d'entrades seleccionades: 0"), findsOneWidget);*/
   });
 }
-*/

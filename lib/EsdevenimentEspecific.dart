@@ -60,8 +60,19 @@ class MyInfo {
   bool faved;
   int taken;
 
-  MyInfo(int id, String title, String desc, int cap, DateTime date,
-      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved, int taken ) {
+  MyInfo(
+      int id,
+      String title,
+      String desc,
+      int cap,
+      DateTime date,
+      String location,
+      dynamic organizers,
+      dynamic services,
+      int preu,
+      String image,
+      String tipus,
+      bool faved) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -599,7 +610,6 @@ class _MostraState extends State<Mostra> {
 
      */
 
-
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -611,7 +621,7 @@ class _MostraState extends State<Mostra> {
 
       print(_esperaCarrega);
       /*test */
-       /*mi = MyInfo(
+      /*mi = MyInfo(
           id,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
@@ -641,9 +651,7 @@ class _MostraState extends State<Mostra> {
           event.price,
           event.image,
           event.tipus,
-          event.faved,
-          event.taken,
-      );
+          event.faved);
     });
   }
 
