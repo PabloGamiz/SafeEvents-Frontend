@@ -68,6 +68,7 @@ class MyInfo {
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
     //format String location esdeveniment=> nom localitzacio + '--' + lat + ';' + long
+
     if(location != null){
       var loc = location.split('--');
       var loc2 = loc[1];
@@ -126,13 +127,7 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-    final Marker marker = Marker(
-        markerId: MarkerId('palau'),
-        position: LatLng(double.parse(mi.location.toString().split(';')[0]),
-            double.parse(mi.location.toString().split(';')[1])),
-        infoWindow: InfoWindow(
-            title: mi.address, snippet: mi.title));
-    _markers.add(marker);
+
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -223,7 +218,7 @@ class _MostraState extends State<Mostra> {
                                                           .withOpacity(1)),
                                                 ),
                                                 Text(
-                                                  mi.location,
+                                                  mi.address,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
@@ -471,8 +466,8 @@ class _MostraState extends State<Mostra> {
                                   child: GoogleMap(
                                     onMapCreated: _onMapCreated,
                                     initialCameraPosition: CameraPosition(
-                                      target: LatLng(41.3580319012,
-                                          2.1515327272), //location.coordenates
+                                      target: LatLng(double.parse(mi.location.toString().split(';')[0]),
+                                          double.parse(mi.location.toString().split(';')[1])), //location.coordenates
                                       zoom: 15.4746,
                                     ),
                                     markers: _markers,
@@ -617,30 +612,40 @@ class _MostraState extends State<Mostra> {
       else
         mostrar = false;
 
-      if (event.title != null) _esperaCarrega = false;
+      //if (event.title != null) _esperaCarrega = false;
       //test
 
       print(_esperaCarrega);
       /*test */
-       /*mi = MyInfo(
+       mi = MyInfo(
           id,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
           20,
           DateTime(2020 - 12 - 10),
-          'Palau Sant Jordi',
+          'Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593',
           'KIKO&Co',
           'Música',
           25,
           'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
           'Música',
-         true
+         true,
+         20
 
        );
-      _esperaCarrega = false;*/
+
+       String a = "Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593";
+       print(a);
+        var loc = a.split('--');
+        var loc2 = loc[1];
+        var loc1 = loc[0];
+        print(loc2);
+        print(loc1);
+
+      _esperaCarrega = false;
 //    });
 
-      mi = MyInfo(
+      /*mi = MyInfo(
           null,
           event.title,
           event.description,
@@ -654,8 +659,16 @@ class _MostraState extends State<Mostra> {
           event.tipus,
           event.faved,
           event.taken,
-      );
+      );*/
+
     });
+    final Marker marker = Marker(
+        markerId: MarkerId('palau'),
+        position: LatLng(double.parse(mi.location.toString().split(';')[0]),
+            double.parse(mi.location.toString().split(';')[1])),
+        infoWindow: InfoWindow(
+            title: mi.address, snippet: mi.title));
+    _markers.add(marker);
   }
 
   bool esDeLaEmpresa() {
