@@ -3,6 +3,7 @@ import 'package:safeevents/ClientInfo.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ConsultaFavorits.dart';
 import 'EventsGeneral.dart';
 import 'no_login.dart';
 import 'reserves.dart';
@@ -32,11 +33,11 @@ class _StructureState extends State<Structure> {
   static List<Widget> _widgetOptionsIfRegistered = <Widget>[
     EventsGeneral(),
     //ClientInfo(0),
+    ConsultaFavortis(),
     Text(
       'Index 2: Favourites',
       style: optionStyle,
     ),
-    //Mostra(idevent: 2),
     Text(
       'Index 3: Map',
       style: optionStyle,
