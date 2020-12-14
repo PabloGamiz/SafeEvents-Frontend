@@ -11,6 +11,21 @@ import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/reserves.dart';
 
 void main() {
+  testWidgets("login screen", (WidgetTester tester) async {
+    //find all the widgets needed in first screen
+
+    final withoutsessionfield = find.byKey(ValueKey("without_session"));
+    final signinsessionfield = find.byKey(ValueKey("login_button"));
+
+    await tester.pumpWidget(MaterialApp(home: SignIn()));
+    await tester.tap(withoutsessionfield);
+    await tester.pump(); //rebuild your widget
+
+    await tester.pumpWidget(MaterialApp(home: SignIn()));
+    await tester.tap(signinsessionfield);
+    await tester.pump(); //rebuild your widget
+  });
+/*
   testWidgets("selecciona nombre d'entrades", (WidgetTester tester) async {
     //find all the widgets needed in first screen
     final selectField = find.byKey(ValueKey("seleccionar_N_entrades"));
@@ -34,14 +49,13 @@ void main() {
         find.byKey(ValueKey("Okey_button_alert_compra_1"));
     final okey_reservaField = find.byKey(ValueKey("Okey_button_alert_reserva"));
     final without_sessionfield = find.byKey(ValueKey("without_session"));
+    final signin_sessionfield = find.byKey(ValueKey("login_button"));
+
     //the params needed
     int id = 1;
     int entrades = 1;
-    await tester.pumpWidget(MaterialApp(home: SignIn()));
-    await tester.tap(without_sessionfield);
-    await tester.pump(); //rebuild your widget
     //expect(actual, matcher);
-    /*
+
     //execute the actual test
     await tester.pumpWidget(MaterialApp(
         home: Reserves(
@@ -55,6 +69,6 @@ void main() {
     await tester.pump(); //rebuild your widget
 
     //check outputs
-    expect(find.text("Nombre d'entrades seleccionades: 0"), findsOneWidget);*/
-  });
+    expect(find.text("Nombre d'entrades seleccionades: 0"), findsOneWidget);
+  });*/
 }

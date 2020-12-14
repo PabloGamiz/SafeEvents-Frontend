@@ -29,6 +29,7 @@ class _SignInState extends State<SignIn> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FlatButton(
+            key: Key("login_button"),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

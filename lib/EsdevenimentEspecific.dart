@@ -669,7 +669,6 @@ class _MostraState extends State<Mostra> {
   }
 
   _contrata() async {
-
     runApp(MaterialApp(
       home: Reserves(
         entradas: (mi.capacity - mi.taken),
@@ -702,7 +701,6 @@ class _MostraState extends State<Mostra> {
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
-
 }
 
 _contacta() {
