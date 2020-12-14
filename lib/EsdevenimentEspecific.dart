@@ -172,7 +172,7 @@ class _MostraState extends State<Mostra> {
                                   color: Colors.blue),
                               child: Column(
                                 children: [
-                                  Container(
+                                  /*Container(
                                     height: 13,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
@@ -180,7 +180,7 @@ class _MostraState extends State<Mostra> {
                                       onPressed: () => {_doFav()},
                                     ),
                                     alignment: Alignment(1, 1),
-                                  ),
+                                  ),*/
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 10.0,
@@ -197,12 +197,12 @@ class _MostraState extends State<Mostra> {
                                             //'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
                                             mi.image,
                                             width: 120,
-                                            loadingBuilder:
+                                            /*loadingBuilder:
                                                 (context, child, progress) {
                                               return progress == null
                                                   ? child
                                                   : LinearProgressIndicator();
-                                            },
+                                            },*/
                                           ),
                                         ),
                                         Padding(
@@ -616,7 +616,7 @@ class _MostraState extends State<Mostra> {
       else
         mostrar = false;
 
-      //if (event.controller.title != null) _esperaCarrega = false;
+      if (event.title != null) _esperaCarrega = false;
       //test
 
       print(_esperaCarrega);

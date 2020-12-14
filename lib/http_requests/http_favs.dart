@@ -7,12 +7,9 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<List<FavsModel>> http_Favs() async {
-  /*
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String stringValue = prefs.getString('cookie');
-  */
-  var body =
-      json.encode({"cookie": "zZMZ7uE29f_olQIXSpV_AXWtPGHfBmbDuarXqSst12A="});
+  var body = json.encode({"cookie": stringValue});
   var uri = Uri.http('10.4.41.148:8080', '/event/favorites');
   print(uri);
   final response = await http.put(uri, body: body);
@@ -21,6 +18,6 @@ Future<List<FavsModel>> http_Favs() async {
   } else {
     print(response.statusCode);
     print(response.body);
-    throw Exception('No favorites found');
+    //throw Exception('No favorites found');
   }
 }

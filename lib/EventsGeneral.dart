@@ -81,8 +81,11 @@ class _GeneralEventsState extends State {
     'Arte'
   ]; //nombre de las categorias
 
-  void obtenirLikeds() {
+  /*void obtenirLikeds() {
     likeds = List.filled(filteredEvents.length, false);
+    print("likeds");
+    print(likeds.length);
+  
     for (int i = 0; i < filteredEvents.length; ++i) {
       for (int j = 0; j < favs.length; ++j) {
         if (filteredEvents[i].id == favs[j].id) {
@@ -91,7 +94,7 @@ class _GeneralEventsState extends State {
         }
       }
     }
-  }
+  }*/
 
   List<ListEsdevenimentsModel> generalEvents = List();
 
@@ -190,7 +193,7 @@ class _GeneralEventsState extends State {
                       },
                       title: Column(
                         children: [
-                          Container(
+                          /*Container(
                             height: 30,
                             child: Align(
                               alignment: Alignment.centerRight,
@@ -219,7 +222,7 @@ class _GeneralEventsState extends State {
                                 }),
                               ),
                             ),
-                          ),
+                          ),*/
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
@@ -300,6 +303,7 @@ class _GeneralEventsState extends State {
         ),
       ));
     } else if (!registered && filteredEvents.length > 0) {
+      //obtenirLikeds();
       return MaterialApp(
           home: Scaffold(
         body: Column(children: <Widget>[

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safeevents/ClientInfo.dart';
+import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'EventsGeneral.dart';
@@ -35,6 +36,7 @@ class _StructureState extends State<Structure> {
       'Index 2: Favourites',
       style: optionStyle,
     ),
+    //Mostra(idevent: 2),
     Text(
       'Index 3: Map',
       style: optionStyle,
