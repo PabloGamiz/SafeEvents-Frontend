@@ -19,8 +19,8 @@ Future<FeedbackEsdeveniments> http_afegeixfeedback(int rating, String message, S
   print('STATUS? = '+response.statusCode.toString());
   if (response.statusCode == 201 || response.statusCode == 200) {
     print('Status code = '+response.statusCode.toString());
-    final FeedbackEsdeveniments list = feedbackEsdevenimentsFromJson(response.body);
-    return list;
+    /*final FeedbackEsdeveniments list = feedbackEsdevenimentsFromJson(response.body);
+    return list;*/
   } else if (response.statusCode == 400) {
     print('Status code = '+response.statusCode.toString());
     return null;

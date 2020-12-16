@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:safeevents/http_models/ModificaEsdevenimentModel.dart';
 import 'package:safeevents/http_models/PublicaEsdevenimentsModel.dart';
 
-Future<PublicaEsdevenimentsModel> http_publishevents(String title, String description, int capacity,String data, int price, String location, String coordenades, String image, String cookie, String tipus ) async {
+Future<ModificaEsdevenimentModel> http_publishevents(String title, String description, int capacity,String data, int price, String location, String coordenades, String image, String cookie, String tipus ) async {
   print('Entra');
   final String apitUrl = "http://10.4.41.148:8080/event/publica";
   var queryParamaters = {
@@ -23,7 +24,7 @@ Future<PublicaEsdevenimentsModel> http_publishevents(String title, String descri
   print('STATUS? = '+response.statusCode.toString());
   if (response.statusCode == 201 || response.statusCode == 200) {
     print('Status code = '+response.statusCode.toString());
-    final PublicaEsdevenimentsModel list = publicaEsdevenimentsModelFromJson(response.body);
+    final ModificaEsdevenimentModel list = modificaEsdevenimentModelFromJson(response.body);
     print(list);
     return list;
   } else if (response.statusCode == 400) {

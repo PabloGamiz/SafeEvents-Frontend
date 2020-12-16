@@ -45,7 +45,7 @@ bool liked;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(idevent: 3),
+      home: Mostra(idevent: 4),
     ));
 
 class MyInfo {
@@ -293,9 +293,11 @@ class _MostraState extends State<Mostra> {
                                                                   allowHalfRating:
                                                                       false,
                                                                   onRated: (v) {
+                                                                    _rate = v;
                                                                     showDialog(
                                                                       context:
                                                                           context,
+
                                                                       builder:
                                                                           (_) =>
                                                                               new Container(
@@ -599,8 +601,8 @@ class _MostraState extends State<Mostra> {
   void _initEvent(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    //cookie = stringValue;
-    cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
+    cookie = stringValue;
+    //cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
     final EsdevenimentEspecificModel event =
         await http_esdevenimentespecific(id, cookie);
     /*_rate = event.controller.rating;

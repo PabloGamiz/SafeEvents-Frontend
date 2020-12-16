@@ -1,5 +1,4 @@
 
-import 'dart:developer';
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
@@ -8,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:address_search_text_field/address_search_text_field.dart';
 
 import 'package:safeevents/EventsGeneral.dart';
-import 'package:safeevents/http_models/PublicaEsdevenimentsModel.dart';
+import 'package:safeevents/http_models/ModificaEsdevenimentModel.dart';
 import 'package:safeevents/http_requests/http_publishevents.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'EsdevenimentEspecific.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
@@ -527,9 +528,7 @@ class _PublishState extends State<Publish> {
 
       _cridabackend(nom,descripcio,capacity,dir,preu,data,hora,img,tipus);
       //SI LA CAPACITAT ESTA TOTA OCUPADA PUES SHA DE DESACTIVAR
-      runApp(MaterialApp(
-        home: EventsGeneral(),
-      ));
+
     }
 
     }
@@ -539,7 +538,11 @@ class _PublishState extends State<Publish> {
     print(coordenades);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String cookie = prefs.getString('cookie');
-    final PublicaEsdevenimentsModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus);
+    final ModificaEsdevenimentModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus);
+    //event.id
+    runApp(MaterialApp(
+      home: Mostra(idevent: event.controller.id),
+    ));
 
   }
   seleccionaImatge() {

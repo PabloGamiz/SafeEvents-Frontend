@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:address_search_text_field/address_search_text_field.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
@@ -19,7 +18,7 @@ TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
 TextEditingController capcontroller = new TextEditingController();
 
-var idfake = 3;
+var idfake = 4;
 bool _esperaCarrega = true;
 
 void main() => runApp(MaterialApp(
@@ -377,7 +376,7 @@ class _ModificaState extends State<Modifica> {
                               'Escull el tipus d\'esdeveniment',
                               'Musica',
                               'Teatre',
-                              'Esport',
+                              'Esports',
                               'Art',
                               'Altres'
                             ].map<DropdownMenuItem<String>>((String value) {
@@ -515,7 +514,8 @@ class _ModificaState extends State<Modifica> {
 
 
     setState(() {
-      cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
+      cookie = stringValue;
+
       /*if (event.controller.title != null) _esperaCarrega = false;*/
       print('PRINTPRINT : '+event.checkInDate.toString().split('.')[0]);
       print('PRINTPRINT : '+event.title.toString());
@@ -569,7 +569,7 @@ class _ModificaState extends State<Modifica> {
     var hora = '';
     var img = imgcontroller.text;
     var capacity = capcontroller.text;
-    var services = ['Gel hidroalcòlic'];
+    var services = [];
 
     if (_data.toString() != 'null')
       data = _data.toString().split(' ')[0];
@@ -638,9 +638,7 @@ class _ModificaState extends State<Modifica> {
     if (!someError) {
       //Envia data al backend i redirecciona
       _callbackend( cookie,  id,  nom,  descripcio,  capacity,  preu,  data,hora,  dir,  services,  img,  tipus);
-      runApp(MaterialApp(
-        home: Mostra(idevent: id),
-      ));
+
     }
   }
 
@@ -655,7 +653,7 @@ class _ModificaState extends State<Modifica> {
     ));
   }
 
-  void _callbackend(String cookie, int id, String nom, String descripcio, String capacity, String preu, String data,String hora, String dir, List<String> services, String img, String tipus ) async {
+  void _callbackend(String cookie, int id, String nom, String descripcio, String capacity, String preu, String data,String hora, String dir, List<dynamic> services, String img, String tipus ) async {
     String datahora = data+'T'+hora+'Z';
     final ModificaEsdevenimentModel event =
         await http_modificaesdeveniment(
@@ -671,5 +669,9 @@ class _ModificaState extends State<Modifica> {
         services,
         img,
         tipus);
+
+    runApp(MaterialApp(
+      home: Mostra(idevent: id),
+    ));
   }
 }
