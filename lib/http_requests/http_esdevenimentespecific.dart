@@ -4,7 +4,7 @@ import 'package:safeevents/http_models/EsdevenimentEspecificModel.dart';
 
 Future<EsdevenimentEspecificModel> http_esdevenimentespecific(
     int id, String cookie) async {
-  print('hola');
+  print('ESPECIFIC');
   final String apitUrl = "http://10.4.41.148:8080/event/single";
   /*var queryParamaters = {'id': id};
   final jsonID = json.encode(queryParamaters);*/
