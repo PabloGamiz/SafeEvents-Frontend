@@ -512,10 +512,7 @@ class _GeneralEventsState extends State {
     ));
   }
 
-  _esdevenimentEspecific(int index) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('liked', liked(filteredEvents[index].id));
-    print(liked(filteredEvents[index].id));
+  _esdevenimentEspecific(int index) {
     runApp(MaterialApp(
       home: Mostra(idevent: filteredEvents[index].id),
     ));

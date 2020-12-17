@@ -35,15 +35,11 @@ class _StructureState extends State<Structure> {
     //ClientInfo(0),
     ConsultaFavortis(),
     Text(
-      'Index 2: Favourites',
-      style: optionStyle,
-    ),
-    Text(
       'Index 3: Map',
       style: optionStyle,
     ),
     Text(
-      'Index 3: Chat',
+      'Index 4: Chat',
       style: optionStyle,
     ),
     ClientInfo(0),

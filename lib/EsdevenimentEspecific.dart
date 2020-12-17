@@ -128,18 +128,7 @@ class _MostraState extends State<Mostra> {
   Future<void> initState() {
     //TO DO: Passar l'event que em ve desde el general
     _initEvent(id);
-    liked();
     super.initState();
-  }
-
-  bool like;
-
-  void liked() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    like = prefs.getBool('liked');
-    if (like == null) {
-      like = false;
-    }
   }
 
   Future<bool> _onBackPressed() async {
@@ -149,6 +138,7 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -189,13 +179,22 @@ class _MostraState extends State<Mostra> {
                               child: Column(
                                 children: [
                                   Container(
-                                    height: 17,
+                                    height: 23,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color: (like == false || like == null)
-                                          ? Colors.white
-                                          : Colors.red,
-                                      onPressed: () => {_doFav()},
+                                      color: !mi.faved ? Colors.white : Colors.red,
+                                      onPressed: () => {
+                                        setState(() {
+                                          if (mi.faved) {
+                                            http_delfavourite(cookie,
+                                                id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
+                                            mi.faved = false;
+                                          } else {
+                                            http_addfavourite(cookie, id);
+                                            mi.faved = true;
+                                          }
+                                        }),
+                                      },
                                     ),
                                     alignment: Alignment(1, 1),
                                   ),
@@ -599,18 +598,10 @@ class _MostraState extends State<Mostra> {
     await PermissionHandler().requestPermissions([PermissionGroup.location]);
   }*/
 
-  _doFav() {
+  /*_doFav() {
     //do something
-    setState(() {
-      if (like) {
-        http_delfavourite(cookie,
-            id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
-      } else {
-        http_addfavourite(cookie, id);
-      }
-      like != like;
-    });
-  }
+    
+  }*/
 
   void _initEvent(int id) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
