@@ -1,4 +1,3 @@
-
 import 'package:address_search_text_field/address_search_text_field.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
@@ -141,61 +140,61 @@ class _ModificaState extends State<Modifica> {
         child: Scaffold(
           body: _esperaCarrega
               ? Align(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator())
-              :Container(
-            margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    TextField(
-                        controller: nomcontroller,
-                        decoration: InputDecoration(
-                            labelText: "Nom Esdeveniment",
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(),
-                            )),
-                        maxLines: 1),
-                    Container(
-                      child: Visibility(
-                          visible: showerrorNom,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                errorNom,
-                                style: TextStyle(
-                                  color: Colors.red[700],
-                                ),
-                              ),
-                            ],
-                          )),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: TextFormField(
-                        controller: descrcontroller,
-                        decoration: InputDecoration(
-                            labelText: "Descripció de l'Esdeveniment",
-                            fillColor: Colors.white,
-                            contentPadding: new EdgeInsets.symmetric(
-                                vertical: 30.0, horizontal: 20.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                              borderSide: BorderSide(),
-                            )),
-                        maxLines: 4,
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0),
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator())
+              : Container(
+                  margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
-                          /*TextFormField(
+                          TextField(
+                              controller: nomcontroller,
+                              decoration: InputDecoration(
+                                  labelText: "Nom Esdeveniment",
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(),
+                                  )),
+                              maxLines: 1),
+                          Container(
+                            child: Visibility(
+                                visible: showerrorNom,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      errorNom,
+                                      style: TextStyle(
+                                        color: Colors.red[700],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20.0),
+                            child: TextFormField(
+                              controller: descrcontroller,
+                              decoration: InputDecoration(
+                                  labelText: "Descripció de l'Esdeveniment",
+                                  fillColor: Colors.white,
+                                  contentPadding: new EdgeInsets.symmetric(
+                                      vertical: 30.0, horizontal: 20.0),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(25.0),
+                                    borderSide: BorderSide(),
+                                  )),
+                              maxLines: 4,
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                /*TextFormField(
                               controller: dircontroller,
                               decoration: InputDecoration(
                                   labelText: "Direcció de l\'Esdeveniment",
@@ -205,136 +204,142 @@ class _ModificaState extends State<Modifica> {
                                     borderSide: BorderSide(),
                                   )),
                               maxLines: 1),*/
-                          AddressSearchTextField(
-                            country: "Spain",//TODO passar pais
-                            controller: dircontroller,
-                            hintText: 'Introdueix la direcció',
-                            decoration: InputDecoration(
-                                labelText: "Direcció de l\'Esdeveniment",
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(),
+                                AddressSearchTextField(
+                                  country: "Spain", //TODO passar pais
+                                  controller: dircontroller,
+                                  hintText: 'Introdueix la direcció',
+                                  decoration: InputDecoration(
+                                      labelText: "Direcció de l\'Esdeveniment",
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25.0),
+                                        borderSide: BorderSide(),
+                                      )),
+                                  noResultsText: "No hi han resultats",
+                                  onDone: (AddressPoint point) {
+                                    print(point.latitude);
+                                    print(point.longitude);
+                                    coordenades = point.latitude.toString() +
+                                        ';' +
+                                        point.longitude.toString();
+                                    print(coordenades);
+                                    if (point.latitude.toString() != '0.0')
+                                      Navigator.of(context).pop();
+                                  },
                                 )
+                              ],
                             ),
-                            noResultsText: "No hi han resultats",
-                            onDone: (AddressPoint point){
-                              print(point.latitude);
-                              print(point.longitude);
-                              coordenades = point.latitude.toString() + ';' + point.longitude.toString();
-                              print(coordenades);
-                              if (point.latitude.toString() != '0.0') Navigator.of(context).pop();
-                            },
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left: 15.0),
-                      child: Visibility(
-                          visible: showerrorDir,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                errorDir,
-                                style: TextStyle(
-                                  color: Colors.red[700],
-                                ),
-                              ),
-                            ],
-                          )),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            controller: preucontroller,
-                            decoration: InputDecoration(
-                                labelText: "Preu (en €)",
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(),
-                                )),
-                            maxLines: 1,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ], // Only numbers can be entered
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Visibility(
-                          visible: showerrorPreu,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                errorPreu,
-                                style: TextStyle(
-                                  color: Colors.red[700],
-                                ),
-                              ),
-                            ],
-                          )),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Column(
-                        children: <Widget>[
-                          TextFormField(
-                            controller: capcontroller,
-                            decoration: InputDecoration(
-                                labelText: "Capacitat de l'esdeveniment",
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(25.0),
-                                  borderSide: BorderSide(),
+                          Container(
+                            margin: EdgeInsets.only(left: 15.0),
+                            child: Visibility(
+                                visible: showerrorDir,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      errorDir,
+                                      style: TextStyle(
+                                        color: Colors.red[700],
+                                      ),
+                                    ),
+                                  ],
                                 )),
-                            maxLines: 1,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Visibility(
-                          visible: showerrorCap,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                errorCap,
-                                style: TextStyle(
-                                  color: Colors.red[700],
+                          Container(
+                            margin: EdgeInsets.only(top: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: preucontroller,
+                                  decoration: InputDecoration(
+                                      labelText: "Preu (en €)",
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25.0),
+                                        borderSide: BorderSide(),
+                                      )),
+                                  maxLines: 1,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ], // Only numbers can be entered
                                 ),
-                              ),
-                            ],
-                          )),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0),
-                      child: Column(
-                        children: <Widget>[
-                          TextField(
-                              controller: imgcontroller,
-                              decoration: InputDecoration(
-                                  labelText: "Afegeix un enllaç d'imatge",
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(25.0),
-                                    borderSide: BorderSide(),
-                                  )),
-                              maxLines: 1),
-                          Text(
-                            'Per afegir una imatge és obligatori que estigui pujada a internet',
-                            style: TextStyle(fontSize: 10),
-                          )
-                        ],
-                      ),
-                      /*child: Row(
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Visibility(
+                                visible: showerrorPreu,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      errorPreu,
+                                      style: TextStyle(
+                                        color: Colors.red[700],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                TextFormField(
+                                  controller: capcontroller,
+                                  decoration: InputDecoration(
+                                      labelText: "Capacitat de l'esdeveniment",
+                                      fillColor: Colors.white,
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(25.0),
+                                        borderSide: BorderSide(),
+                                      )),
+                                  maxLines: 1,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Visibility(
+                                visible: showerrorCap,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      errorCap,
+                                      style: TextStyle(
+                                        color: Colors.red[700],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20.0),
+                            child: Column(
+                              children: <Widget>[
+                                TextField(
+                                    controller: imgcontroller,
+                                    decoration: InputDecoration(
+                                        labelText: "Afegeix un enllaç d'imatge",
+                                        fillColor: Colors.white,
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(25.0),
+                                          borderSide: BorderSide(),
+                                        )),
+                                    maxLines: 1),
+                                Text(
+                                  'Per afegir una imatge és obligatori que estigui pujada a internet',
+                                  style: TextStyle(fontSize: 10),
+                                )
+                              ],
+                            ),
+                            /*child: Row(
                       children: <Widget>[
                         Text(
                           'Selecciona una imatge (Opcional): '
@@ -360,135 +365,142 @@ class _ModificaState extends State<Modifica> {
                             )
                         )],
                     ),*/
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0, left: 10.0),
-                      child: Column(
-                        children: <Widget>[
-                          DropdownButton<String>(
-                            value: tipus,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                tipus = newValue;
-                              });
-                            },
-                            items: <String>[
-                              'Escull el tipus d\'esdeveniment',
-                              'Musica',
-                              'Teatre',
-                              'Esports',
-                              'Art',
-                              'Altres'
-                            ].map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: new Text(value),
-                              );
-                            }).toList(),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Visibility(
-                          visible: showerrorPicklist,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                errorPicklist,
-                                style: TextStyle(
-                                  color: Colors.red[700],
-                                ),
-                              ),
-                            ],
-                          )),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 20.0, left: 10.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text('Introdueix la Data de l\'Esdeveniment'),
+                          ),
                           Container(
-                            margin: EdgeInsets.only(left: 60.0, right: 70.0),
-                            child: DateTimeField(
-                                format: format,
-                                initialValue: _data,
-                                onShowPicker: (context, currentValue) async {
-                                  final date = await showDatePicker(
-                                    context: context,
-                                    initialDate: currentValue ?? DateTime.now(),
-                                    firstDate: DateTime(1900),
-                                    lastDate: DateTime(2100),
-                                  );
-                                  _data = date;
-                                  return _data;
-                                }),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0, left: 10.0),
-                      child: Column(
-                        children: <Widget>[
-                          Text('Introdueix l\'hora de l\'Esdeveniment'),
+                            margin: EdgeInsets.only(top: 20.0, left: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                DropdownButton<String>(
+                                  value: tipus,
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      tipus = newValue;
+                                    });
+                                  },
+                                  items: <String>[
+                                    'Escull el tipus d\'esdeveniment',
+                                    'Musica',
+                                    'Teatre',
+                                    'Esports',
+                                    'Art',
+                                    'Altres'
+                                  ].map<DropdownMenuItem<String>>(
+                                      (String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: new Text(value),
+                                    );
+                                  }).toList(),
+                                )
+                              ],
+                            ),
+                          ),
                           Container(
-                            margin: EdgeInsets.only(left: 70.0, right: 94.0),
-                            child: DateTimeField(
-                                format: formath,
-                                initialValue: _hora,
-                                onShowPicker: (context, currentValue) async {
-                                  final time = await showTimePicker(
-                                    context: context,
-                                    initialTime: TimeOfDay.fromDateTime(
-                                        currentValue ?? DateTime.now()),
-                                  );
-                                  _hora = DateTimeField.convert(time);
-                                  return _hora;
-                                }),
-                          )
+                            child: Visibility(
+                                visible: showerrorPicklist,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      errorPicklist,
+                                      style: TextStyle(
+                                        color: Colors.red[700],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 20.0, left: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Text('Introdueix la Data de l\'Esdeveniment'),
+                                Container(
+                                  margin:
+                                      EdgeInsets.only(left: 60.0, right: 70.0),
+                                  child: DateTimeField(
+                                      format: format,
+                                      initialValue: _data,
+                                      onShowPicker:
+                                          (context, currentValue) async {
+                                        final date = await showDatePicker(
+                                          context: context,
+                                          initialDate:
+                                              currentValue ?? DateTime.now(),
+                                          firstDate: DateTime(1900),
+                                          lastDate: DateTime(2100),
+                                        );
+                                        _data = date;
+                                        return _data;
+                                      }),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10.0, left: 10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Text('Introdueix l\'hora de l\'Esdeveniment'),
+                                Container(
+                                  margin:
+                                      EdgeInsets.only(left: 70.0, right: 94.0),
+                                  child: DateTimeField(
+                                      format: formath,
+                                      initialValue: _hora,
+                                      onShowPicker:
+                                          (context, currentValue) async {
+                                        final time = await showTimePicker(
+                                          context: context,
+                                          initialTime: TimeOfDay.fromDateTime(
+                                              currentValue ?? DateTime.now()),
+                                        );
+                                        _hora = DateTimeField.convert(time);
+                                        return _hora;
+                                      }),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 10.0, left: 20.0),
+                            child: Visibility(
+                                visible: showerrorDataHora,
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      errorDataHora,
+                                      style: TextStyle(
+                                        color: Colors.red[700],
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: 10.0, left: 10.0),
+                              child: Row(
+                                children: <Widget>[
+                                  RaisedButton(
+                                    color: Colors.blue,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(18.0),
+                                    ),
+                                    child: Text(
+                                      'Actualitza',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onPressed: () => {publicaEsdeveniment()},
+                                  )
+                                ],
+                              )),
                         ],
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0, left: 20.0),
-                      child: Visibility(
-                          visible: showerrorDataHora,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                errorDataHora,
-                                style: TextStyle(
-                                  color: Colors.red[700],
-                                ),
-                              ),
-                            ],
-                          )),
-                    ),
-                    Container(
-                        margin: EdgeInsets.only(top: 10.0, left: 10.0),
-                        child: Row(
-                          children: <Widget>[
-                            RaisedButton(
-                              color: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                              ),
-                              child: Text(
-                                'Actualitza',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              onPressed: () => {publicaEsdeveniment()},
-                            )
-                          ],
-                        )),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
         ),
       ),
     );
@@ -498,8 +510,8 @@ class _ModificaState extends State<Modifica> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
 
-    final EsdevenimentEspecificModel event =
-    await http_esdevenimentespecific(id,'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=');
+    final EsdevenimentEspecificModel event = await http_esdevenimentespecific(
+        id, 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=');
     //ModificaEsdevenimentModel event;
     /*_rate = event.controller.rating;
     print(event.controller.title);
@@ -512,29 +524,28 @@ class _ModificaState extends State<Modifica> {
 
      */
 
-
     setState(() {
       cookie = stringValue;
 
       /*if (event.controller.title != null) _esperaCarrega = false;*/
-      print('PRINTPRINT : '+event.checkInDate.toString().split('.')[0]);
-      print('PRINTPRINT : '+event.title.toString());
-      print('PRINTPRINT : '+_esperaCarrega.toString());
+      print('PRINTPRINT : ' + event.checkInDate.toString().split('.')[0]);
+      print('PRINTPRINT : ' + event.title.toString());
+      print('PRINTPRINT : ' + _esperaCarrega.toString());
       if (event.title != null) _esperaCarrega = false;
-      print('PRINTPRINT : '+_esperaCarrega.toString());
+      print('PRINTPRINT : ' + _esperaCarrega.toString());
 
-    mi = MyInfo(
-        null,
-        event.title,
-        event.description,
-        event.capacity,
-        event.checkInDate,
-        event.location,
-        'org',
-        event.tipus,
-        event.price,
-        event.image
-        /*id,
+      mi = MyInfo(
+          null,
+          event.title,
+          event.description,
+          event.capacity,
+          event.checkInDate,
+          event.location,
+          'org',
+          event.tipus,
+          event.price,
+          event.image
+          /*id,
         'Kiko Rivera on Tour',
         'El Kiko Rivera torna a Barcelona en el seu tour per Europa',
         12,
@@ -543,20 +554,21 @@ class _ModificaState extends State<Modifica> {
         "club",
         "Teatre",
         25,
-        "google.com/foto"*/);
+        "google.com/foto"*/
+          );
 
-        _data = DateTime.parse(mi.checkInDate);
-        _hora = DateTime.parse(mi.checkInDate);
+      _data = DateTime.parse(mi.checkInDate);
+      _hora = DateTime.parse(mi.checkInDate);
 
-        nomcontroller.text = mi.title;
-        dircontroller.text = mi.location.toString().split('--')[0];
-        var coord =  mi.location.toString().split('--')[1];
-        coordenades = coord;
-        descrcontroller.text = mi.description;
-        preucontroller.text = mi.preu.toString();
-        imgcontroller.text = mi.img;
-        tipus = mi.tipus;
-        capcontroller.text = mi.capacity.toString();
+      nomcontroller.text = mi.title;
+      dircontroller.text = mi.location.toString().split('--')[0];
+      var coord = mi.location.toString().split('--')[1];
+      coordenades = coord;
+      descrcontroller.text = mi.description;
+      preucontroller.text = mi.preu.toString();
+      imgcontroller.text = mi.img;
+      tipus = mi.tipus;
+      capcontroller.text = mi.capacity.toString();
     });
   }
 
@@ -637,8 +649,8 @@ class _ModificaState extends State<Modifica> {
     //Si no hi ha errors enviarem les dades al BackEnd i redirigirem la pantalla a la de l'esdeveniment/la principal
     if (!someError) {
       //Envia data al backend i redirecciona
-      _callbackend( cookie,  id,  nom,  descripcio,  capacity,  preu,  data,hora,  dir,  services,  img,  tipus);
-
+      _callbackend(cookie, id, nom, descripcio, capacity, preu, data, hora, dir,
+          services, img, tipus);
     }
   }
 
@@ -649,21 +661,32 @@ class _ModificaState extends State<Modifica> {
   _goBack() {
     Navigator.pop(context, false);
     runApp(MaterialApp(
-      home: Mostra(idevent: idfake),
+      home: Mostra(idevent: id),
     ));
   }
 
-  void _callbackend(String cookie, int id, String nom, String descripcio, String capacity, String preu, String data,String hora, String dir, List<dynamic> services, String img, String tipus ) async {
-    String datahora = data+'T'+hora+'Z';
-    final ModificaEsdevenimentModel event =
-        await http_modificaesdeveniment(
+  void _callbackend(
+      String cookie,
+      int id,
+      String nom,
+      String descripcio,
+      String capacity,
+      String preu,
+      String data,
+      String hora,
+      String dir,
+      List<dynamic> services,
+      String img,
+      String tipus) async {
+    String datahora = data + 'T' + hora + 'Z';
+    final ModificaEsdevenimentModel event = await http_modificaesdeveniment(
         cookie,
         id,
         nom,
         descripcio,
         int.parse(capacity),
         int.parse(preu),
-            datahora,
+        datahora,
         dir,
         coordenades,
         services,

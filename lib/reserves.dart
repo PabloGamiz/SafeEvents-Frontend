@@ -400,7 +400,7 @@ class _PantallaReserva extends State<Reserves> {
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
-                home: LectorQr(),
+                home: Structure(),
               )),
             });
 
