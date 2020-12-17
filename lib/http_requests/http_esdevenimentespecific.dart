@@ -11,8 +11,6 @@ Future<EsdevenimentEspecificModel> http_esdevenimentespecific(
   var queryParamaters = {'id': id, 'cookie': cookie};
   final jsonID = json.encode(queryParamaters);
   final response = await http.post(apitUrl, body: jsonID);
-  print(response.statusCode);
-  print(response.body);
   if (response.statusCode == 201 || response.statusCode == 200) {
     print('Status code = ' + response.statusCode.toString());
     final EsdevenimentEspecificModel list =
