@@ -23,6 +23,7 @@ class EsdevenimentEspecificModel {
     this.tipus,
     this.faved,
     this.taken,
+    this.esorg,
   });
 
   String title;
@@ -38,6 +39,7 @@ class EsdevenimentEspecificModel {
   String tipus;
   bool faved;
   int taken;
+  bool esorg;
 
   factory EsdevenimentEspecificModel.fromJson(Map<String, dynamic> json) => EsdevenimentEspecificModel(
     title: json["title"],
@@ -53,6 +55,7 @@ class EsdevenimentEspecificModel {
     tipus: json["tipus"],
     faved: json["Faved"],
     taken: json["Taken"],
+    esorg: json["esorg"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -69,5 +72,6 @@ class EsdevenimentEspecificModel {
     "tipus": tipus,
     "Faved": faved,
     "Taken": taken,
+    "esorg": esorg,
   };
 }

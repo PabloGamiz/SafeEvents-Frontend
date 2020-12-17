@@ -7,12 +7,13 @@ Future<List<ListEsdevenimentsModel>> http_esdevenimentsrecomanats(String cookie)
   final String apitUrl = "http://10.4.41.148:8080/event/recomanaEv";
 
   var json = {
-    'cookie': "nq8uw8MDvaN0VavKoxLodIaBii7DzhDChsC5RxqiSMY="
+    'cookie': cookie
   };
   String jsonStr = jsonEncode(json);
   print('S\'envia '+ jsonStr);
   final response = await http.put(apitUrl,headers: { "Content-Type" : "application/json"}, body:jsonStr );
   print('RESPONSE STATUS: '+ response.statusCode.toString());
+  print('Status code = '+response.body.toString());
   if (response.statusCode == 201 || response.statusCode == 200) {
     final listEsdevenimentsModel =
     listEsdevenimentsModelFromJson(response.body);

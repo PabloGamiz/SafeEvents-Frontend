@@ -31,6 +31,7 @@ class Debouncer {
 }
 
 class EsdevenimentsRecomanats extends StatefulWidget {
+  final _debouncer = Debouncer(milliseconds: 500);
   @override
   _EsdevenimentsRecomanatsState createState() => _EsdevenimentsRecomanatsState();
 }
@@ -42,15 +43,7 @@ class _EsdevenimentsRecomanatsState extends State {
 
   bool registered = false;
 
-  _comprovarSessio() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('cookie');
-    cookie = stringValue;
-    if (stringValue != null)
-      registered = true;
-    else
-      registered = false;
-  }
+
 
   List likeds = List.filled(100, false);
 
@@ -70,16 +63,32 @@ class _EsdevenimentsRecomanatsState extends State {
   List<ListEsdevenimentsModel> generalEvents = List();
 
   List<ListEsdevenimentsModel> filteredEvents = List();
+  _comprovarSessio() async {
+    await SharedPreferences.getInstance().then((value) {
+      cookie = value.getString('cookie');
+    });
+    print ('COOKIE11111: '+cookie);
 
-  void initState() {
-    super.initState();
-    _comprovarSessio();
+    if (cookie != null)
+      registered = true;
+    else
+      registered = false;
+
     http_esdevenimentsrecomanats(cookie).then((eventsFromServer) {
       setState(() {
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
+
+        print('Llista desd_: '+filteredEvents.toString());
       });
-    });/*
+    });
+  }
+
+  void initState()  {
+
+    _comprovarSessio();
+    super.initState();
+    /*
     final list = new List<ListEsdevenimentsModel>();
     Controller c = new Controller();
 
@@ -105,17 +114,6 @@ class _EsdevenimentsRecomanatsState extends State {
     });*/
     print('LLISTA : '+generalEvents.toString());
   }
-/*
-  int sumadelpreu(ListEsdevenimentsModel l) {
-    int suma = 0;
-    for (Service s in l.controller.services) {
-      for (Product p in s.products) {
-        suma = suma + p.price;
-      }
-    }
-    return suma;
-  }*/
-
   Widget build(BuildContext context) {
     if (registered /*&& filteredEvents.length > 0*/) {
       return MaterialApp(

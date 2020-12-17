@@ -60,6 +60,7 @@ class MyInfo {
   String tipus;
   bool faved;
   int taken;
+  bool esorg;
 
   MyInfo(
       int id,
@@ -74,7 +75,7 @@ class MyInfo {
       String image,
       String tipus,
       bool faved,
-      int taken) {
+      int taken, bool esorg) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -98,6 +99,7 @@ class MyInfo {
     this.tipus = tipus;
     this.faved = faved;
     this.taken = taken;
+    this.esorg = esorg;
   }
 }
 
@@ -674,6 +676,7 @@ class _MostraState extends State<Mostra> {
         event.tipus,
         event.faved,
         event.taken,
+        event.esorg
       );
     });
     final Marker marker = Marker(
@@ -686,7 +689,8 @@ class _MostraState extends State<Mostra> {
 
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra per editar
-    return true;
+    if(mi.esorg)return true;
+    return false;
   }
 
   _doFeedback() {
