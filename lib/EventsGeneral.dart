@@ -65,7 +65,7 @@ class _GeneralEventsState extends State {
       registered = false;
   }
 
-  List<FavsModel> favs = List();
+  List<FavsModel> favs;
 
   String _defaultValue;
 
@@ -73,15 +73,18 @@ class _GeneralEventsState extends State {
 
   List categories = [
     '',
-    'Música',
-    'Teatro',
-    'Deporte',
-    'Arte'
+    'Musica',
+    'Teatre',
+    'Esports',
+    'Art',
+    'Altres'
   ]; //nombre de las categorias
 
   bool liked(int id) {
-    for (int i = 0; i < favs.length; ++i) {
-      if (favs[i].id == id) return true;
+    if (favs != null) {
+      for (int i = 0; i < favs.length; ++i) {
+        if (favs[i].id == id) return true;
+      }
     }
     return false;
   }
@@ -100,14 +103,17 @@ class _GeneralEventsState extends State {
         print(filteredEvents.length);
       });
     });
-    http_Favs().then((favourites) {
-      setState(() {
-        favs = favourites;
-      });
-    });
   }
 
   Widget build(BuildContext context) {
+    http_Favs().then((favourites) {
+      setState(() {
+        if (favourites == null)
+          favs = List();
+        else
+          favs = favourites;
+      });
+    });
     if (registered && filteredEvents.length > 0) {
       return MaterialApp(
           home: Scaffold(
@@ -379,11 +385,14 @@ class _GeneralEventsState extends State {
                           SizedBox(
                             width: 25,
                           ),
-                          Expanded(
-                            child: Text('45€',
-                                /*sumadelpreu(filteredEvents[index]).toString(),*/
-                                style: TextStyle(
-                                    fontSize: 40, color: Colors.white)),
+                          Container(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text('45€',
+                                  /*sumadelpreu(filteredEvents[index]).toString(),*/
+                                  style: TextStyle(
+                                      fontSize: 40, color: Colors.white)),
+                            ),
                           ),
                           Expanded(
                             //color: Colors.red,
@@ -506,6 +515,7 @@ class _GeneralEventsState extends State {
   _esdevenimentEspecific(int index) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('liked', liked(filteredEvents[index].id));
+    print(liked(filteredEvents[index].id));
     runApp(MaterialApp(
       home: Mostra(idevent: filteredEvents[index].id),
     ));

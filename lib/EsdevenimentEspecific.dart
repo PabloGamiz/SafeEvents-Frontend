@@ -17,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
 
+import 'Structure.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
 import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
@@ -27,10 +28,6 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
-
-import 'http_requests/http_favs.dart';
-
-import 'http_models/FavsModel.dart';
 
 //Variables globals
 int idfake = 20;
@@ -64,22 +61,33 @@ class MyInfo {
   bool faved;
   int taken;
 
-  MyInfo(int id, String title, String desc, int cap, DateTime date,
-      String location, dynamic organizers, dynamic services, int preu, String image, String tipus, bool faved, int taken ) {
+  MyInfo(
+      int id,
+      String title,
+      String desc,
+      int cap,
+      DateTime date,
+      String location,
+      dynamic organizers,
+      dynamic services,
+      int preu,
+      String image,
+      String tipus,
+      bool faved,
+      int taken) {
     this.id = id;
     this.title = title;
     this.description = desc;
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
     //format String location esdeveniment=> nom localitzacio + '--' + lat + ';' + long
-    if(location != null){
+    if (location != null) {
       var loc = location.split('--');
       var loc2 = loc[1];
       var loc1 = loc[0];
       this.location = loc2;
       this.address = loc1;
-    }
-    else{
+    } else {
       this.location = location;
       this.address = location;
     }
@@ -129,6 +137,9 @@ class _MostraState extends State<Mostra> {
   void liked() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     like = prefs.getBool('liked');
+    if (like == null) {
+      like = false;
+    }
   }
 
   Future<bool> _onBackPressed() async {
@@ -138,7 +149,6 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -179,10 +189,12 @@ class _MostraState extends State<Mostra> {
                               child: Column(
                                 children: [
                                   Container(
-                                    height: 13,
+                                    height: 17,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color: _colorFav,
+                                      color: (like == false || like == null)
+                                          ? Colors.white
+                                          : Colors.red,
                                       onPressed: () => {_doFav()},
                                     ),
                                     alignment: Alignment(1, 1),
@@ -477,8 +489,13 @@ class _MostraState extends State<Mostra> {
                                   child: GoogleMap(
                                     onMapCreated: _onMapCreated,
                                     initialCameraPosition: CameraPosition(
-                                      target: LatLng(double.parse(mi.location.toString().split(';')[0]),
-                                          double.parse(mi.location.toString().split(';')[1])), //location.coordenates
+                                      target: LatLng(
+                                          double.parse(mi.location
+                                              .toString()
+                                              .split(';')[0]),
+                                          double.parse(
+                                              mi.location.toString().split(';')[
+                                                  1])), //location.coordenates
                                       zoom: 15.4746,
                                     ),
                                     markers: _markers,
@@ -590,9 +607,6 @@ class _MostraState extends State<Mostra> {
         http_addfavourite(cookie, id);
       }
       like != like;
-      if (_colorFav == Colors.white)
-        _colorFav = Colors.red;
-      else if (_colorFav == Colors.red) _colorFav = Colors.white;
     });
   }
 
@@ -614,7 +628,6 @@ class _MostraState extends State<Mostra> {
 
      */
 
-
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -626,7 +639,7 @@ class _MostraState extends State<Mostra> {
 
       print(_esperaCarrega);
       /*test */
-       /*mi = MyInfo(
+      /*mi = MyInfo(
           id,
           'KIKO RIVERA ON TOUR',
           'El Kiko Rivera es una bestia',
@@ -655,28 +668,26 @@ class _MostraState extends State<Mostra> {
 //    });
 
       mi = MyInfo(
-          null,
-          event.title,
-          event.description,
-          event.capacity,
-          event.checkInDate,
-          event.location,
-          event.organizers,
-          event.services,
-          event.price,
-          event.image,
-          event.tipus,
-          event.faved,
-          event.taken,
+        null,
+        event.title,
+        event.description,
+        event.capacity,
+        event.checkInDate,
+        event.location,
+        event.organizers,
+        event.services,
+        event.price,
+        event.image,
+        event.tipus,
+        event.faved,
+        event.taken,
       );
-
     });
     final Marker marker = Marker(
         markerId: MarkerId('palau'),
         position: LatLng(double.parse(mi.location.toString().split(';')[0]),
             double.parse(mi.location.toString().split(';')[1])),
-        infoWindow: InfoWindow(
-            title: mi.address, snippet: mi.title));
+        infoWindow: InfoWindow(title: mi.address, snippet: mi.title));
     _markers.add(marker);
   }
 
@@ -694,7 +705,6 @@ class _MostraState extends State<Mostra> {
   }
 
   _contrata() async {
-
     runApp(MaterialApp(
       home: Reserves(
         entradas: (mi.capacity - mi.taken),
@@ -715,7 +725,7 @@ class _MostraState extends State<Mostra> {
     bool veDeRecomanats = false;
     if (!veDeRecomanats) {
       runApp(MaterialApp(
-        home: EventsGeneral(),
+        home: Structure(),
       ));
     } else {
       runApp(MaterialApp(
@@ -727,7 +737,6 @@ class _MostraState extends State<Mostra> {
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
-
 }
 
 _contacta() {
