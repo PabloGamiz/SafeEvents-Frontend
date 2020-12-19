@@ -19,6 +19,7 @@ TextEditingController dircontroller = new TextEditingController();
 TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
 TextEditingController capcontroller = new TextEditingController();
+TextEditingController mesurescontroller = new TextEditingController();
 
 void main() => runApp(MaterialApp(
   title: "PublicaEvents",
@@ -155,21 +156,33 @@ class _PublishState extends State<Publish> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 20.0),
-                    child: Column(
-                      children: <Widget>[
-                        /*TextFormField(
-                          key: Key('diresdeveniment'),
-                        controller: dircontroller,
+                    child: TextFormField(
+                        controller: mesurescontroller,
                         decoration: InputDecoration(
-                            labelText: "Direcció de l\'Esdeveniment",
+                            labelText: "Afegeix mesures contra el COVID",
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
                               borderSide: BorderSide(),
                             )
                         ),
-                        maxLines: 1
-                      ),*/AddressSearchTextField(
+                        maxLines: 3
+                    ),
+                  ),
+                  Container(
+                      child: Text(
+                        'Afegeix una mesura COVID per línia',
+                        style: TextStyle(
+                            fontSize: 10
+                        ),
+                      ),
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.only(top: 20.0),
+                    child: Column(
+                      children: <Widget>[
+                        AddressSearchTextField(
                           country: "Spain",//TODO passar pais
                           controller: dircontroller,
                           hintText: 'Introdueix la direcció',
@@ -431,6 +444,7 @@ class _PublishState extends State<Publish> {
                         )
                     ),
                   ),
+
                   Container(
                     margin: EdgeInsets.only(top: 10.0, left: 10.0),
                     child: Row(
@@ -466,6 +480,8 @@ class _PublishState extends State<Publish> {
   }
 
   publicaEsdeveniment() {
+
+
     var nom = nomcontroller.text;
     var descripcio = descrcontroller.text;
     var dir = dircontroller.text;
@@ -533,12 +549,14 @@ class _PublishState extends State<Publish> {
 
     }
   _cridabackend(String nom, String descripcio,String capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
+    var mesura = mesurescontroller.text;
+    List<String> mesuresCOVID = mesura.split('\n');
     String datahora = data+'T'+hora+'Z';
-    print('datahora '+datahora);
+    print('Mesures contr '+mesurescontroller.text);
     print(coordenades);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String cookie = prefs.getString('cookie');
-    final ModificaEsdevenimentModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus);
+    final ModificaEsdevenimentModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus, mesuresCOVID);
     //event.id
     runApp(MaterialApp(
       home: Mostra(idevent: event.controller.id),

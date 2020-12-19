@@ -42,7 +42,7 @@ bool liked;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(idevent: 4),
+      home: Mostra(idevent: 5),
     ));
 
 class MyInfo {
@@ -54,7 +54,8 @@ class MyInfo {
   String location;
   String address;
   dynamic organizers;
-  dynamic services;
+  dynamic service;
+  String services;
   int preu;
   String image;
   String tipus;
@@ -93,7 +94,18 @@ class MyInfo {
       this.address = location;
     }
     this.organizers = organizers;
-    this.services = services;
+    String serv = '';
+    if(services != null) {
+      for (String s in services) {
+        if (s != null) {
+          serv = serv + '-' +s + '\n';
+          print('0SERV ins ' + serv);
+        }
+      }
+      print('0SERV FORA ' + serv);
+    }
+
+    this.services = serv;
     this.preu = preu;
     this.image = image;
     this.tipus = tipus;
@@ -529,9 +541,10 @@ class _MostraState extends State<Mostra> {
                                           color: Colors.white.withOpacity(1)),
                                     ),
                                     Text(
-                                      "-Mascareta obligatòria\n"
+                                      /*"-Mascareta obligatòria\n"
                                       "-Dispensador de gel hidroalcohòlic\n"
-                                      "-Aforament reduït al 60%\n",
+                                      "-Aforament reduït al 60%\n",*/
+                                      mi.services,
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 20,
                                       style: TextStyle(
@@ -612,17 +625,6 @@ class _MostraState extends State<Mostra> {
     //cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
     final EsdevenimentEspecificModel event =
         await http_esdevenimentespecific(id, cookie);
-    /*_rate = event.controller.rating;
-    print(event.controller.title);
-    print(event.controller.description);
-    print(event.controller.capacity);
-    print(event.controller.checkInDate);
-    print(event.controller.location);
-    //print(event.controller.organizers);
-    //print(event.controller.services);
-
-     */
-
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -670,7 +672,9 @@ class _MostraState extends State<Mostra> {
         event.checkInDate,
         event.location,
         event.organizers,
-        event.services,
+        /*event.services,*/["Mascareta obligatòria",
+          "Dispensador de gel hidroalcohòlic",
+          "Aforament reduït al 60%"],
         event.price,
         event.image,
         event.tipus,
