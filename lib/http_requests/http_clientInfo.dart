@@ -7,12 +7,12 @@ import 'package:safeevents/http_models/ClientInfoModel.dart';
 Future<ClientInfoMod> fetchClient(int id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String stringValue = prefs.getString('cookie');
-  var uri = Uri.http('10.4.41.148:9090', '/clientInfo/');
+  var uri = Uri.http('10.4.41.148:8080', '/clientInfo');
   var body;
   if (id != 0) {
-    body = {"id": id, "cookie": stringValue};
+    body = jsonEncode({"id": id, "cookie": stringValue});
   } else {
-    body = {"id": 0, "cookie": stringValue};
+    body = jsonEncode({"id": 0, "cookie": stringValue});
   }
   final response = await http.put(
     uri,
@@ -21,12 +21,12 @@ Future<ClientInfoMod> fetchClient(int id) async {
   if (response.statusCode == 200) {
     return clientInfoModFromJson(response.body);
   } else {
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load client info');
   }
 }
 
 Future<ClientInfoMod> fetchLocalClient(int id) async {
-  return clientInfoModFromJson(json.encode(testClient2));
+  return clientInfoModFromJson(json.encode(testClient));
 }
 
 var testClient = {
@@ -40,17 +40,38 @@ var testClient = {
         "title": "EventExample - Demo",
         "description": "Its an event for example",
         "capacity": 15000,
-        "taken": 35,
+        "taken": 87,
+        "price": 0,
+        "checkInDate": "2020-11-29T11:11:36.55+01:00",
+        "closureDate": "2020-11-29T11:11:36.55+01:00",
+        "location":
+            "Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593",
+        "feedbacks": null,
+        "services": null,
+        "createdAt": "2020-12-14T17:42:24.721+01:00",
+        "updatedAt": "2020-12-17T17:39:03.174+01:00",
+        "image":
+            "https://i.pinimg.com/originals/12/46/9c/12469c8a50bcb6e344589c43eb7db72c.jpg",
+        "tipus": "Altres",
+        "mesures": ""
+      },
+      {
+        "id": 7,
+        "title": "ElHectorLatino",
+        "description": "Its an event for example",
+        "capacity": 15000,
+        "taken": 0,
         "price": 0,
         "checkInDate": "2020-11-29T11:11:36.55+01:00",
         "closureDate": "2020-11-29T11:11:36.55+01:00",
         "location": "Barcelona",
         "feedbacks": null,
         "services": null,
-        "createdAt": "2020-12-09T16:21:26.799+01:00",
-        "updatedAt": "2020-12-09T17:42:21.627+01:00",
+        "createdAt": "2020-12-17T17:28:18.051+01:00",
+        "updatedAt": "2020-12-17T17:28:18.051+01:00",
         "image": "",
-        "tipus": ""
+        "tipus": "",
+        "mesures": ""
       }
     ]
   },
@@ -62,9 +83,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.085+01:00",
+        "option": 1,
+        "qr_code": "nYe_xRBDjyTzNL6Iq18OVK98aqOCvILIQPwPw_QDMuM=",
+        "createdAt": "2020-12-14T17:43:10.248+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -72,9 +94,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.095+01:00",
+        "option": 1,
+        "qr_code": "X3262uY7nAZRaPNhFFSiXKJ5Eia1uT6GPC7iHNNwo1U=",
+        "createdAt": "2020-12-14T17:43:10.255+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -82,9 +105,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.106+01:00",
+        "option": 1,
+        "qr_code": "5Gjb1XkMra2De9QJc9tcMAeeyuzkRQ8lJvxg8yF4Z_0=",
+        "createdAt": "2020-12-14T17:43:10.264+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -92,9 +116,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.147+01:00",
+        "option": 1,
+        "qr_code": "kaVIXa2__XBeWFIRkuDaF11bpif6aQv06aiBPK2FaAk=",
+        "createdAt": "2020-12-14T17:43:10.27+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -102,9 +127,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.155+01:00",
+        "option": 1,
+        "qr_code": "NdESgCjXuXnhc_ccjF0oX126brR54sr3-TDK8k7D7vQ=",
+        "createdAt": "2020-12-14T17:43:10.276+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -112,9 +138,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.162+01:00",
+        "option": 1,
+        "qr_code": "h0DJG_5qc1E8mubqDRV_mMPGA0dyNFnZ82YaJH899js=",
+        "createdAt": "2020-12-14T17:43:10.282+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -122,9 +149,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.169+01:00",
+        "option": 1,
+        "qr_code": "tMhSudoX6iaznnOcldwtxdVbnxS99UbjdhPw8XGXsjQ=",
+        "createdAt": "2020-12-14T17:43:10.288+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -132,9 +160,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.181+01:00",
+        "option": 1,
+        "qr_code": "ym5dcOBF4Ikspov1RrbGS-z2mNLKgxQlBAA7mKgO4_I=",
+        "createdAt": "2020-12-14T17:43:10.296+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -142,9 +171,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.189+01:00",
+        "option": 1,
+        "qr_code": "ATiMqi6HcneugNbxOLchjTShu3GEwJaRNtLjQO7eUiA=",
+        "createdAt": "2020-12-14T17:43:10.301+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -152,9 +182,10 @@ var testClient = {
         "description": "testing",
         "event_id": 1,
         "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:21:45.202+01:00",
+        "option": 1,
+        "qr_code": "HPg6NZPjDd-Xmv0tP8ylAW4eNaov8dzFz3OUEQseRFE=",
+        "createdAt": "2020-12-14T17:43:10.308+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -163,8 +194,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "C9K3ugBK13xV0hn6Gr9YkBlIb-oC1Z9dBv9QUcJCnhw=",
-        "createdAt": "2020-12-09T16:21:50.569+01:00",
+        "qr_code": "HKCTeL_kcdd7lhmOeP1Str-TsCRXS-aJV0ILy7oQ3f8=",
+        "createdAt": "2020-12-14T17:43:10.314+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -173,8 +205,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "OeHFV94-RA2LjrnDVIihqJjuTMKzFlgPyZgNn_pzx0I=",
-        "createdAt": "2020-12-09T16:21:50.579+01:00",
+        "qr_code": "5ItfVmXgBxNFVZUqYisIVzWWuBg3MD9rpbOUQ-4RC8s=",
+        "createdAt": "2020-12-14T17:43:10.321+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -183,8 +216,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "1IEpp6Y-vVsgv0_NcfR36lN6T-Q-EPrB5DI8q4XpK7Y=",
-        "createdAt": "2020-12-09T16:21:50.587+01:00",
+        "qr_code": "OzJ8ALmvpXKu2sIi_TE4Jz6oMsu56_rxkKu-ci8Gews=",
+        "createdAt": "2020-12-14T17:43:10.327+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -193,8 +227,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "5KOUBPHGVqL7b2aFj8Iz09FtSVqUfhOc4IzN-GAmKnw=",
-        "createdAt": "2020-12-09T16:21:50.594+01:00",
+        "qr_code": "WBl6GuNhE5yglI_uOq_h_r4WDbZUWx4ROvu1FRn1fRE=",
+        "createdAt": "2020-12-14T17:43:10.333+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -203,8 +238,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "8Mb8jPc2ziPyU-aGm_HfY9Ao3A1CgPH28GK6VjbIPl0=",
-        "createdAt": "2020-12-09T16:21:50.602+01:00",
+        "qr_code": "bk79I7Fpd5pEEsGIrekM4kpzQuGFq6Ye8s2vuI2QlSk=",
+        "createdAt": "2020-12-14T17:43:10.339+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -213,8 +249,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "O3sAmKwgiKGC5PsMuCIkcOrtrv-VrxQ19Or9Nzjc6b4=",
-        "createdAt": "2020-12-09T16:21:50.61+01:00",
+        "qr_code": "Y2-uTjpxSAlmM63DJN0rAG6EZVNQnsbBXkkQ6gAIfCQ=",
+        "createdAt": "2020-12-14T17:43:10.346+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -223,8 +260,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "okWBxWbkXQxL2LfzhTElxGorF66sKTRe_a4MOFap-tQ=",
-        "createdAt": "2020-12-09T16:21:50.618+01:00",
+        "qr_code": "FC0SD9_HlhSAvhDmT7if6keBaEYm0UUhuc6sPWxnDp4=",
+        "createdAt": "2020-12-14T17:43:10.353+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -233,8 +271,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "3y-GUwsIdtuEOjrYfO0vaZnuwFlUSseNlMRvWl7KiDw=",
-        "createdAt": "2020-12-09T16:21:50.626+01:00",
+        "qr_code": "Ab4KkDSbqjQdlma9n1hJ28Scc_UZrqLxd6dtaRGA7mw=",
+        "createdAt": "2020-12-14T17:43:10.36+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -243,8 +282,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "6jeFx9GudUofwCe7-XBwxX61qHjPe7Ij6aO6MwxPy48=",
-        "createdAt": "2020-12-09T16:21:50.634+01:00",
+        "qr_code": "BuOTEZnwhv3rO-0l8DsGH5z_Nq_Hg9yTZF86aJ0BbvY=",
+        "createdAt": "2020-12-14T17:43:10.366+01:00",
+        "check_in": null,
         "client_id": 1
       },
       {
@@ -253,58 +293,9 @@ var testClient = {
         "event_id": 1,
         "assistant_id": 1,
         "option": 1,
-        "qr_code": "Wgo3GhMcOMONJO61G89S2RjxmH2vK9J1osW9iGEm5fY=",
-        "createdAt": "2020-12-09T16:21:50.642+01:00",
-        "client_id": 1
-      },
-      {
-        "id": 21,
-        "description": "testing",
-        "event_id": 1,
-        "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:22:37.741+01:00",
-        "client_id": 1
-      },
-      {
-        "id": 22,
-        "description": "testing",
-        "event_id": 1,
-        "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:22:37.754+01:00",
-        "client_id": 1
-      },
-      {
-        "id": 23,
-        "description": "testing",
-        "event_id": 1,
-        "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:22:37.772+01:00",
-        "client_id": 1
-      },
-      {
-        "id": 24,
-        "description": "testing",
-        "event_id": 1,
-        "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:22:37.784+01:00",
-        "client_id": 1
-      },
-      {
-        "id": 25,
-        "description": "testing",
-        "event_id": 1,
-        "assistant_id": 1,
-        "option": 0,
-        "qr_code": null,
-        "createdAt": "2020-12-09T16:22:37.796+01:00",
+        "qr_code": "m7ZIAO2ScP3lEI4TP1Pezj-7dwvbKrv5FS1Ky2FfBO0=",
+        "createdAt": "2020-12-14T17:43:10.373+01:00",
+        "check_in": null,
         "client_id": 1
       }
     ]
@@ -315,62 +306,70 @@ var testClient = {
       "title": "EventExample - Demo",
       "description": "Its an event for example",
       "capacity": 15000,
-      "taken": 35,
+      "taken": 87,
+      "price": 0,
+      "checkInDate": "2020-11-29T11:11:36.55+01:00",
+      "closureDate": "2020-11-29T11:11:36.55+01:00",
+      "location":
+          "Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593",
+      "feedbacks": null,
+      "services": null,
+      "createdAt": "2020-12-14T17:42:24.721+01:00",
+      "updatedAt": "2020-12-17T17:39:03.174+01:00",
+      "image":
+          "https://i.pinimg.com/originals/12/46/9c/12469c8a50bcb6e344589c43eb7db72c.jpg",
+      "tipus": "Altres",
+      "mesures": ""
+    },
+    {
+      "id": 7,
+      "title": "ElHectorLatino",
+      "description": "Its an event for example",
+      "capacity": 15000,
+      "taken": 0,
       "price": 0,
       "checkInDate": "2020-11-29T11:11:36.55+01:00",
       "closureDate": "2020-11-29T11:11:36.55+01:00",
       "location": "Barcelona",
       "feedbacks": null,
       "services": null,
-      "createdAt": "2020-12-09T16:21:26.799+01:00",
-      "updatedAt": "2020-12-09T17:42:21.627+01:00",
+      "createdAt": "2020-12-17T17:28:18.051+01:00",
+      "updatedAt": "2020-12-17T17:28:18.051+01:00",
       "image": "",
-      "tipus": ""
+      "tipus": "",
+      "mesures": ""
     }
   ]
 };
 
 var testClient2 = {
-  "id": 1,
-  "email": "testing@gmail.com",
-  "organizer": {
-    "id": 1,
+  "id": 2,
+  "email": "alex.rodriguez.sanchez@estudiantat.upc.edu",
+  "organize": {
+    "id": 2,
     "organizes": [
       {
-        "cookie": "",
-        "id": 0,
-        "title": "EventExample - Demo",
-        "description": "Its an event for example",
-        "capacity": 15000,
-        "organizers": "",
-        "checkInDate": "2020-11-29T11:11:36.55+01:00",
-        "closureDate": "2020-11-29T11:11:36.55+01:00",
-        "price": 0,
-        "location": "Barcelona",
+        "id": 2,
+        "title": "Lakers-Celtics",
+        "description": "Ganan los celtics seguro",
+        "capacity": 1000,
+        "taken": 0,
+        "price": 500000000,
+        "checkInDate": "2024-12-01T17:01:10+01:00",
+        "closureDate": "2024-12-01T17:01:10+01:00",
+        "location":
+            "100 Legends Way, Boston, MA 02114, \r\nEstados Unidos--42.36710512725245;-71.06182061609607",
+        "feedbacks": null,
         "services": null,
-        "image": "",
-        "tipus": "",
-        "Faved": false,
-        "Taken": 35
-      },
-      {
-        "cookie": "",
-        "id": 0,
-        "title": "Kiko Rivera on Tour",
-        "description": "A quemar el Palau",
-        "capacity": 10,
-        "organizers": "",
-        "checkInDate": "2024-12-01T18:01:10+01:00",
-        "closureDate": "2024-12-01T18:01:10+01:00",
-        "price": 5000,
-        "location": "Palau San Jorge",
-        "services": null,
+        "createdAt": "2020-12-14T18:26:24.506+01:00",
+        "updatedAt": "2020-12-14T18:26:24.506+01:00",
         "image":
-            "https://t0.gstatic.com/images?q=tbn:ANd9GcRr7G1QfG8LzmZ8dSJ22t3x51JuPf5JvPvV0DVMjwljCN1CQyMM_ytwSBboIUd6",
-        "tipus": "",
-        "Faved": false,
-        "Taken": 0
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Celtics_game_versus_the_Timberwolves%2C_February%2C_1_2009.jpg/300px-Celtics_game_versus_the_Timberwolves%2C_February%2C_1_2009.jpg",
+        "tipus": "Esports",
+        "mesures": ""
       }
     ]
-  }
+  },
+  "assist": null,
+  "favs": null
 };
