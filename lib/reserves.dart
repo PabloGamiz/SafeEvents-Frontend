@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import 'EsdevenimentEspecific.dart';
+import 'Qr.dart';
 import 'Structure.dart';
 import 'http_models/resposta_reserva_model.dart';
 import 'http_requests/http_entrades.dart';
@@ -50,6 +50,7 @@ class _PantallaReserva extends State<Reserves> {
     );
 
     final courseentrades = Container(
+      key: Key("courseentrades"),
       padding: const EdgeInsets.all(7.0),
       decoration: new BoxDecoration(
           border: new Border.all(color: Colors.white),
@@ -69,6 +70,7 @@ class _PantallaReserva extends State<Reserves> {
 
     final reservaButton = Container(
         padding: EdgeInsets.symmetric(vertical: 16.0),
+        key: Key("Reserva_reservaButton"),
         //width: MediaQuery.of(context).size.width,
         child: RaisedButton(
           onPressed: () => {
@@ -87,6 +89,7 @@ class _PantallaReserva extends State<Reserves> {
 
     final compraButton = Container(
         padding: EdgeInsets.symmetric(vertical: 16.0),
+        key: Key("Comprar_reservaButton"),
         // width: MediaQuery.of(context).size.width,
         child: RaisedButton(
           onPressed: () => {
@@ -130,6 +133,7 @@ class _PantallaReserva extends State<Reserves> {
         SizedBox(height: 30.0),
         Container(
             padding: EdgeInsets.symmetric(vertical: 10.0),
+            key: Key("seleccionar_N_entrades"),
             // width: MediaQuery.of(context).size.width,
             child: Center(
                 child: RaisedButton(
@@ -163,7 +167,9 @@ class _PantallaReserva extends State<Reserves> {
           child: InkWell(
             onTap: () {
               runApp(MaterialApp(
-                home: Mostra(),
+                home: Mostra(
+                  idevent: id,
+                ),
               ));
             },
             child: Icon(Icons.arrow_back, color: Colors.white),
@@ -200,6 +206,7 @@ class _PantallaReserva extends State<Reserves> {
   showselectnumber(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
+      key: Key("Okey_selector"),
       child: Text("OK"),
       onPressed: () => Navigator.of(context).pop(),
     );
@@ -210,6 +217,7 @@ class _PantallaReserva extends State<Reserves> {
           initialValue: 0,
           minValue: 0,
           maxValue: entradas,
+          key: Key("numberpicker_N_entrades"),
           onChanged: (newValue) => setState(() => numero = newValue)),
     ]);
 
@@ -235,6 +243,7 @@ class _PantallaReserva extends State<Reserves> {
   showAlertDialogentrades(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
+      key: Key("Okey_button_alert_compra_1"),
       child: Text("OK"),
       onPressed: () => Navigator.of(context).pop(),
     );
@@ -262,6 +271,7 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
     Widget okButton = FlatButton(
       child: Text("OK"),
+      key: Key("Okey_button_alert_reserva"),
       onPressed: () => _reserva(),
     );
 
@@ -287,6 +297,7 @@ class _PantallaReserva extends State<Reserves> {
   showAlertDialogcompra(BuildContext context) {
     Widget okButton = FlatButton(
       child: Text("OK"),
+      key: Key("Okey_button_alert_compra_2"),
       onPressed: () => _compra(),
     );
     // set up the AlertDialog
@@ -313,10 +324,17 @@ class _PantallaReserva extends State<Reserves> {
     String stringValue = prefs.getString('cookie');
     final RespostaReservaModel session =
         await http_reserva(stringValue, id, numero);
-    if (session != null)
-      prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
-    Navigator.of(context).pop();
-    showConfirmationDialog(context);
+    if (session != null) {
+      /*for (int i = 0; i < session.tickets.length; ++i)
+        prefs.setStringList(
+            'entrades_' + id.toString(), session.tickets[i].controller.id);*/
+      Navigator.of(context).pop();
+      print(session.tickets[0].controller.id);
+      showConfirmationDialog(context);
+    } else {
+      Navigator.of(context).pop();
+      showErrorDialog(context);
+    }
   }
 
   _compra() async {
@@ -325,12 +343,52 @@ class _PantallaReserva extends State<Reserves> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     final RespostaReservaModel session =
-        await http_reserva(stringValue, id, numero);
+        await http_compra(stringValue, id, numero);
 
-    if (session != null)
-      prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
-    Navigator.of(context).pop();
-    showConfirmationDialogCompra(context);
+    if (session != null) {
+      //prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
+      Navigator.of(context).pop();
+      showConfirmationDialogCompra(
+          context, session.tickets[0].controller.qrCode);
+      print(session.tickets[0].controller.qrCode);
+    } else {
+      Navigator.of(context).pop();
+      showErrorDialog(context);
+    }
+  }
+
+  showErrorDialog(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text("Continuar"),
+        key: Key("error_button_alert"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: Reserves(
+                  entradas: entradas,
+                  id: id,
+                ),
+              )),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Avis"),
+      content: Text("No s'ha pogut fer l'acció si us plau torna a intentar-ho"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   showConfirmationDialog(BuildContext context) {
@@ -338,6 +396,7 @@ class _PantallaReserva extends State<Reserves> {
 
     Widget okButton = FlatButton(
         child: Text("Continuar"),
+        key: Key("confirmation_button_alert_reserva"),
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
@@ -365,15 +424,18 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 
-  showConfirmationDialogCompra(BuildContext context) {
+  showConfirmationDialogCompra(BuildContext context, qrCode) {
     // set up the button
 
     Widget okButton = FlatButton(
         child: Text("Continuar"),
+        key: Key("confirmation_button_alert_compra"),
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
-                home: Structure(),
+                home: QR(
+                  qrCode: qrCode,
+                ),
               )),
             });
 
@@ -397,6 +459,23 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 }
+
+/*
+_compra_reserva() async {
+  sleep(const Duration(seconds: 2));
+  print('compra');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String stringValue = prefs.getString('cookie');
+  final RespostaReservaModel session =
+      await http_compra_reserva(stringValue, id, numero);
+
+  if (session != null)
+    prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
+  Navigator.of(context).pop();
+  showConfirmationDialogCompra(context);
+}
+*/
+
 /*
   
 // Request

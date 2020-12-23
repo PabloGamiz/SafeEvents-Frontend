@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:safeevents/ClientInfo.dart';
+import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'ConsultaFavorits.dart';
 import 'EventsGeneral.dart';
 import 'no_login.dart';
+import 'reserves.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -29,23 +32,22 @@ class _StructureState extends State<Structure> {
 
   static List<Widget> _widgetOptionsIfRegistered = <Widget>[
     EventsGeneral(),
-    Text(
-      'Index 2: Favourites',
-      style: optionStyle,
-    ),
+    //ClientInfo(0),
+    ConsultaFavortis(),
     Text(
       'Index 3: Map',
       style: optionStyle,
     ),
     Text(
-      'Index 3: Chat',
+      'Index 4: Chat',
       style: optionStyle,
     ),
-    ClientInfo('paco@gmail.com')
+    ClientInfo(0),
   ];
 
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
     EventsGeneral(),
+    //ClientInfo(0),
     Nologin(),
     Text(
       'Index 3: Map',
@@ -161,5 +163,14 @@ class _StructureState extends State<Structure> {
         ),
       );
     }
+  }
+
+  static callreserva() {
+    runApp(MaterialApp(
+      home: Reserves(
+        entradas: 25,
+        id: 12,
+      ),
+    ));
   }
 }

@@ -10,116 +10,68 @@ String esdevenimentEspecificModelToJson(EsdevenimentEspecificModel data) => json
 
 class EsdevenimentEspecificModel {
   EsdevenimentEspecificModel({
-    this.controller,
-  });
-
-  Controller controller;
-
-  factory EsdevenimentEspecificModel.fromJson(Map<String, dynamic> json) => EsdevenimentEspecificModel(
-    controller: Controller.fromJson(json["Controller"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "Controller": controller.toJson(),
-  };
-}
-
-class Controller {
-  Controller({
-    this.id,
     this.title,
     this.description,
     this.capacity,
-    this.price,
+    this.organizers,
     this.checkInDate,
     this.closureDate,
+    this.price,
     this.location,
-    this.organizers,
     this.services,
-    this.createdAt,
-    this.updatedAt,
+    this.image,
+    this.tipus,
+    this.faved,
+    this.taken,
+    this.esorg,
   });
 
-  int id;
   String title;
   String description;
   int capacity;
-  int price;
+  String organizers;
   DateTime checkInDate;
   DateTime closureDate;
-  Location location;
-  List<dynamic> organizers;
-  List<dynamic> services;
-  DateTime createdAt;
-  DateTime updatedAt;
+  int price;
+  String location;
+  dynamic services;
+  String image;
+  String tipus;
+  bool faved;
+  int taken;
+  bool esorg;
 
-  factory Controller.fromJson(Map<String, dynamic> json) => Controller(
-    id: json["id"],
+  factory EsdevenimentEspecificModel.fromJson(Map<String, dynamic> json) => EsdevenimentEspecificModel(
     title: json["title"],
     description: json["description"],
     capacity: json["capacity"],
-    price: json["price"],
+    organizers: json["organizers"],
     checkInDate: DateTime.parse(json["checkInDate"]),
     closureDate: DateTime.parse(json["closureDate"]),
-    location: Location.fromJson(json["location"]),
-    organizers: List<dynamic>.from(json["organizers"].map((x) => x)),
-    services: List<dynamic>.from(json["services"].map((x) => x)),
-    createdAt: DateTime.parse(json["createdAt"]),
-    updatedAt: DateTime.parse(json["updatedAt"]),
+    price: json["price"],
+    location: json["location"],
+    services: json["services"],
+    image: json["image"],
+    tipus: json["tipus"],
+    faved: json["Faved"],
+    taken: json["Taken"],
+    esorg: json["esorg"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "title": title,
     "description": description,
     "capacity": capacity,
-    "price": price,
+    "organizers": organizers,
     "checkInDate": checkInDate.toIso8601String(),
     "closureDate": closureDate.toIso8601String(),
-    "location": location.toJson(),
-    "organizers": List<dynamic>.from(organizers.map((x) => x)),
-    "services": List<dynamic>.from(services.map((x) => x)),
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
-  };
-}
-
-class Location {
-  Location({
-    this.id,
-    this.name,
-    this.address,
-    this.coordinates,
-    this.extension,
-    this.createdAt,
-    this.updatedAt,
-  });
-
-  int id;
-  String name;
-  String address;
-  String coordinates;
-  int extension;
-  DateTime createdAt;
-  DateTime updatedAt;
-
-  factory Location.fromJson(Map<String, dynamic> json) => Location(
-    id: json["id"],
-    name: json["name"],
-    address: json["address"],
-    coordinates: json["coordinates"],
-    extension: json["extension"],
-    createdAt: DateTime.parse(json["CreatedAt"]),
-    updatedAt: DateTime.parse(json["UpdatedAt"]),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "address": address,
-    "coordinates": coordinates,
-    "extension": extension,
-    "CreatedAt": createdAt.toIso8601String(),
-    "UpdatedAt": updatedAt.toIso8601String(),
+    "price": price,
+    "location": location,
+    "services": services,
+    "image": image,
+    "tipus": tipus,
+    "Faved": faved,
+    "Taken": taken,
+    "esorg": esorg,
   };
 }

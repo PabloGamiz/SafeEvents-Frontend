@@ -1,17 +1,23 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:permission/permission.dart';
+//import 'package:permission_handler/permission_handler.dart';
 
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
+import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
+import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
 
+import 'Structure.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
 import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
@@ -19,6 +25,9 @@ import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/reserves.dart';
 
 import 'package:smooth_star_rating/smooth_star_rating.dart';
+
+import 'http_requests/http_addfavourite.dart';
+import 'http_requests/http_delfavourite.dart';
 
 //Variables globals
 int idfake = 20;
@@ -28,10 +37,12 @@ var _rate = 0.0;
 TextEditingController controllerfeedback = new TextEditingController();
 bool _esperaCarrega = true;
 MyInfo mi;
+int ide;
+bool liked;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(),
+      home: Mostra(idevent: 4),
     ));
 
 class MyInfo {
@@ -40,40 +51,80 @@ class MyInfo {
   String description;
   int capacity;
   String checkInDate;
-  Location location;
+  String location;
   String address;
   dynamic organizers;
   dynamic services;
   int preu;
+  String image;
+  String tipus;
+  bool faved;
+  int taken;
+  bool esorg;
 
-  MyInfo(int id, String title, String desc, int cap, DateTime date,
-      Location location, dynamic organizers, dynamic services, int preu) {
+  MyInfo(
+      int id,
+      String title,
+      String desc,
+      int cap,
+      DateTime date,
+      String location,
+      dynamic organizers,
+      dynamic services,
+      int preu,
+      String image,
+      String tipus,
+      bool faved,
+      int taken, bool esorg) {
     this.id = id;
     this.title = title;
     this.description = desc;
     this.capacity = cap;
     this.checkInDate = date.toString().split('.')[0];
-    this.location = location;
-    this.address = location.address;
+    //format String location esdeveniment=> nom localitzacio + '--' + lat + ';' + long
+    if (location != null) {
+      var loc = location.split('--');
+      var loc2 = loc[1];
+      var loc1 = loc[0];
+      this.location = loc2;
+      this.address = loc1;
+    } else {
+      this.location = location;
+      this.address = location;
+    }
     this.organizers = organizers;
     this.services = services;
     this.preu = preu;
+    this.image = image;
+    this.tipus = tipus;
+    this.faved = faved;
+    this.taken = taken;
+    this.esorg = esorg;
   }
 }
 
 class Mostra extends StatefulWidget {
-  Mostra( {Key key}) : super(key: key);
+  var idevent;
+  bool liked;
 
+  //final String idevent
+  Mostra({Key key, @required this.idevent}) : super(key: key);
   @override
-  _MostraState createState() => _MostraState();
+  _MostraState createState() => _MostraState(idevent);
 }
 
 class _MostraState extends State<Mostra> {
-  Controller event;
+  EsdevenimentEspecificModel event;
+  //PermissionName permissionName = PermissionName.Internet;
+  Completer<GoogleMapController> _controller = Completer();
+  var cookie = "";
 
-  @override
   bool mostrar = false;
-  int id = 20;
+  int id;
+
+  _MostraState(idevent) {
+    id = idevent;
+  }
 
   //int id = id que pasan desde general Events;
   Future<void> initState() {
@@ -83,11 +134,13 @@ class _MostraState extends State<Mostra> {
   }
 
   Future<bool> _onBackPressed() async {
-    return showDialog(context: context, builder: (context) => _goBack());
+    return showDialog(context: context, builder: (context) => _goBackButt());
   }
 
+  final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -112,12 +165,10 @@ class _MostraState extends State<Mostra> {
                                 top: 70.0,
                                 child: InkWell(
                                   onTap: () {
-                                    runApp(MaterialApp(
-                                      home: EventsGeneral(),
-                                    ));
+                                    _goBack();
                                   },
-                                  child:
-                                      Icon(Icons.arrow_back, color: Colors.blue),
+                                  child: Icon(Icons.arrow_back,
+                                      color: Colors.blue),
                                 ),
                               ),
                             ),
@@ -130,11 +181,22 @@ class _MostraState extends State<Mostra> {
                               child: Column(
                                 children: [
                                   Container(
-                                    height: 13,
+                                    height: 23,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color: _colorFav,
-                                      onPressed: () => {_doFav()},
+                                      color: !mi.faved ? Colors.white : Colors.red,
+                                      onPressed: () => {
+                                        setState(() {
+                                          if (mi.faved) {
+                                            http_delfavourite(cookie,
+                                                id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
+                                            mi.faved = false;
+                                          } else {
+                                            http_addfavourite(cookie, id);
+                                            mi.faved = true;
+                                          }
+                                        }),
+                                      },
                                     ),
                                     alignment: Alignment(1, 1),
                                   ),
@@ -151,14 +213,15 @@ class _MostraState extends State<Mostra> {
                                               BorderRadius.circular(20.0),
                                           child: Image.network(
                                             //'https://static2.elcomercio.es/www/pre2017/multimedia/noticias/201702/02/media/cortadas/kiko%20Rivera%2002-kHLI-U211857221190OJH-575x323@El%20Comercio.jpg',
-                                            'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
+                                            //'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
+                                            mi.image,
                                             width: 120,
-                                            loadingBuilder:
+                                            /*loadingBuilder:
                                                 (context, child, progress) {
                                               return progress == null
                                                   ? child
                                                   : LinearProgressIndicator();
-                                            },
+                                            },*/
                                           ),
                                         ),
                                         Padding(
@@ -179,7 +242,7 @@ class _MostraState extends State<Mostra> {
                                                           .withOpacity(1)),
                                                 ),
                                                 Text(
-                                                  mi.location.name,
+                                                  mi.address,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
@@ -219,7 +282,7 @@ class _MostraState extends State<Mostra> {
                                                                     '[]'
                                                                 ? 'No hi ha organitzador'
                                                                 : mi.organizers
-                                                                    .toString()[0],
+                                                                    .toString(),
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -243,9 +306,11 @@ class _MostraState extends State<Mostra> {
                                                                   allowHalfRating:
                                                                       false,
                                                                   onRated: (v) {
+                                                                    _rate = v;
                                                                     showDialog(
                                                                       context:
                                                                           context,
+
                                                                       builder:
                                                                           (_) =>
                                                                               new Container(
@@ -412,13 +477,32 @@ class _MostraState extends State<Mostra> {
                               margin: EdgeInsets.only(top: 20.0),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20.0),
-                                child: Image.network(
+                                child:
+                                    /*Image.network(
                                   'https://www.adslzone.net/app/uploads-adslzone.net/2017/06/google-maps.jpg',
                                   loadingBuilder: (context, child, progress) {
                                     return progress == null
                                         ? child
                                         : LinearProgressIndicator();
                                   },
+                                ),*/
+                                    SizedBox(
+                                  width: 320,
+                                  height: 220,
+                                  child: GoogleMap(
+                                    onMapCreated: _onMapCreated,
+                                    initialCameraPosition: CameraPosition(
+                                      target: LatLng(
+                                          double.parse(mi.location
+                                              .toString()
+                                              .split(';')[0]),
+                                          double.parse(
+                                              mi.location.toString().split(';')[
+                                                  1])), //location.coordenates
+                                      zoom: 15.4746,
+                                    ),
+                                    markers: _markers,
+                                  ),
                                 ),
                               ),
                             ),
@@ -495,7 +579,7 @@ class _MostraState extends State<Mostra> {
               child: FloatingActionButton(
                 onPressed: () {
                   runApp(MaterialApp(
-                    home: Modifica(),
+                    home: Modifica(idevent: id),
                   ));
                 },
                 tooltip: 'Publish event',
@@ -511,19 +595,23 @@ class _MostraState extends State<Mostra> {
       ),
     );
   }
+  /*void setPermissions() async{
+    Map<PermissionGroup, PermissionStatus> permissions =
+    await PermissionHandler().requestPermissions([PermissionGroup.location]);
+  }*/
 
-  _doFav() {
+  /*_doFav() {
     //do something
-    setState(() {
-      if (_colorFav == Colors.white)
-        _colorFav = Colors.red;
-      else if (_colorFav == Colors.red) _colorFav = Colors.white;
-    });
-  }
+    
+  }*/
 
   void _initEvent(int id) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    cookie = stringValue;
+    //cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
     final EsdevenimentEspecificModel event =
-        await http_esdevenimentespecific(id);
+        await http_esdevenimentespecific(id, cookie);
     /*_rate = event.controller.rating;
     print(event.controller.title);
     print(event.controller.description);
@@ -535,48 +623,88 @@ class _MostraState extends State<Mostra> {
 
      */
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('cookie');
     setState(() {
       if (stringValue != null)
         mostrar = true;
       else
         mostrar = false;
 
-      if (event.controller.title != null) _esperaCarrega = false;
-      print(_esperaCarrega);
-    });
+      if (event.title != null) _esperaCarrega = false;
+      //test
 
-    mi = MyInfo(
-        event.controller.id,
-        event.controller.title,
-        event.controller.description,
-        event.controller.capacity,
-        event.controller.checkInDate,
-        event.controller.location,
-        event.controller.organizers,
-        event.controller.services,
-        event.controller.price);
+      print(_esperaCarrega);
+      /*test */
+      /*mi = MyInfo(
+          id,
+          'KIKO RIVERA ON TOUR',
+          'El Kiko Rivera es una bestia',
+          20,
+          DateTime(2020 - 12 - 10),
+          'Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593',
+          'KIKO&Co',
+          'Música',
+          25,
+          'https://s1.eestatic.com/2016/02/29/actualidad/Actualidad_106001799_1813809_1706x1706.jpg',
+          'Música',
+         true,
+         20
+
+       );
+
+       String a = "Passeig Olímpic, 5-7, 08038 Barcelona, Spain--41.363371699999995;2.152593";
+       print(a);
+        var loc = a.split('--');
+        var loc2 = loc[1];
+        var loc1 = loc[0];
+        print(loc2);
+        print(loc1);
+
+      _esperaCarrega = false;*/
+//    });
+
+      mi = MyInfo(
+        null,
+        event.title,
+        event.description,
+        event.capacity,
+        event.checkInDate,
+        event.location,
+        event.organizers,
+        event.services,
+        event.price,
+        event.image,
+        event.tipus,
+        event.faved,
+        event.taken,
+        event.esorg
+      );
+    });
+    final Marker marker = Marker(
+        markerId: MarkerId('palau'),
+        position: LatLng(double.parse(mi.location.toString().split(';')[0]),
+            double.parse(mi.location.toString().split(';')[1])),
+        infoWindow: InfoWindow(title: mi.address, snippet: mi.title));
+    _markers.add(marker);
   }
 
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra per editar
-    return true;
+    if(mi.esorg)return true;
+    return false;
   }
 
   _doFeedback() {
     //Aqui comunicarem amb el backend per enviar les dades del feedback, estrelles(1-5), missatge, id esdeveniment, usuari
     print(controllerfeedback.text);
     print(_rate);
+    http_afegeixfeedback(_rate.toInt(), controllerfeedback.text, cookie, id);
     Navigator.pop(context);
   }
 
   _contrata() async {
-    final int entradas = 20; //await http_entradas(id);
-
     runApp(MaterialApp(
       home: Reserves(
-        entradas: entradas,
+        entradas: (mi.capacity - mi.taken),
         id: id,
       ),
     ));
@@ -584,11 +712,27 @@ class _MostraState extends State<Mostra> {
     //saltar a la pestanya de Comprar / Reservar
   }
 
-  _goBack() {
+  _goBackButt() {
     Navigator.pop(context, false);
-    runApp(MaterialApp(
-      home: EventsGeneral(),
-    ));
+    _goBack();
+  }
+
+  _goBack() {
+    //Depenent de si venim de events generals o de recomanats anar a un o altre
+    bool veDeRecomanats = false;
+    if (!veDeRecomanats) {
+      runApp(MaterialApp(
+        home: Structure(),
+      ));
+    } else {
+      runApp(MaterialApp(
+        home: EsdevenimentsRecomanats(),
+      ));
+    }
+  }
+
+  _onMapCreated(GoogleMapController controller) {
+    _controller.complete(controller);
   }
 }
 

@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-/*
-void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
-    ['kiko rivera concert', 'Getafe - Osasuna']));
-*/
-
 class ClientInfo extends StatefulWidget {
   final String email;
 
@@ -145,32 +140,23 @@ Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
     else
       return createWidget();*/
 
-/*
-_tancarSessio() async {
-  print('5');
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String stringValue = prefs.getString('cookie');
-  print(stringValue);
-  SignInModel session = await http_SignOut(stringValue);
-  /*var now;
-    do {
-      session = await http_SignOut(stringValue);
-      now = new DateTime.now();
-    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
-
-  runApp(MaterialApp(
-    home: SignIn(),
-  ));
-}
-
-*/
 */
 
 //This page shows the information of a selected user
 
+import 'dart:io';
+
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
+import 'package:safeevents/SignIn.dart';
+import 'package:safeevents/Structure.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'http_models/SignIn_model.dart';
+import 'http_requests/http_clientInfo.dart';
+import 'http_models/ClientInfoModel.dart';
+import 'http_requests/http_pasarQr.dart';
+import 'http_requests/http_signout.dart';
 
 /*
 void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
@@ -178,118 +164,405 @@ void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
 */
 
 class ClientInfo extends StatefulWidget {
-  final String email;
+  final int id;
 
-  ClientInfo(this.email);
+  ClientInfo(this.id);
 
-  _ClientInfoState createState() => _ClientInfoState(email);
+  _ClientInfoState createState() => _ClientInfoState();
 }
 
 class _ClientInfoState extends State<ClientInfo> {
-  String email;
-
-  _ClientInfoState(this.email);
-
-  Future<Client> futureClient;
+  Future<ClientInfoMod> futureClient;
+  var dropdownValue = "Reservas";
+  List<Purchased> selected = new List();
+  String result = "Hey there !";
+  int eventid = 1;
 
   @override
   void initState() {
     super.initState();
-    futureClient = fetchClient(email);
+    futureClient = fetchLocalClient(widget.id);
+  }
+
+  Future _scanQr(int event_id) async {
+    try {
+      String qrResult = await BarcodeScanner.scan();
+      setState(() {
+        result = qrResult;
+
+        Future<int> ok = http_pasarQr(result, event_id);
+      });
+    } on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          result = "Camera permission was denied";
+        });
+      } else {
+        setState(() {
+          result = "Unknown Error $ex";
+        });
+      }
+      showAlertDialog(context);
+    } on FormatException {
+      setState(() {
+        result = "You pressed the back button before scanning anything";
+      });
+      showAlertDialog(context);
+    } catch (ex) {
+      setState(() {
+        result = "Unknown Error $ex";
+      });
+      showAlertDialog(context);
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text("Okey"),
+        key: Key("showAlertDialog"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: Structure(),
+              )),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text(result),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Client>(
+    return FutureBuilder<ClientInfoMod>(
       future: futureClient,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return createClientWidget(snapshot);
+          if (widget.id == 0)
+            return buildProfileWidget(snapshot);
+          else
+            return buildClientInfoWidget(snapshot);
         } else if (snapshot.hasError) {
           return Text("${snapshot.error}");
         }
-
         // By default, show a loading spinner.
         return CircularProgressIndicator();
       },
     );
   }
-}
 
-Future<Client> fetchClient(String email) async {
-  var queryParameters = {'id': '2'};
-  var uri = Uri.http('10.4.41.148:8080', '/clientinfo', queryParameters);
-  final response = await http.get(uri);
-  print(response.statusCode);
-  if (response.statusCode == 200) {
-    print(response.body);
-    return Client.fromJson(jsonDecode(response.body));
-  } else {
-    print(response.statusCode);
-  }
-}
-
-class Client {
-  final String clientname;
-  final String email;
-  final bool verified;
-  final events;
-
-  Client({this.clientname, this.email, this.verified, this.events});
-
-  factory Client.fromJson(Map<String, dynamic> json) {
-    return Client(
-      clientname: json['username'],
-      email: json['email'],
-      verified: json['verified'] == 'true',
-      events: json['events'],
+  Widget buildProfileWidget(AsyncSnapshot<ClientInfoMod> snapshot) {
+    var client = snapshot.data;
+    var assistant = client.assists;
+    var organizer = client.organize;
+    selected = _selectTicket(dropdownValue, assistant);
+    return Column(
+      children: [
+        generalInfo(client),
+        DropdownButton(
+          value: dropdownValue,
+          elevation: 16,
+          items: ["Reservas", "Entradas", "Eventos organizados"]
+              .map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          style: TextStyle(color: Colors.lightBlue),
+          underline: Container(
+            height: 2,
+            color: Colors.lightBlue,
+          ),
+          onChanged: (String newValue) {
+            setState(() {
+              dropdownValue = newValue;
+              if (dropdownValue != "Eventos organizados")
+                selected = _selectTicket(dropdownValue, assistant);
+            });
+          },
+        ),
+        if (dropdownValue != "Eventos organizados")
+          _ticketsList()
+        else
+          _eventsList(organizer)
+      ],
     );
   }
-}
 
-Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
-  return Scaffold(
-    body: Column(children: [
-      Text(
-        'Username',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Text(snapshot.data.clientname),
-      Text(
-        'Email',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Text(snapshot.data.email),
-      Text(
-        'Verified',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      if (snapshot.data.verified)
-        Text('This user is verified')
-      else
-        Text('This user is not verified'),
-      Text(
-        'Events',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Expanded(
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(snapshot.data.events[index]['eventName']),
-              subtitle: Text(snapshot.data.events[index]['Date']),
-            );
-          },
-          itemCount: snapshot.data.events.length,
+  Widget _ticketsList() {
+    if (selected.length != 0)
+      return Expanded(
+        child: ListView(
+          children: selected.map(_buildTicketWidget).toList(),
           shrinkWrap: true,
         ),
+      );
+    else
+      return Text("No tienes " + dropdownValue);
+  }
+
+  Widget _eventsList(Organize organizer) {
+    if (organizer.organizes.length != 0)
+      return Expanded(
+        child: ListView(
+          children: organizer.organizes.map(_buildEventWidget).toList(),
+          shrinkWrap: true,
+        ),
+      );
+    else
+      return Expanded(
+        child: Text("No organiza ningun evento"),
+      );
+  }
+
+  Widget buildClientInfoWidget(AsyncSnapshot<ClientInfoMod> snapshot) {
+    var client = snapshot.data;
+    var organizer = client.organize;
+    return Column(
+      children: [
+        generalInfo(client),
+        Container(
+          child: Text(
+            "Eventos organizados",
+            style: TextStyle(
+                color: Colors.black,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.lightBlue,
+                decorationThickness: 2),
+          ),
+          margin: EdgeInsets.symmetric(vertical: 10),
+        ),
+        if (organizer.organizes.length != 0)
+          Expanded(
+            child: ListView(
+              children: organizer.organizes.map(_buildEventWidget).toList(),
+              shrinkWrap: true,
+            ),
+          )
+        else
+          Expanded(
+            child: Text("No organiza ningun evento"),
+          ),
+      ],
+      mainAxisAlignment: MainAxisAlignment.center,
+    );
+  }
+
+  Widget generalInfo(client) {
+    return Card(
+      color: Colors.lightBlue,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                child: Text(
+                  client.email,
+                  style: TextStyle(color: Colors.white),
+                ),
+                margin: EdgeInsets.symmetric(vertical: 20),
+              )
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          Row(
+            children: [
+              if (widget.id == 0)
+                FlatButton(
+                  onPressed: () => _scanQr(eventid),
+                  child: Icon(
+                    Icons.qr_code,
+                    color: Colors.white,
+                  ),
+                ),
+              if (widget.id == 0)
+                FlatButton(
+                  onPressed: () => _tancarSessio(),
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  ),
+                ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          )
+        ],
       ),
-    ]),
-  );
+    );
+  }
+
+  Widget _buildEventWidget(Fav event) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 1.0,
+        horizontal: 4.0,
+      ),
+      child: Card(
+        color: Colors.lightBlue,
+        child: ListTile(
+          onTap: () {
+            //_esdevenimentEspecific();
+          },
+          title: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  event.title,
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+          subtitle: Row(
+            children: [
+              SizedBox(
+                width: 25,
+              ),
+              Expanded(
+                child: Text(event.price.toString() + '€',
+                    style: TextStyle(fontSize: 40, color: Colors.white)),
+              ),
+              Expanded(
+                //color: Colors.red,
+                //height: 80,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Container(
+                        child: Text(
+                          event.location,
+                          /*filteredEvents[index].location.name,*/
+                          style: TextStyle(color: Colors.white),
+                          maxLines: 2,
+                          overflow: TextOverflow.fade,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 5,
+                    ),
+                    Text(event.closureDate.toString(),
+                        style: TextStyle(color: Colors.white)),
+                    Container(
+                      height: 5,
+                    ),
+                    Text(event.tipus, //filteredEvents[index].category,
+                        style: TextStyle(color: Colors.white)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTicketWidget(Purchased purchase) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 1.0,
+        horizontal: 4.0,
+      ),
+      child: Card(
+        color: Colors.lightBlue,
+        child: ListTile(
+          onTap: () {
+            //_esdevenimentEspecific();
+          },
+          title: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  purchase.id.toString(),
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+          subtitle: Row(
+            children: [
+              SizedBox(
+                width: 25,
+              ),
+              Expanded(
+                child: Text(purchase.description.toString(),
+                    style: TextStyle(fontSize: 40, color: Colors.white)),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Purchased> _selectTicket(String type, Assists assistant) {
+    selected.clear();
+    if (type == "Reservas") {
+      if (assistant != null && assistant.purchased.length != 0) {
+        for (int i = 0; i < assistant.purchased.length; ++i) {
+          if (assistant.purchased[i].option == 0) {
+            selected.add(assistant.purchased[i]);
+          }
+        }
+      }
+    } else if (type == "Entradas" && assistant != null) {
+      if (assistant != null && assistant.purchased.length != 0) {
+        for (int i = 0; i < assistant.purchased.length; ++i) {
+          if (assistant.purchased[i].option == 1) {
+            selected.add(assistant.purchased[i]);
+          }
+        }
+      }
+    }
+    return selected;
+  }
+
+  _tancarSessio() async {
+    print('cerrar session');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    print(stringValue);
+    SignInModel session = await http_SignOut(stringValue);
+    /*var now;
+    do {
+      session = await http_SignOut(stringValue);
+      now = new DateTime.now();
+    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
+    prefs.setString('cookie', null);
+    runApp(MaterialApp(
+      home: SignIn(),
+    ));
+  }
 }
 
 /*

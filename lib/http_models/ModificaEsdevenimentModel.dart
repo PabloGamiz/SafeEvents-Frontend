@@ -1,15 +1,31 @@
 // To parse this JSON data, do
 //
-//     final listEsdevenimentsModel = listEsdevenimentsModelFromJson(jsonString);
+//     final modificaEsdevenimentModel = modificaEsdevenimentModelFromJson(jsonString);
 
 import 'dart:convert';
 
-List<ListEsdevenimentsModel> listEsdevenimentsModelFromJson(String str) => List<ListEsdevenimentsModel>.from(json.decode(str).map((x) => ListEsdevenimentsModel.fromJson(x)));
+ModificaEsdevenimentModel modificaEsdevenimentModelFromJson(String str) => ModificaEsdevenimentModel.fromJson(json.decode(str));
 
-String listEsdevenimentsModelToJson(List<ListEsdevenimentsModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String modificaEsdevenimentModelToJson(ModificaEsdevenimentModel data) => json.encode(data.toJson());
 
-class ListEsdevenimentsModel {
-  ListEsdevenimentsModel({
+class ModificaEsdevenimentModel {
+  ModificaEsdevenimentModel({
+    this.controller,
+  });
+
+  Controller controller;
+
+  factory ModificaEsdevenimentModel.fromJson(Map<String, dynamic> json) => ModificaEsdevenimentModel(
+    controller: Controller.fromJson(json["Controller"]),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "Controller": controller.toJson(),
+  };
+}
+
+class Controller {
+  Controller({
     this.id,
     this.title,
     this.description,
@@ -43,7 +59,7 @@ class ListEsdevenimentsModel {
   String image;
   String tipus;
 
-  factory ListEsdevenimentsModel.fromJson(Map<String, dynamic> json) => ListEsdevenimentsModel(
+  factory Controller.fromJson(Map<String, dynamic> json) => Controller(
     id: json["id"],
     title: json["title"],
     description: json["description"],
