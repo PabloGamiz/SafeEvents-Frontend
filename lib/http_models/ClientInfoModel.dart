@@ -83,7 +83,7 @@ class Purchased {
   });
 
   int id;
-  Description description;
+  String description;
   int eventId;
   int assistantId;
   int option;
@@ -94,9 +94,7 @@ class Purchased {
 
   factory Purchased.fromJson(Map<String, dynamic> json) => Purchased(
         id: json["id"] == null ? null : json["id"],
-        description: json["description"] == null
-            ? null
-            : descriptionValues.map[json["description"]],
+        description: json["description"] == null ? null : json["description"],
         eventId: json["event_id"] == null ? null : json["event_id"],
         assistantId: json["assistant_id"] == null ? null : json["assistant_id"],
         option: json["option"] == null ? null : json["option"],
@@ -110,8 +108,7 @@ class Purchased {
 
   Map<String, dynamic> toJson() => {
         "id": id == null ? null : id,
-        "description":
-            description == null ? null : descriptionValues.reverse[description],
+        "description": description == null ? null : description,
         "event_id": eventId == null ? null : eventId,
         "assistant_id": assistantId == null ? null : assistantId,
         "option": option == null ? null : option,
@@ -121,10 +118,6 @@ class Purchased {
         "client_id": clientId == null ? null : clientId,
       };
 }
-
-enum Description { TESTING }
-
-final descriptionValues = EnumValues({"testing": Description.TESTING});
 
 class Fav {
   Fav({
