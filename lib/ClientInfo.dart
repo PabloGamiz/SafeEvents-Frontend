@@ -140,34 +140,23 @@ Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
     else
       return createWidget();*/
 
-/*
-_tancarSessio() async {
-  print('5');
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String stringValue = prefs.getString('cookie');
-  print(stringValue);
-  SignInModel session = await http_SignOut(stringValue);
-  /*var now;
-    do {
-      session = await http_SignOut(stringValue);
-      now = new DateTime.now();
-    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
-
-  runApp(MaterialApp(
-    home: SignIn(),
-  ));
-}
-
-*/
 */
 
 //This page shows the information of a selected user
 
 import 'dart:io';
 
+import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:safeevents/SignIn.dart';
+import 'package:safeevents/Structure.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
+import 'http_requests/http_pasarQr.dart';
+import 'http_requests/http_signout.dart';
 
 /*
 void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
@@ -186,11 +175,76 @@ class _ClientInfoState extends State<ClientInfo> {
   Future<ClientInfoMod> futureClient;
   var dropdownValue = "Reservas";
   List<Purchased> selected = new List();
+  String result = "Hey there !";
+  int eventid = 1;
 
   @override
   void initState() {
     super.initState();
     futureClient = fetchLocalClient(widget.id);
+  }
+
+  Future _scanQr(int event_id) async {
+    try {
+      String qrResult = await BarcodeScanner.scan();
+      setState(() {
+        result = qrResult;
+
+        Future<int> ok = http_pasarQr(result, event_id);
+      });
+    } on PlatformException catch (ex) {
+      if (ex.code == BarcodeScanner.CameraAccessDenied) {
+        setState(() {
+          result = "Camera permission was denied";
+        });
+      } else {
+        setState(() {
+          result = "Unknown Error $ex";
+        });
+      }
+      showAlertDialog(context);
+    } on FormatException {
+      setState(() {
+        result = "You pressed the back button before scanning anything";
+      });
+      showAlertDialog(context);
+    } catch (ex) {
+      setState(() {
+        result = "Unknown Error $ex";
+      });
+      showAlertDialog(context);
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text("Okey"),
+        key: Key("showAlertDialog"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: Structure(),
+              )),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text(result),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   @override
@@ -315,7 +369,7 @@ class _ClientInfoState extends State<ClientInfo> {
               ),
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: null,
+                  onPressed: () => _scanQr(eventid),
                   child: Icon(
                     Icons.qr_code,
                     color: Colors.white,
@@ -323,7 +377,7 @@ class _ClientInfoState extends State<ClientInfo> {
                 ),
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: null,
+                  onPressed: () => _tancarSessio(),
                   child: Icon(
                     Icons.logout,
                     color: Colors.white,
@@ -475,6 +529,23 @@ class _ClientInfoState extends State<ClientInfo> {
       }
     }
     return selected;
+  }
+
+  _tancarSessio() async {
+    print('cerrar session');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    print(stringValue);
+    SignInModel session = await http_SignOut(stringValue);
+    /*var now;
+    do {
+      session = await http_SignOut(stringValue);
+      now = new DateTime.now();
+    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
+    prefs.setString('cookie', null);
+    runApp(MaterialApp(
+      home: SignIn(),
+    ));
   }
 }
 
