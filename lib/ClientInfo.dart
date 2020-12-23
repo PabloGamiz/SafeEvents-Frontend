@@ -337,7 +337,17 @@ class _ClientInfoState extends State<ClientInfo> {
     return Column(
       children: [
         generalInfo(client),
-        Text("Eventos organizados"),
+        Container(
+          child: Text(
+            "Eventos organizados",
+            style: TextStyle(
+                color: Colors.black,
+                decoration: TextDecoration.underline,
+                decorationColor: Colors.lightBlue,
+                decorationThickness: 2),
+          ),
+          margin: EdgeInsets.symmetric(vertical: 10),
+        ),
         if (organizer.organizes.length != 0)
           Expanded(
             child: ListView(
@@ -361,12 +371,18 @@ class _ClientInfoState extends State<ClientInfo> {
         children: [
           Row(
             children: [
-              Text(
-                'Email:',
-              ),
-              Text(
-                client.email,
-              ),
+              Container(
+                child: Text(
+                  client.email,
+                  style: TextStyle(color: Colors.white),
+                ),
+                margin: EdgeInsets.symmetric(vertical: 20),
+              )
+            ],
+            mainAxisAlignment: MainAxisAlignment.center,
+          ),
+          Row(
+            children: [
               if (widget.id == 0)
                 FlatButton(
                   onPressed: () => _scanQr(eventid),
@@ -512,15 +528,15 @@ class _ClientInfoState extends State<ClientInfo> {
   List<Purchased> _selectTicket(String type, Assists assistant) {
     selected.clear();
     if (type == "Reservas") {
-      if (assistant.purchased.length != 0) {
+      if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
           if (assistant.purchased[i].option == 0) {
             selected.add(assistant.purchased[i]);
           }
         }
       }
-    } else if (type == "Entradas") {
-      if (assistant.purchased.length != 0) {
+    } else if (type == "Entradas" && assistant != null) {
+      if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
           if (assistant.purchased[i].option == 1) {
             selected.add(assistant.purchased[i]);
