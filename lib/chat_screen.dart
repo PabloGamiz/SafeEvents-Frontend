@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'services/database.dart';
 import 'http_models/message_model.dart';
 import 'http_models/user_model.dart';
@@ -6,16 +7,16 @@ import 'http_models/user_model.dart';
 final DatabaseMethods database = DatabaseMethods();
 
 class ChatScreen extends StatefulWidget {
-  final User user;
+  final String chatRoomId;
 
-  ChatScreen({this.user});
+  ChatScreen({this.chatRoomId});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  _chatBubble(Message message, bool isMe, bool isSameUser) {
+  /*_chatBubble(Message message, bool isMe, bool isSameUser) {
     if (isMe) {
       return Column(
         children: <Widget>[
@@ -142,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ],
       );
     }
-  }
+  }*/
 
   _sendMessageArea() {
     //MODIFICAR PARA PONERLO COMO EL TUTORIAL
@@ -173,63 +174,141 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  DatabaseMethods database = new DatabaseMethods();
+  TextEditingController messageController =
+      new TextEditingController(); //Falta crear el controlador de mensajes
+
+  Stream chatMessageStream;
+  String myName;
+
+  void getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    myName = prefs.getString('email');
+  }
+
+  // ignore: non_constant_identifier_names
+  Widget ChatMessageList() {
+    return StreamBuilder(
+        stream: chatMessageStream,
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? ListView.builder(
+                  itemCount: snapshot.data.documents.length,
+                  itemBuilder: (context, index) {
+                    return MessageTile(
+                        snapshot.data.documents[index].data["message"],
+                        snapshot.data.documents[index].data["sendBy"] ==
+                            myName);
+                  })
+              : Container();
+        });
+  }
+
+  void initState() {
+    getUser();
+    database.getConversationMessages(widget.chatRoomId).then((value) {
+      setState(() {
+        chatMessageStream = value;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    int prevUserId;
     return Scaffold(
-      backgroundColor: Color(0xFFF6F6F6),
-      appBar: AppBar(
-        brightness: Brightness.dark,
-        centerTitle: true,
-        title: RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-            children: [
-              TextSpan(
-                  text: widget.user.name,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  )),
-            ],
-          ),
+      body: Container(
+        child: Stack(
+          children: [
+            ChatMessageList(),
+            Container(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  color: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: messageController,
+                          style: TextStyle(color: Colors.blue),
+                          decoration: InputDecoration(
+                            hintText: "Message...",
+                            hintStyle: TextStyle(color: Colors.lightBlue),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _sendMessage();
+                        },
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(40)),
+                          padding: EdgeInsets.all(12),
+                          child: Image.asset("assets/SendIcon.png"),
+                        ),
+                      ),
+                    ],
+                  ),
+                ))
+          ],
         ),
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              reverse: true,
-              padding: EdgeInsets.all(20),
-              itemCount: messages.length,
-              itemBuilder: (BuildContext context, int index) {
-                final Message message = messages[index];
-                final bool isMe = message.sender.id == currentUser.id;
-                final bool isSameUser = prevUserId == message.sender.id;
-                prevUserId = message.sender.id;
-                return _chatBubble(message, isMe, isSameUser);
-              },
-            ),
-          ),
-          _sendMessageArea(),
-        ],
       ),
     );
   }
 
   _sendMessage() {
-    Map<String, dynamic> messageMap = {
-      "message": message,
-      "sendBy": Constants.myName,
-      "time": DateTime.now().millisecondsSinceEpoch
-    };
-    database.addConversationMessages(chatRoomId, messageMap);
-    //limpiar la pantalla donde se escribe el mensaje
+    if (messageController.text.isNotEmpty) {
+      Map<String, dynamic> messageMap = {
+        "message": messageController.text,
+        "sendBy": myName, //obtener de SharedPreferences
+        "time": DateTime.now().millisecondsSinceEpoch
+      };
+      database.addConversationMessages(widget.chatRoomId, messageMap);
+      messageController.text = "";
+    }
+  }
+}
+
+class MessageTile extends StatelessWidget {
+  final String message;
+  final bool sendByMe;
+  MessageTile(this.message, this.sendByMe);
+
+  Widget build(BuildContext context) {
+    return Container(
+      padding:
+          EdgeInsets.only(left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+      margin: EdgeInsets.symmetric(vertical: 8),
+      width: MediaQuery.of(context).size.width,
+      alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        color: sendByMe ? Colors.blue : Colors.white,
+        decoration: BoxDecoration(
+          borderRadius: sendByMe
+              ? BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomLeft: Radius.circular(23),
+                )
+              : BorderRadius.only(
+                  topLeft: Radius.circular(23),
+                  topRight: Radius.circular(23),
+                  bottomRight: Radius.circular(23),
+                ),
+        ),
+        child: Text(message,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+            )),
+      ),
+    );
   }
 }

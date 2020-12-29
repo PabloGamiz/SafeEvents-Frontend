@@ -2,23 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMethods {
   getUserByUsername(String username) {
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection("users")
         .where("name", isEqualTo: username)
-        .getDocuments();
+        .get();
   }
 
   uploadUserInfo(userMap) {
-    Firestore.instance.collection("users").add(userMap).catchError((e) {
+    FirebaseFirestore.instance.collection("users").add(userMap).catchError((e) {
       print(e.toString());
     });
   }
 
   createChatRoom(String chatRoomId, chatRoomMap) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection("ChatRoom")
-        .document(chatRoomId)
-        .setData(chatRoomMap)
+        .doc(chatRoomId)
+        .set(chatRoomMap)
         .catchError((e) {
       print(e.toString());
     });
@@ -32,20 +32,27 @@ class DatabaseMethods {
     }
   }
 
+  getChatRooms(String userName) async {
+    return await FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .where("users", arrayContains: userName)
+        .snapshots();
+  }
+
   getConversationMessages(String chatRoomId) {
     //llamar cuando se hace el initstate de sala de chat
-    return Firestore.instance
+    return FirebaseFirestore.instance
         .collection("ChatRoom")
-        .document(chatRoomId)
+        .doc(chatRoomId)
         .collection("chats")
         .orderBy("time", descending: false)
         .snapshots();
   }
 
   addConversationMessages(String chatRoomId, messageMap) {
-    Firestore.instance
+    FirebaseFirestore.instance
         .collection("ChatRoom")
-        .document(chatRoomId)
+        .doc(chatRoomId)
         .collection("chats")
         .add(messageMap)
         .catchError((e) {
