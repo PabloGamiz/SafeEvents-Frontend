@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
+import 'package:safeevents/MesuresCovidTemplate.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -157,12 +158,12 @@ class _MostraState extends State<Mostra> {
       home: WillPopScope(
         onWillPop: _onBackPressed,
         child: Container(
-          child: Scaffold(
-            body: _esperaCarrega
-                ? Align(
-                    alignment: Alignment.center,
-                    child: CircularProgressIndicator())
-                : Container(
+          child: _esperaCarrega
+              ? Align(
+              alignment: Alignment.center,
+              child: CircularProgressIndicator())
+              :Scaffold(
+            body:  Container(
                     margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
                     alignment: Alignment.topCenter,
                     child: Padding(
@@ -519,6 +520,37 @@ class _MostraState extends State<Mostra> {
                               ),
                             ),
                             Container(
+                            width: 500,
+                            margin: EdgeInsets.only(top: 20.0),
+                              child:
+                                RaisedButton(
+                                  color: Colors.green,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                    new BorderRadius.circular(20.0),
+                                  ),
+                                  child: Row(
+                                    children : <Widget>[
+                                    Image(
+                                      image: NetworkImage(
+                                        'https://github.com/noobcoder17/covid-19/blob/master/assets/corona_virus.png?raw=true'),
+                                      height: 30,
+
+
+                                    ),
+                                    Text(
+                                    'Consulta les mesures de prevenció del COVID',
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 12),
+                                    ),
+                                  ],),
+                                  onPressed: () => {_mesures()},
+                                ),
+
+                            ),
+
+                            Container(
                               width: 500,
                               margin: EdgeInsets.only(top: 20.0),
                               decoration: BoxDecoration(
@@ -532,8 +564,9 @@ class _MostraState extends State<Mostra> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   children: <Widget>[
+
                                     Text(
-                                      'MESURES\n',
+                                      'SERVEIS\n',
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 3,
                                       style: TextStyle(
@@ -663,6 +696,8 @@ class _MostraState extends State<Mostra> {
 
       _esperaCarrega = false;*/
 //    });
+      bool eso = false;
+      if(event.esorg!= null)event.esorg;
 
       mi = MyInfo(
         null,
@@ -680,8 +715,9 @@ class _MostraState extends State<Mostra> {
         event.tipus,
         event.faved,
         event.taken,
-        event.esorg
+        eso
       );
+      //print ('services '+event.services);
     });
     final Marker marker = Marker(
         markerId: MarkerId('palau'),
@@ -738,6 +774,14 @@ class _MostraState extends State<Mostra> {
   _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
   }
+}
+
+_mesures() {
+  runApp(MaterialApp(
+    home: Template(id:ide
+
+    ),
+  ));
 }
 
 _contacta() {

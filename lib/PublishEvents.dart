@@ -159,7 +159,7 @@ class _PublishState extends State<Publish> {
                     child: TextFormField(
                         controller: mesurescontroller,
                         decoration: InputDecoration(
-                            labelText: "Afegeix mesures contra el COVID",
+                            labelText: "Afegeix els serveis que s'ofereixen",
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
@@ -171,7 +171,7 @@ class _PublishState extends State<Publish> {
                   ),
                   Container(
                       child: Text(
-                        'Afegeix una mesura COVID per línia',
+                        'Afegeix un servei per línia',
                         style: TextStyle(
                             fontSize: 10
                         ),

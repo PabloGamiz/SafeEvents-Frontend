@@ -1,36 +1,24 @@
 import 'EsdevenimentEspecific.dart';
 import 'package:flutter/material.dart';
 
+int idgeneral;
 void main() => runApp(MaterialApp(
   title: "TemplateCOVID",
-  home: Template(),
+  home: Template(id: 2),
 ));
 class Template extends StatefulWidget {
-  Template({Key key}) : super(key: key);
+  var id;
+  Template({Key key, @required this.id}) : super(key: key);
   @override
-  _TemplateState createState() => _TemplateState();
+  _TemplateState createState() => _TemplateState(id);
 }
 class _TemplateState extends State<Template> {
+  _TemplateState(id){
+    idgeneral = id;
+  }
+
   Future<bool> _onBackPressed() async{
-    return showDialog(
-      context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: Text('Si tornes enrere no es publicarà l\'Esdeveniment \n\n N\'estàs segur/a?'),
-            actions: <Widget>[
-              FlatButton(
-                onPressed: () =>
-                    Navigator.pop(context,false),
-                child: Text('No'),
-              ),
-              FlatButton(
-                onPressed: () =>
-                    _goBack(),
-                child: Text('Sí'),
-              ),
-            ],
-          ),
-    );
+    _goBack();
   }
   @override
   Widget build(BuildContext context) {
@@ -65,12 +53,10 @@ class _TemplateState extends State<Template> {
                         Container(
                           child: FadeInImage(
 
-                            // En esta propiedad colocamos la imagen a descargar
                             image: NetworkImage(
                                 'https://github.com/noobcoder17/covid-19/blob/master/assets/corona_virus.png?raw=true'),
 
                             // En esta propiedad colocamos el gif o imagen de carga
-                            // debe estar almacenado localmente
                             placeholder: NetworkImage(
                                 'https://github.com/andygeek/cards_app_flutter/blob/master/assets/loading.gif?raw=true'),
 
@@ -83,13 +69,17 @@ class _TemplateState extends State<Template> {
                           ),
                         ),
                         Container(
-                          child: FadeInImage(
+                          margin: EdgeInsets.only(top: 20) ,
+                          child: Image(
+                            image:AssetImage('assets/SafeEventsBlack.png'),
+                            //width: 130,
+                            height: 100,
+                          ) ,
+                          /*FadeInImage(
 
-                            // En esta propiedad colocamos la imagen a descargar
-                            image: NetworkImage('assets/SafeEventsBlack.png'),
+                            image: Image(image:AssetImage('/assets/SafeEventsBlack.png') ) ,
 
                             // En esta propiedad colocamos el gif o imagen de carga
-                            // debe estar almacenado localmente
                             placeholder: NetworkImage(
                                 'https://github.com/andygeek/cards_app_flutter/blob/master/assets/loading.gif?raw=true'),
 
@@ -99,7 +89,7 @@ class _TemplateState extends State<Template> {
 
                             // En esta propiedad colocamos el alto de nuestra imagen
                             height: 120,
-                          ),
+                          ),*/
                         ),
                       ],
                     ),
@@ -126,6 +116,7 @@ class _TemplateState extends State<Template> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   margin: EdgeInsets.all(15),
                   elevation: 10,
+
                   child: Column(
                     children: <Widget>[
                       ListTile(
@@ -244,7 +235,7 @@ class _TemplateState extends State<Template> {
 
     runApp(
         MaterialApp(
-          home: Mostra(idevent: 20),
+          home: Mostra(idevent: idgeneral),
         ));
   }
 
