@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:safeevents/payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -338,12 +338,7 @@ class _PantallaReserva extends State<Reserves> {
   }
 
   _compra() async {
-    sleep(const Duration(seconds: 2));
-    print('compra');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String stringValue = prefs.getString('cookie');
-    final RespostaReservaModel session =
-        await http_compra(stringValue, id, numero);
+    final RespostaReservaModel session = compra(id, numero);
 
     if (session != null) {
       //prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
