@@ -39,13 +39,12 @@ class DatabaseMethods {
         .snapshots();
   }
 
-  getConversationMessages(String chatRoomId) {
-    //llamar cuando se hace el initstate de sala de chat
-    return FirebaseFirestore.instance
+  getConversationMessages(String chatRoomId) async {
+    return await FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
         .collection("chats")
-        .orderBy("time", descending: false)
+        .orderBy("time", descending: true)
         .snapshots();
   }
 

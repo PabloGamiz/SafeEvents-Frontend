@@ -12,141 +12,15 @@ class ChatScreen extends StatefulWidget {
   ChatScreen({this.chatRoomId});
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  _ChatScreenState createState() => _ChatScreenState(this.chatRoomId);
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  /*_chatBubble(Message message, bool isMe, bool isSameUser) {
-    if (isMe) {
-      return Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.topRight,
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.80,
-              ),
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-              child: Text(
-                message.text,
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          !isSameUser
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      message.time,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                )
-              : Container(
-                  child: null,
-                ),
-        ],
-      );
-    } else {
-      return Column(
-        children: <Widget>[
-          Container(
-            alignment: Alignment.topLeft,
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.80,
-              ),
-              padding: EdgeInsets.all(10),
-              margin: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
-                  ),
-                ],
-              ),
-              child: Text(
-                message.text,
-                style: TextStyle(
-                  color: Colors.black54,
-                ),
-              ),
-            ),
-          ),
-          !isSameUser
-              ? Row(
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      message.time,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ],
-                )
-              : Container(
-                  child: null,
-                ),
-        ],
-      );
-    }
-  }*/
+  final String chatRoomId;
+
+  _ChatScreenState(this.chatRoomId);
 
   _sendMessageArea() {
-    //MODIFICAR PARA PONERLO COMO EL TUTORIAL
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
       height: 70,
@@ -175,11 +49,10 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   DatabaseMethods database = new DatabaseMethods();
-  TextEditingController messageController =
-      new TextEditingController(); //Falta crear el controlador de mensajes
+  TextEditingController messageController = new TextEditingController();
 
   Stream chatMessageStream;
-  String myName;
+  String myName = "something@gmail.com";
 
   void getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -193,12 +66,12 @@ class _ChatScreenState extends State<ChatScreen> {
         builder: (context, snapshot) {
           return snapshot.hasData
               ? ListView.builder(
+                  reverse: true,
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
                     return MessageTile(
-                        snapshot.data.documents[index].data["message"],
-                        snapshot.data.documents[index].data["sendBy"] ==
-                            myName);
+                        snapshot.data.docs[index].data()["message"],
+                        snapshot.data.docs[index].data()["sendBy"] == myName);
                   })
               : Container();
         });
@@ -217,6 +90,18 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Center(
+              child: Text(
+                chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: Container(
         child: Stack(
           children: [
@@ -224,17 +109,17 @@ class _ChatScreenState extends State<ChatScreen> {
             Container(
                 alignment: Alignment.bottomCenter,
                 child: Container(
-                  color: Colors.white,
+                  color: Colors.lightBlue[100],
                   padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
                           controller: messageController,
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
                             hintText: "Message...",
-                            hintStyle: TextStyle(color: Colors.lightBlue),
+                            hintStyle: TextStyle(color: Colors.black),
                             border: InputBorder.none,
                           ),
                         ),
@@ -244,13 +129,18 @@ class _ChatScreenState extends State<ChatScreen> {
                           _sendMessage();
                         },
                         child: Container(
-                          height: 40,
-                          width: 40,
+                          height: 45,
+                          width: 45,
                           decoration: BoxDecoration(
                               color: Colors.blue,
                               borderRadius: BorderRadius.circular(40)),
                           padding: EdgeInsets.all(12),
-                          child: Image.asset("assets/SendIcon.png"),
+                          child: Center(
+                            child: Icon(
+                              Icons.send,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -266,7 +156,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (messageController.text.isNotEmpty) {
       Map<String, dynamic> messageMap = {
         "message": messageController.text,
-        "sendBy": myName, //obtener de SharedPreferences
+        "sendBy": myName,
         "time": DateTime.now().millisecondsSinceEpoch
       };
       database.addConversationMessages(widget.chatRoomId, messageMap);
@@ -282,15 +172,15 @@ class MessageTile extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          EdgeInsets.only(left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
+      padding: EdgeInsets.only(
+          left: sendByMe ? 24 : 24, right: sendByMe ? 24 : 24, bottom: 10),
       margin: EdgeInsets.symmetric(vertical: 8),
       width: MediaQuery.of(context).size.width,
       alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-        color: sendByMe ? Colors.blue : Colors.white,
         decoration: BoxDecoration(
+          color: sendByMe ? Colors.blue : Colors.lightBlueAccent[100],
           borderRadius: sendByMe
               ? BorderRadius.only(
                   topLeft: Radius.circular(23),
@@ -305,7 +195,7 @@ class MessageTile extends StatelessWidget {
         ),
         child: Text(message,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black87,
               fontSize: 17,
             )),
       ),
