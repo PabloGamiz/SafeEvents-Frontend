@@ -13,13 +13,13 @@ import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
+import 'package:safeevents/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
 
 import 'Structure.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
-import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/reserves.dart';
@@ -28,6 +28,8 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
+
+import 'services/database.dart';
 
 //Variables globals
 int idfake = 20;
@@ -39,6 +41,7 @@ bool _esperaCarrega = true;
 MyInfo mi;
 int ide;
 bool liked;
+final DatabaseMethods database = DatabaseMethods();
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -441,7 +444,7 @@ class _MostraState extends State<Mostra> {
                                                       child: ButtonTheme(
                                                         minWidth: 1,
                                                         height: 20,
-                                                        child: RaisedButton(
+                                                        /* child: RaisedButton(
                                                           color: Colors.white,
                                                           shape:
                                                               RoundedRectangleBorder(
@@ -458,9 +461,10 @@ class _MostraState extends State<Mostra> {
                                                                   Colors.blue,
                                                             ),
                                                           ),
-                                                          onPressed: () =>
-                                                              {_contacta()},
-                                                        ),
+                                                          onPressed: () => {
+                                                            _contacta(/*pasar userName de la empresa*/);
+                                                           },
+                                                        ),*/
                                                       ),
                                                     )
                                                   ],
@@ -736,8 +740,16 @@ class _MostraState extends State<Mostra> {
   }
 }
 
-_contacta() {
-  //saltar a la pestanya de Xat amb la empresa
+_contacta(String userName) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String myName = prefs.getString('email');
+  String chatRoomId = database.getChatRoomId(userName, myName);
+  List<String> users = [userName, myName];
+  Map<String, dynamic> chatRoomMap = {"users": users, "chatroomId": chatRoomId};
+  database.createChatRoom(chatRoomId, chatRoomMap);
+  ChatScreen(
+    chatRoomId: chatRoomId,
+  );
 }
 
 class ReservaModel {

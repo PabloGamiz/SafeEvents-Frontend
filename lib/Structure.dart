@@ -7,6 +7,7 @@ import 'ConsultaFavorits.dart';
 import 'EventsGeneral.dart';
 import 'no_login.dart';
 import 'reserves.dart';
+import 'chatgeneral_screen.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -43,6 +44,8 @@ class _StructureState extends State<Structure> {
       style: optionStyle,
     ),
     ClientInfo(0),
+    ChatGeneralScreen(),
+    ClientInfo('paco@gmail.com')
   ];
 
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
