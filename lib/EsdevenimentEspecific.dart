@@ -707,7 +707,7 @@ class _MostraState extends State<Mostra> {
         event.checkInDate,
         event.location,
         event.organizers,
-        /*event.services,*/["Mascareta obligatòria",
+        /*event.services,*/["Servei de Begudes",
           "Dispensador de gel hidroalcohòlic",
           "Aforament reduït al 60%"],
         event.price,
