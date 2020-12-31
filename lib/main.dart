@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:safeevents/SignIn.dart';
+import 'package:safeevents/chatgeneral_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Structure.dart';
@@ -16,7 +17,7 @@ void main() async {
     ));
   } else {
     runApp(MaterialApp(
-      home: Structure(),
+      home: SignIn(),
     ));
   }
 }

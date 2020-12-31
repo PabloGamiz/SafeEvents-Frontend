@@ -82,17 +82,14 @@ class _SignInState extends State<SignIn> {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    FirebaseUser user =
-        (await firebaseAuth.signInWithCredential(credential)).user;
 
-    if (database.getUserByUsername(user.displayName) == null) {
-      //mirar que el usuario no este en la base de datos
-      Map<String, String> userInfoMap = {
-        "name": user.displayName, //obtener nombre del perfil de google,
-        "email": user.email //obtener email del perfil de google
-      };
-      database.uploadUserInfo(userInfoMap);
-    }
+    var user = (await firebaseAuth.signInWithCredential(credential)).user;
+
+    Map<String, String> userInfoMap = {
+      "name": user.displayName,
+      "email": user.email
+    };
+    database.uploadUserInfo(userInfoMap);
 
     prefs.setString('email', user.email);
     prefs.setString('user', user.displayName);

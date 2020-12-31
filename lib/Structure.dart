@@ -39,13 +39,8 @@ class _StructureState extends State<Structure> {
       'Index 3: Map',
       style: optionStyle,
     ),
-    Text(
-      'Index 4: Chat',
-      style: optionStyle,
-    ),
-    ClientInfo(0),
     ChatGeneralScreen(),
-    ClientInfo('paco@gmail.com')
+    ClientInfo(0),
   ];
 
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[

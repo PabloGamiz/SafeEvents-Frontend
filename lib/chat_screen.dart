@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/database.dart';
+import 'Structure.dart'; 
 import 'http_models/message_model.dart';
 import 'http_models/user_model.dart';
 
@@ -52,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
   TextEditingController messageController = new TextEditingController();
 
   Stream chatMessageStream;
-  String myName = "something@gmail.com";
+  String myName;
 
   void getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -101,11 +102,21 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ],
         ),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () { Scaffold.of(context).openDrawer(); }
+            );
+          }
+        ),
       ),
       body: Container(
-        child: Stack(
+        child: Column(
           children: [
-            ChatMessageList(),
+            Expanded(
+              child: ChatMessageList(),
+            ),
             Container(
                 alignment: Alignment.bottomCenter,
                 child: Container(
@@ -123,6 +134,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             border: InputBorder.none,
                           ),
                         ),
+                      ),
+                      SizedBox(
+                        width: 10,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -161,6 +175,11 @@ class _ChatScreenState extends State<ChatScreen> {
       };
       database.addConversationMessages(widget.chatRoomId, messageMap);
       messageController.text = "";
+      database.getConversationMessages(widget.chatRoomId).then((value) {
+        setState(() {
+          chatMessageStream = value;
+        });
+      });
     }
   }
 }

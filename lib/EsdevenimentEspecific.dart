@@ -78,7 +78,8 @@ class MyInfo {
       String image,
       String tipus,
       bool faved,
-      int taken, bool esorg) {
+      int taken,
+      bool esorg) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -143,7 +144,6 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -187,7 +187,8 @@ class _MostraState extends State<Mostra> {
                                     height: 23,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color: !mi.faved ? Colors.white : Colors.red,
+                                      color:
+                                          !mi.faved ? Colors.white : Colors.red,
                                       onPressed: () => {
                                         setState(() {
                                           if (mi.faved) {
@@ -313,7 +314,6 @@ class _MostraState extends State<Mostra> {
                                                                     showDialog(
                                                                       context:
                                                                           context,
-
                                                                       builder:
                                                                           (_) =>
                                                                               new Container(
@@ -444,7 +444,7 @@ class _MostraState extends State<Mostra> {
                                                       child: ButtonTheme(
                                                         minWidth: 1,
                                                         height: 20,
-                                                        /* child: RaisedButton(
+                                                        child: RaisedButton(
                                                           color: Colors.white,
                                                           shape:
                                                               RoundedRectangleBorder(
@@ -462,9 +462,11 @@ class _MostraState extends State<Mostra> {
                                                             ),
                                                           ),
                                                           onPressed: () => {
-                                                            _contacta(/*pasar userName de la empresa*/);
-                                                           },
-                                                        ),*/
+                                                            _contacta(mi
+                                                                .organizers
+                                                                .toString())
+                                                          },
+                                                        ),
                                                       ),
                                                     )
                                                   ],
@@ -667,21 +669,20 @@ class _MostraState extends State<Mostra> {
 //    });
 
       mi = MyInfo(
-        null,
-        event.title,
-        event.description,
-        event.capacity,
-        event.checkInDate,
-        event.location,
-        event.organizers,
-        event.services,
-        event.price,
-        event.image,
-        event.tipus,
-        event.faved,
-        event.taken,
-        event.esorg
-      );
+          null,
+          event.title,
+          event.description,
+          event.capacity,
+          event.checkInDate,
+          event.location,
+          event.organizers,
+          event.services,
+          event.price,
+          event.image,
+          event.tipus,
+          event.faved,
+          event.taken,
+          event.esorg);
     });
     final Marker marker = Marker(
         markerId: MarkerId('palau'),
@@ -693,7 +694,7 @@ class _MostraState extends State<Mostra> {
 
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra per editar
-    if(mi.esorg)return true;
+    if (mi.esorg) return true;
     return false;
   }
 
@@ -745,11 +746,11 @@ _contacta(String userName) async {
   String myName = prefs.getString('email');
   String chatRoomId = database.getChatRoomId(userName, myName);
   List<String> users = [userName, myName];
-  Map<String, dynamic> chatRoomMap = {"users": users, "chatroomId": chatRoomId};
+  Map<String, dynamic> chatRoomMap = {"users": users, "chatroomid": chatRoomId};
   database.createChatRoom(chatRoomId, chatRoomMap);
-  ChatScreen(
-    chatRoomId: chatRoomId,
-  );
+  runApp(MaterialApp(
+    home: ChatScreen(chatRoomId: chatRoomId),
+  ));
 }
 
 class ReservaModel {
