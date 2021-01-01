@@ -709,9 +709,10 @@ class _MostraState extends State<Mostra> {
   _contrata() async {
     runApp(MaterialApp(
       home: Reserves(
-        entradas: (mi.capacity - mi.taken),
-        id: id,
-      ),
+          entradas: (mi.capacity - mi.taken),
+          id: id,
+          eventName: mi.title,
+          location: mi.location),
     ));
 
     //saltar a la pestanya de Comprar / Reservar

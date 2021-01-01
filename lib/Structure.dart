@@ -168,6 +168,8 @@ class _StructureState extends State<Structure> {
       home: Reserves(
         entradas: 25,
         id: 12,
+        eventName: "",
+        location: "",
       ),
     ));
   }
