@@ -4,55 +4,52 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
+class MapGeneralEvents extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Google Maps Demo',
-      home: MapSample(),
-    );
-  }
+  State<MapGeneralEvents> createState() => MapGeneralEventsState();
 }
 
-class MapSample extends StatefulWidget {
-  @override
-  State<MapSample> createState() => MapSampleState();
-}
-
-class MapSampleState extends State<MapSample> {
+class MapGeneralEventsState extends State<MapGeneralEvents> {
   Completer<GoogleMapController> _controller = Completer();
   Location location = new Location();
   var position;
-/*
-  static final CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(position.latitude, position.longitude),
-    zoom: 14.4746,
-  );
-*/
+
   @override
   Widget build(BuildContext context) {
-    return new FutureBuilder(
-      future: position,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return GoogleMap(
-            mapType: MapType.hybrid,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(position.latitude, position.longitude),
-              zoom: 9,
-            ),
-            onMapCreated: (GoogleMapController controller) {
-              _controller.complete(controller);
-            },
-          );
-        } else if (snapshot.hasError) {
-          Text("${snapshot.error}");
-        }
-        return CircularProgressIndicator();
-      },
+    return Scaffold(
+      body: GoogleMap(
+        mapType: MapType.hybrid,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(40.416775, -3.703790),
+          zoom: 5,
+        ),
+        onMapCreated: (GoogleMapController controller) {
+          _controller.complete(controller);
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _goToCurrentPosition,
+        child: Icon(Icons.my_location),
+        backgroundColor: Colors.lightBlue,
+      ),
     );
+  }
+
+  Future<void> _goToCurrentPosition() async {
+    final GoogleMapController controller = await _controller.future;
+    StreamSubscription<LocationData> locationSubscription =
+        position.onLocationChanged.listen((l) {
+      controller.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(l.latitude, l.longitude),
+            zoom: 9,
+          ),
+        ),
+      );
+    });
+    await Future.delayed(Duration(seconds: 6));
+    locationSubscription.cancel();
   }
 
   @override
@@ -81,7 +78,7 @@ class MapSampleState extends State<MapSample> {
       }
     }
 
-    position = location.getLocation();
+    position = Location();
   }
 }
 

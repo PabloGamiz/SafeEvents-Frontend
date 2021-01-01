@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ConsultaFavorits.dart';
 import 'EventsGeneral.dart';
+import 'MapGeneralEvents.dart';
 import 'no_login.dart';
 import 'reserves.dart';
 
@@ -34,10 +35,7 @@ class _StructureState extends State<Structure> {
     EventsGeneral(),
     //ClientInfo(0),
     ConsultaFavortis(),
-    Text(
-      'Index 3: Map',
-      style: optionStyle,
-    ),
+    MapGeneralEvents(),
     Text(
       'Index 4: Chat',
       style: optionStyle,
