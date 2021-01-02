@@ -149,12 +149,15 @@ import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/Structure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
+import 'http_requests/http_generalevents.dart';
 import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
 
@@ -177,11 +180,18 @@ class _ClientInfoState extends State<ClientInfo> {
   List<Purchased> selected = new List();
   String result = "Hey there !";
   int eventid = 1;
+  Map<int, ListEsdevenimentsModel> generalEvents;
 
   @override
   void initState() {
     super.initState();
     futureClient = fetchLocalClient(widget.id);
+    http_GeneralEvents().then((eventsFromServer) {
+      setState(() {
+        generalEvents = Map.fromIterable(eventsFromServer,
+            key: (event) => event.id, value: (event) => event);
+      });
+    });
   }
 
   Future _scanQr(int event_id) async {
@@ -498,14 +508,20 @@ class _ClientInfoState extends State<ClientInfo> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  purchase.id.toString(),
+                  generalEvents[purchase.eventId].price.toString() + '€',
                   style: TextStyle(fontSize: 24, color: Colors.white),
                   maxLines: 2,
                   overflow: TextOverflow.fade,
                 ),
               ),
-              SizedBox(
-                height: 10,
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  generalEvents[purchase.eventId].checkInDate.toString(),
+                  style: TextStyle(fontSize: 12, color: Colors.white),
+                  maxLines: 2,
+                  overflow: TextOverflow.fade,
+                ),
               ),
             ],
           ),
@@ -515,8 +531,8 @@ class _ClientInfoState extends State<ClientInfo> {
                 width: 25,
               ),
               Expanded(
-                child: Text(purchase.description.toString(),
-                    style: TextStyle(fontSize: 40, color: Colors.white)),
+                child: Text(generalEvents[purchase.eventId].title,
+                    style: TextStyle(fontSize: 30, color: Colors.white)),
               ),
             ],
           ),
