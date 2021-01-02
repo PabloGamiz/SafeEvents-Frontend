@@ -7,6 +7,7 @@ import 'ConsultaFavorits.dart';
 import 'EventsGeneral.dart';
 import 'no_login.dart';
 import 'reserves.dart';
+import 'chatgeneral_screen.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -38,10 +39,7 @@ class _StructureState extends State<Structure> {
       'Index 3: Map',
       style: optionStyle,
     ),
-    Text(
-      'Index 4: Chat',
-      style: optionStyle,
-    ),
+    ChatGeneralScreen(),
     ClientInfo(0),
   ];
 

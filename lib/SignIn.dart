@@ -2,12 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'Structure.dart';
-import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'services/database.dart';
 import 'package:http/http.dart' as http;
 
+//esto es chat
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
@@ -15,6 +16,7 @@ class SignIn extends StatefulWidget {
 
 final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final DatabaseMethods database = new DatabaseMethods();
 
 class _SignInState extends State<SignIn> {
   @override
@@ -76,6 +78,22 @@ class _SignInState extends State<SignIn> {
     prefs.setString('cookie', session.cookie);
     prefs.setInt('timeout', session.deadline);
 
+    AuthCredential credential = GoogleAuthProvider.getCredential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    var user = (await firebaseAuth.signInWithCredential(credential)).user;
+
+    Map<String, String> userInfoMap = {
+      "name": user.displayName,
+      "email": user.email
+    };
+    database.uploadUserInfo(userInfoMap);
+
+    prefs.setString('email', user.email);
+    prefs.setString('user', user.displayName);
+
     runApp(MaterialApp(
       home: Structure(),
     ));
@@ -83,6 +101,9 @@ class _SignInState extends State<SignIn> {
 
   _launchStructure() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setString('cookie', null);
+    preferences.setInt('timeout', null);
+
     await preferences.clear();
 
     runApp(MaterialApp(

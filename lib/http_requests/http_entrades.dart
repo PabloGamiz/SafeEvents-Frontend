@@ -77,6 +77,7 @@ Future<RespostaReservaModel> http_compra_reserva(
   final response = await http.put(apitUrl, body: reservaModel);
   print(response.statusCode);
   if (response.statusCode == 201 || response.statusCode == 200) {
+    print(response.body);
     return respostaReservaModelFromJson(response.body);
   } else if (response.statusCode == 400) {
     return null;
@@ -84,3 +85,7 @@ Future<RespostaReservaModel> http_compra_reserva(
     return null;
   }
 }
+
+/*
+APIActivatePath = "/ticket/activate"
+*/
