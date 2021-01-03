@@ -37,10 +37,6 @@ class _StructureState extends State<Structure> {
     //ClientInfo(0),
     ConsultaFavortis(),
     MapGeneralEvents(),
-    Text(
-      'Index 3: Map',
-      style: optionStyle,
-    ),
     ChatGeneralScreen(),
     ClientInfo(0),
   ];
@@ -49,10 +45,7 @@ class _StructureState extends State<Structure> {
     EventsGeneral(),
     //ClientInfo(0),
     Nologin(),
-    Text(
-      'Index 3: Map',
-      style: optionStyle,
-    ),
+    MapGeneralEvents(),
     Nologin(),
     Nologin(),
   ];
