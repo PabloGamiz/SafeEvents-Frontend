@@ -149,6 +149,7 @@ import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/Structure.dart';
@@ -395,14 +396,6 @@ class _ClientInfoState extends State<ClientInfo> {
             children: [
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: () => _scanQr(eventid),
-                  child: Icon(
-                    Icons.qr_code,
-                    color: Colors.white,
-                  ),
-                ),
-              if (widget.id == 0)
-                FlatButton(
                   onPressed: () => _tancarSessio(),
                   child: Icon(
                     Icons.logout,
@@ -427,7 +420,11 @@ class _ClientInfoState extends State<ClientInfo> {
         color: Colors.lightBlue,
         child: ListTile(
           onTap: () {
-            //_esdevenimentEspecific();
+            runApp(
+              MaterialApp(
+                home: Mostra(idevent: event.id),
+              ),
+            );
           },
           title: Column(
             children: [
@@ -474,7 +471,7 @@ class _ClientInfoState extends State<ClientInfo> {
                     Container(
                       height: 5,
                     ),
-                    Text(event.closureDate.toString(),
+                    Text(event.checkInDate.toString().split('.')[0],
                         style: TextStyle(color: Colors.white)),
                     Container(
                       height: 5,
@@ -483,6 +480,14 @@ class _ClientInfoState extends State<ClientInfo> {
                         style: TextStyle(color: Colors.white)),
                   ],
                 ),
+              ),
+              FlatButton(
+                onPressed: () => _scanQr(event.id),
+                child: Icon(
+                  Icons.qr_code_scanner,
+                  color: Colors.white,
+                ),
+                minWidth: 0.5,
               ),
             ],
           ),
@@ -500,41 +505,51 @@ class _ClientInfoState extends State<ClientInfo> {
       child: Card(
         color: Colors.lightBlue,
         child: ListTile(
-          onTap: () {
-            //_esdevenimentEspecific();
-          },
-          title: Column(
+          title: Row(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  generalEvents[purchase.eventId].price.toString() + '€',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                  maxLines: 2,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  generalEvents[purchase.eventId].checkInDate.toString(),
-                  style: TextStyle(fontSize: 12, color: Colors.white),
-                  maxLines: 2,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-            ],
-          ),
-          subtitle: Row(
-            children: [
-              SizedBox(
-                width: 25,
-              ),
               Expanded(
                 child: Text(generalEvents[purchase.eventId].title,
                     style: TextStyle(fontSize: 30, color: Colors.white)),
               ),
             ],
+          ),
+          subtitle: Row(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    child: Text(
+                      generalEvents[purchase.eventId].price.toString() + '€',
+                      style: TextStyle(fontSize: 24, color: Colors.white),
+                      maxLines: 2,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ),
+                  Container(
+                    child: Text(
+                      generalEvents[purchase.eventId]
+                          .checkInDate
+                          .toString()
+                          .split('.')[0],
+                      style: TextStyle(fontSize: 17, color: Colors.white),
+                      maxLines: 2,
+                      overflow: TextOverflow.fade,
+                    ),
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(left: 40),
+                  ),
+                ],
+                mainAxisAlignment: MainAxisAlignment.start,
+              ),
+              FlatButton(
+                onPressed: () => _tancarSessio(),
+                child: Icon(
+                  Icons.qr_code,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.end,
           ),
         ),
       ),
