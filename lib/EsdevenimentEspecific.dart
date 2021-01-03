@@ -152,6 +152,7 @@ class _MostraState extends State<Mostra> {
 
   _MostraState(idevent) {
     id = idevent;
+    ide = id;
   }
 
   //int id = id que pasan desde general Events;
@@ -270,12 +271,24 @@ class _MostraState extends State<Mostra> {
                                                           .withOpacity(1)),
                                                 ),
                                                 Text(
-                                                  mi.address,
+                                                  mi.description,
+                                                  overflow:
+                                                  TextOverflow.ellipsis,
+                                                  maxLines: 3,
+                                                  style: TextStyle(
+                                                      fontSize: 11,
+
+                                                      color: Colors.white
+                                                          .withOpacity(1)),
+                                                ),
+                                                Text(
+                                                  mi.address+ '\n',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
                                                   style: TextStyle(
                                                       fontSize: 11,
+                                                      fontStyle: FontStyle.italic,
                                                       color: Colors.white
                                                           .withOpacity(1)),
                                                 ),
@@ -283,7 +296,8 @@ class _MostraState extends State<Mostra> {
                                                   //'11/04/2021 - 20:30\n',
                                                   mi.checkInDate + '\n',
                                                   style: TextStyle(
-                                                      fontSize: 12,
+                                                      fontSize: 11,
+                                                      fontStyle: FontStyle.italic,
                                                       color: Colors.white
                                                           .withOpacity(1)),
                                                 ),
@@ -715,7 +729,7 @@ class _MostraState extends State<Mostra> {
       _esperaCarrega = false;*/
 //    });
       bool eso = false;
-      if(event.esorg!= null)event.esorg;
+      if(event.esorg!= null)eso = event.esorg;
 
       mi = MyInfo(
         null,
@@ -725,9 +739,9 @@ class _MostraState extends State<Mostra> {
         event.checkInDate,
         event.location,
         event.organizers,
-        /*event.services,*/["Servei de Begudes",
+        event.services,/*["Servei de Begudes",
           "Dispensador de gel hidroalcohòlic",
-          "Aforament reduït al 60%"],
+          "Aforament reduït al 60%"],*/
         event.price,
         event.image,
         event.tipus,

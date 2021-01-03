@@ -550,13 +550,28 @@ class _PublishState extends State<Publish> {
     }
   _cridabackend(String nom, String descripcio,String capacity,String direc,String preu, String data,String hora,String img,String tipus) async{
     var mesura = mesurescontroller.text;
-    List<String> mesuresCOVID = mesura.split('\n');
+    //List<String> mesuresCOVID = mesura.split('\n');
+    /*List<String> s1 = new List<String>();
+    for (var i in mesuresCOVID ){
+      String querypar = '{ \'name\' : \'\' '+i+', \'description\' : \'\',\'kind\': \'\',\'location\':\'\',\'product\': null}';
+      print('queryparam : '+querypar);
+      s1.add(querypar);
+
+    }*/
     String datahora = data+'T'+hora+'Z';
     print('Mesures contr '+mesurescontroller.text);
     print(coordenades);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String cookie = prefs.getString('cookie');
-    final ModificaEsdevenimentModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus, mesuresCOVID);
+
+    final ModificaEsdevenimentModel event = await http_publishevents(nom,descripcio,int.parse(capacity),datahora,int.parse(preu),direc, coordenades,img,cookie, tipus, mesura);
+    nomcontroller = new TextEditingController();
+     descrcontroller = new TextEditingController();
+     dircontroller = new TextEditingController();
+     preucontroller = new TextEditingController();
+     imgcontroller = new TextEditingController();
+     capcontroller = new TextEditingController();
+     mesurescontroller = new TextEditingController();
     //event.id
     runApp(MaterialApp(
       home: Mostra(idevent: event.controller.id),

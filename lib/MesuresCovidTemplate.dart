@@ -1,7 +1,7 @@
 import 'EsdevenimentEspecific.dart';
 import 'package:flutter/material.dart';
 
-int idgeneral;
+
 void main() => runApp(MaterialApp(
   title: "TemplateCOVID",
   home: Template(id: 2),
@@ -13,6 +13,7 @@ class Template extends StatefulWidget {
   _TemplateState createState() => _TemplateState(id);
 }
 class _TemplateState extends State<Template> {
+  int idgeneral;
   _TemplateState(id){
     idgeneral = id;
   }
@@ -228,11 +229,11 @@ class _TemplateState extends State<Template> {
 
   }
   _goBack() {
-    Navigator.pop(context,false);
+    //Navigator.pop(context,false);
     _goBackDef();
   }
   _goBackDef() {
-
+  print('idgene : '+idgeneral.toString() );
     runApp(
         MaterialApp(
           home: Mostra(idevent: idgeneral),

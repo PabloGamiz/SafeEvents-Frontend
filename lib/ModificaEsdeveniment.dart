@@ -152,7 +152,20 @@ class _ModificaState extends State<Modifica> {
               padding: const EdgeInsets.all(10.0),
               child: SingleChildScrollView(
                 child: Column(
-                  children: <Widget>[
+                  children: <Widget>[Container(
+                    alignment: Alignment.centerLeft,
+                    child: Positioned(
+                      left: 8.0,
+                      top: 70.0,
+                      child: InkWell(
+                        onTap: () {
+                          _goBack();
+                        },
+                        child: Icon(Icons.arrow_back,
+                            color: Colors.blue),
+                      ),
+                    ),
+                  ),
                     TextField(
                         controller: nomcontroller,
                         decoration: InputDecoration(
@@ -695,9 +708,16 @@ class _ModificaState extends State<Modifica> {
             datahora,
         dir,
         coordenades,
-            mesuresCOVID,
+            mesura,
         img,
         tipus);
+    nomcontroller = new TextEditingController();
+    descrcontroller = new TextEditingController();
+    dircontroller = new TextEditingController();
+    preucontroller = new TextEditingController();
+    imgcontroller = new TextEditingController();
+    capcontroller = new TextEditingController();
+    mesurescontroller = new TextEditingController();
 
     runApp(MaterialApp(
       home: Mostra(idevent: id),

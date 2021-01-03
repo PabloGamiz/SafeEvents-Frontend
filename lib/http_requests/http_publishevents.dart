@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/ModificaEsdevenimentModel.dart';
 import 'package:safeevents/http_models/PublicaEsdevenimentsModel.dart';
 
-Future<ModificaEsdevenimentModel> http_publishevents(String title, String description, int capacity,String data, int price, String location, String coordenades, String image, String cookie, String tipus, List<String> mesuresCOVID ) async {
+Future<ModificaEsdevenimentModel> http_publishevents(String title, String description, int capacity,String data, int price, String location, String coordenades, String image, String cookie, String tipus, String mesuresCOVID ) async {
   print('Entra');
   final String apitUrl = "http://10.4.41.148:8080/event/publica";
   var queryParamaters = {
@@ -15,6 +15,7 @@ Future<ModificaEsdevenimentModel> http_publishevents(String title, String descri
     'closureDate': data,
     'price' : price,
     'location' : location + '--' + coordenades, //format nom localitzacio + -- + lat + ';' + long
+    'mesures' : mesuresCOVID,
     'cookie' : cookie,
     'tipus' : tipus
     //mesuresCOVID
@@ -23,6 +24,7 @@ Future<ModificaEsdevenimentModel> http_publishevents(String title, String descri
   print('b '+jsonID.toString());
   final response = await http.post(apitUrl,body: jsonID );
   print('STATUS? = '+response.statusCode.toString());
+  print('STATUS.body? = '+response.body.toString());
   if (response.statusCode == 201 || response.statusCode == 200) {
     print('Status code = '+response.statusCode.toString());
     final ModificaEsdevenimentModel list = modificaEsdevenimentModelFromJson(response.body);
