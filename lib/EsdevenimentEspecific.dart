@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:http/http.dart';
 import 'package:permission/permission.dart';
 //import 'package:permission_handler/permission_handler.dart';
 
@@ -12,8 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/MesuresCovidTemplate.dart';
+import 'package:safeevents/http_models/FeedbackEsdeveniments.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
+import 'package:safeevents/http_requests/http_editafeedback.dart';
+import 'package:safeevents/http_requests/http_getfeedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
@@ -34,12 +38,10 @@ import 'http_requests/http_delfavourite.dart';
 int idfake = 20;
 var _colorFav = Colors.white;
 //TO DO: quan connectem amb back, aquest valor serà el que ens dona per darrere
-var _rate = 0.0;
+
 TextEditingController controllerfeedback = new TextEditingController();
-bool _esperaCarrega = true;
-MyInfo mi;
+
 int ide;
-bool liked;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -85,13 +87,20 @@ class MyInfo {
     this.checkInDate = date.toString().split('.')[0];
     //format String location esdeveniment=> nom localitzacio + '--' + lat + ';' + long
     if (location != null) {
-      var loc = location.split('--');
-      var loc2 = loc[1];
-      var loc1 = loc[0];
+      var loc2;
+      var loc1;
+      if(location.contains('--')){
+        var loc = location.split('--');
+        loc2 = loc[1];
+        loc1 = loc[0];
+      }else{
+        loc1 = location;
+        loc2 = '0;0';
+      }
       this.location = loc2;
       this.address = loc1;
     } else {
-      this.location = location;
+      this.location = '0;0';
       this.address = location;
     }
     this.organizers = organizers;
@@ -108,7 +117,7 @@ class MyInfo {
 
     this.services = serv;
     this.preu = preu;
-    this.image = image;
+    this.image = image != '' ? image : 'https://media.istockphoto.com/vectors/internet-error-page-not-found-in-vertical-orientation-for-mobile-a-vector-id1252582565?k=6&m=1252582565&s=170667a&w=0&h=bfQo5S20wuI5QCXoCMEe5Xc0OAVvQ7MKgQKy1EG1qU0=';
     this.tipus = tipus;
     this.faved = faved;
     this.taken = taken;
@@ -127,6 +136,12 @@ class Mostra extends StatefulWidget {
 }
 
 class _MostraState extends State<Mostra> {
+  var _rate = 0.0;
+  bool _esperaCarrega = true;
+  MyInfo mi;
+  bool liked;
+  bool _hafetFeedback = false;
+  String textButtonFeedback = 'Publica';
   EsdevenimentEspecificModel event;
   //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
@@ -418,7 +433,7 @@ class _MostraState extends State<Mostra> {
                                                                                   borderRadius: new BorderRadius.circular(18.0),
                                                                                 ),
                                                                                 child: Text(
-                                                                                  'Publica',
+                                                                                  textButtonFeedback,
                                                                                   style: TextStyle(
                                                                                     fontSize: 13,
                                                                                     color: Colors.blue,
@@ -652,12 +667,15 @@ class _MostraState extends State<Mostra> {
   }*/
 
   void _initEvent(int id) async {
+    controllerfeedback.clear();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     cookie = stringValue;
     //cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
     final EsdevenimentEspecificModel event =
         await http_esdevenimentespecific(id, cookie);
+    /*final FeedbackEsdeveniments feedbackEsdeven =
+    await http_getfeedback(cookie,id);*/
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -717,14 +735,16 @@ class _MostraState extends State<Mostra> {
         event.taken,
         eso
       );
+      //_rate = fee.feedbackEsdeven.rating
       //print ('services '+event.services);
+      final Marker marker = Marker(
+          markerId: MarkerId('palau'),
+          position: LatLng(double.parse(mi.location.toString().split(';')[0]),
+              double.parse(mi.location.toString().split(';')[1])),
+          infoWindow: InfoWindow(title: mi.address, snippet: mi.title));
+      _markers.add(marker);
     });
-    final Marker marker = Marker(
-        markerId: MarkerId('palau'),
-        position: LatLng(double.parse(mi.location.toString().split(';')[0]),
-            double.parse(mi.location.toString().split(';')[1])),
-        infoWindow: InfoWindow(title: mi.address, snippet: mi.title));
-    _markers.add(marker);
+
   }
 
   bool esDeLaEmpresa() {
@@ -733,12 +753,27 @@ class _MostraState extends State<Mostra> {
     return false;
   }
 
-  _doFeedback() {
+  _doFeedback() async {
+
     //Aqui comunicarem amb el backend per enviar les dades del feedback, estrelles(1-5), missatge, id esdeveniment, usuari
     print(controllerfeedback.text);
     print(_rate);
-    http_afegeixfeedback(_rate.toInt(), controllerfeedback.text, cookie, id);
-    Navigator.pop(context);
+
+    if(!_hafetFeedback){
+      Response fe = await http_afegeixfeedback(_rate.toInt(), controllerfeedback.text, cookie, id);
+      Navigator.pop(context);
+      if(fe.statusCode == 200){
+        _hafetFeedback = true;
+        setState(() {
+          textButtonFeedback = 'Edita';
+        });
+      }
+    }
+    else{
+      http_editafeedback(id,_rate.toInt(), controllerfeedback.text, cookie, id);
+      Navigator.pop(context);
+    }
+
   }
 
   _contrata() async {
