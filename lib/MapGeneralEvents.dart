@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:address_search_text_field/address_search_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -13,9 +14,11 @@ class MapGeneralEvents extends StatefulWidget {
   State<MapGeneralEvents> createState() => MapGeneralEventsState();
 }
 
+TextEditingController dircontroller = new TextEditingController();
+Location location = new Location();
+
 class MapGeneralEventsState extends State<MapGeneralEvents> {
   Completer<GoogleMapController> _controller = Completer();
-  Location location = new Location();
   var position;
   List<ListEsdevenimentsModel> generalEvents = List();
   Set<Marker> _markers = Set();
@@ -23,6 +26,30 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size(double.infinity, kToolbarHeight),
+        child: AddressSearchTextField(
+          country: "Spain",
+          controller: dircontroller,
+          hintText: 'Introdueix una direcció',
+          decoration: InputDecoration(
+            hintText: "Direcció de l\'Esdeveniment",
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(25.0),
+              borderSide: BorderSide(),
+            ),
+            filled: true,
+          ),
+          noResultsText: "No hi han resultats",
+          onDone: (AddressPoint point) {
+            setState(() {
+              _goToPosition(point);
+            });
+          },
+        ),
+      ),
+      extendBodyBehindAppBar: true,
       body: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: CameraPosition(
@@ -44,6 +71,18 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
     );
   }
 
+  Future<void> _goToPosition(AddressPoint point) async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(point.latitude, point.longitude),
+          zoom: 14,
+        ),
+      ),
+    );
+  }
+
   Future<void> _goToCurrentPosition() async {
     final GoogleMapController controller = await _controller.future;
     StreamSubscription<LocationData> locationSubscription =
@@ -52,7 +91,7 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: LatLng(l.latitude, l.longitude),
-            zoom: 9,
+            zoom: 14,
           ),
         ),
       );
@@ -132,7 +171,6 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
     position = Location();
   }
 }
-
 /*
 GoogleMap(
         mapType: MapType.hybrid,
