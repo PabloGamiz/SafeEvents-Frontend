@@ -71,6 +71,7 @@ class _GeneralEventsState extends State {
   List<FavsModel> favs;
 
   String _defaultValue;
+  String ciutatCercada;
 
   int counter = 0;
 
@@ -136,16 +137,21 @@ class _GeneralEventsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  if (string == "")
+                  ciutatCercada = string;
+                  if (string == "") {
                     filteredcity = false;
-                  else
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                  } else {
                     filteredcity = true;
-                  if (filteredcategory)
+                  }
+                  if (filteredcategory) {
                     filteredEvents =
                         filtrarEsdeveniments(filteredEvents, string, 0);
-                  else
+                  } else {
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, string, 0);
+                  }
                   /*generalEvents
                       .where(
                           (e) => (e.controller.location.name.contains(string)))
@@ -170,16 +176,20 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "")
+                  if (newValue == "") {
                     filteredcategory = false;
-                  else
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                  } else {
                     filteredcategory = true;
-                  if (filteredcity)
+                  }
+                  if (filteredcity) {
                     filteredEvents =
                         filtrarEsdeveniments(filteredEvents, newValue, 1);
-                  else
+                  } else {
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, newValue, 1);
+                  }
                   /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))
                             .toList();*/
@@ -329,11 +339,24 @@ class _GeneralEventsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, string, 0);
-                  /*filteredEvents = generalEvents
+                  ciutatCercada = string;
+                  if (string == "") {
+                    filteredcity = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                  } else {
+                    filteredcity = true;
+                  }
+                  if (filteredcategory) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, string, 0);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, string, 0);
+                  }
+                  /*generalEvents
                       .where(
-                          (e) => (e.location.characters(string)))         //MIRAR QUE ESTO ESTE BIEN
+                          (e) => (e.controller.location.name.contains(string)))
                       .toList();*/
                 });
               });
@@ -355,11 +378,23 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, newValue, 1);
-                  /*filteredEvents = generalEvents
-                          .where((e) => e.category.contains(newValue))
-                          .toList();*/
+                  if (newValue == "") {
+                    filteredcategory = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                  } else {
+                    filteredcategory = true;
+                  }
+                  if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                  }
+                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
                 });
               });
             },

@@ -109,7 +109,6 @@ class MyInfo {
 
 class Mostra extends StatefulWidget {
   var idevent;
-  bool liked;
 
   //final String idevent
   Mostra({Key key, @required this.idevent}) : super(key: key);
@@ -462,9 +461,10 @@ class _MostraState extends State<Mostra> {
                                                             ),
                                                           ),
                                                           onPressed: () => {
-                                                            _contacta(mi
-                                                                .organizers
-                                                                .toString())
+                                                            _contacta(
+                                                                mi.organizers
+                                                                    .toString(),
+                                                                context)
                                                           },
                                                         ),
                                                       ),
@@ -537,7 +537,7 @@ class _MostraState extends State<Mostra> {
                                     Text(
                                       "-Mascareta obligatòria\n"
                                       "-Dispensador de gel hidroalcohòlic\n"
-                                      "-Aforament reduït al 60%\n",
+                                      "-Aforament reduït0 al 60%\n",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 20,
                                       style: TextStyle(
@@ -742,16 +742,17 @@ class _MostraState extends State<Mostra> {
   }
 }
 
-_contacta(String userName) async {
+_contacta(String userName, BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String myName = prefs.getString('email');
   String chatRoomId = database.getChatRoomId(userName, myName);
   List<String> users = [userName, myName];
   Map<String, dynamic> chatRoomMap = {"users": users, "chatroomid": chatRoomId};
   database.createChatRoom(chatRoomId, chatRoomMap);
-  runApp(MaterialApp(
-    home: ChatScreen(chatRoomId: chatRoomId),
-  ));
+  Navigator.push(
+      context,
+      new MaterialPageRoute(
+          builder: (context) => ChatScreen(chatRoomId: chatRoomId)));
 }
 
 class ReservaModel {
