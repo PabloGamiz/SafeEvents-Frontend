@@ -87,7 +87,7 @@ class _StructureState extends State<Structure> {
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.maps_ugc),
+              icon: Icon(Icons.map),
               label: 'Map',
               backgroundColor: Colors.blueGrey,
             ),
@@ -135,7 +135,7 @@ class _StructureState extends State<Structure> {
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.maps_ugc),
+              icon: Icon(Icons.map),
               label: 'Map',
               backgroundColor: Colors.blueGrey,
             ),
