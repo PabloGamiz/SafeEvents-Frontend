@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
-
 import 'EsdevenimentEspecific.dart';
 import 'Qr.dart';
 import 'Structure.dart';
@@ -12,8 +12,13 @@ import 'http_requests/http_entrades.dart';
 class Reserves extends StatefulWidget {
   final int entradas;
   final int id;
+  final String eventName;
 
-  const Reserves({Key key, @required this.entradas, @required this.id})
+  const Reserves(
+      {Key key,
+      @required this.entradas,
+      @required this.id,
+      @required this.eventName})
       : super(key: key);
   @override
   _PantallaReserva createState() => _PantallaReserva(entradas, id);
@@ -22,9 +27,10 @@ class Reserves extends StatefulWidget {
 class _PantallaReserva extends State<Reserves> {
   final int entradas;
   final int id;
+  final String eventName;
   int numero = 0;
 
-  _PantallaReserva(this.entradas, this.id);
+  _PantallaReserva(this.entradas, this.id, this.eventName);
   @override
   Widget build(BuildContext context) {
     final levelIndicator = Container(
@@ -369,6 +375,7 @@ class _PantallaReserva extends State<Reserves> {
                 home: Reserves(
                   entradas: entradas,
                   id: id,
+                  eventName: eventName,
                 ),
               )),
             });

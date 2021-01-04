@@ -711,6 +711,7 @@ class _MostraState extends State<Mostra> {
       home: Reserves(
         entradas: (mi.capacity - mi.taken),
         id: id,
+        eventName: mi.title,
       ),
     ));
 
