@@ -407,7 +407,7 @@ class _PantallaReserva extends State<Reserves> {
   showConfirmationDialog(BuildContext context) {
     // set up the button
 
-    void share(BuildContext context) {
+    /*void share(BuildContext context) {
       String message =
           "He comprat entrades per a l'event $eventName - $location";
       Share.share(message);
@@ -416,7 +416,7 @@ class _PantallaReserva extends State<Reserves> {
     Widget shareButton = FlatButton(
       child: Icon(Icons.share),
       onPressed: () => share(context),
-    );
+    );*/
 
     Widget okButton = FlatButton(
         child: Text("Continuar"),
@@ -434,7 +434,9 @@ class _PantallaReserva extends State<Reserves> {
       content: Text("S'ha fer la reserva correctament de les " +
           numero.toString() +
           " entrades"),
-      actions: [okButton, shareButton],
+      actions: [
+        okButton, /*shareButton*/
+      ],
     );
 
     // show the dialog
