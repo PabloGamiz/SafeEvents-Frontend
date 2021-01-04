@@ -6,16 +6,14 @@ import 'Structure.dart';
 
 class QR extends StatefulWidget {
   List qrCode;
-  int i;
-  QR({Key key, @required this.qrCode, @required this.i}) : super(key: key);
+  QR({Key key, @required this.qrCode}) : super(key: key);
   @override
-  _QRstate createState() => _QRstate(qrCode, i);
+  _QRstate createState() => _QRstate(qrCode);
 }
 
 class _QRstate extends State<QR> {
   List qrCode;
-  int i;
-  _QRstate(this.qrCode, this.i);
+  _QRstate(this.qrCode);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

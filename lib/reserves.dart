@@ -344,9 +344,7 @@ class _PantallaReserva extends State<Reserves> {
   _compra() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    final RespostaReservaModel session =
-        await http_compra(stringValue, id, numero);
-    //compra(id, numero);
+    final RespostaReservaModel session = await compra(id, numero);
     if (session != null) {
       //prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
       Navigator.of(context).pop();
@@ -429,8 +427,8 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
 
     void share(BuildContext context) {
-      String message = "He comprat entrades per a l'event $eventName";
-      Share.share(message);
+      // String message = "He comprat entrades per a l'event $eventName";
+      //Share.share(message);
     }
 
     Widget shareButton = FlatButton(
@@ -439,9 +437,7 @@ class _PantallaReserva extends State<Reserves> {
               share(context),
               Navigator.of(context).pop(),
               runApp(MaterialApp(
-                home: QR(
-                  qrCode: qrCode,
-                ),
+                home: QR(qrCode: qrCode),
               )),
             });
 
@@ -450,15 +446,8 @@ class _PantallaReserva extends State<Reserves> {
         key: Key("confirmation_button_alert_compra"),
         onPressed: () => {
               Navigator.of(context).pop(),
-              /*
               runApp(MaterialApp(
                 home: Structure(),
-              ) */
-              runApp(MaterialApp(
-                home: QR(
-                  qrCode: qrCode,
-                  i: 0,
-                ),
               )),
             });
 

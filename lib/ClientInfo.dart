@@ -151,14 +151,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/EventsGeneral.dart';
+import 'package:safeevents/Qr.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/Structure.dart';
+import 'package:safeevents/http_models/resposta_reserva_model.dart';
 import 'package:safeevents/scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
+import 'http_requests/http_entrades.dart';
 import 'http_requests/http_generalevents.dart';
 import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
@@ -187,7 +190,7 @@ class _ClientInfoState extends State<ClientInfo> {
   @override
   void initState() {
     super.initState();
-    futureClient = fetchLocalClient(widget.id);
+    futureClient = fetchClient(widget.id);
     http_GeneralEvents().then((eventsFromServer) {
       setState(() {
         generalEvents = Map.fromIterable(eventsFromServer,
@@ -543,7 +546,7 @@ class _ClientInfoState extends State<ClientInfo> {
                 mainAxisAlignment: MainAxisAlignment.start,
               ),
               FlatButton(
-                onPressed: () => _tancarSessio(),
+                onPressed: () => _mostrarqr(),
                 child: Icon(
                   Icons.qr_code,
                   color: Colors.white,
@@ -577,6 +580,18 @@ class _ClientInfoState extends State<ClientInfo> {
       }
     }
     return selected;
+  }
+
+  _mostrarqr() async {
+    print('mostrar qr');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    print(stringValue);
+    RespostaReservaModel session = await http_get_tickets(stringValue, eventid);
+
+    runApp(MaterialApp(
+      home: QR(qrCode: session.tickets),
+    ));
   }
 
   _tancarSessio() async {

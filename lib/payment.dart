@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'http_models/preuModel.dart';
 import 'http_models/resposta_reserva_model.dart';
 import 'http_requests/http_entrades.dart';
 import 'http_requests/http_payment.dart';
@@ -14,19 +15,22 @@ compra(int id, int numero) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String stringValue = prefs.getString('cookie');
   RespostaReservaModel session = await http_compra(stringValue, id, numero);
-  int resposta = paypal(id, numero);
-  if (resposta != 200 || resposta != 201) {
-    print('error al guardar dades');
+  for (int i = 0; i < session.tickets.length; ++i) {
+    var resposta = paypal(session.tickets[i].controller.id);
   }
 
   return session;
 }
 
-paypal(int id, int numero) async {
-  Float totalAmount = (numero * await http_preu(id)) as Float;
-  Float subTotalAmount = totalAmount;
-  Float shippingCost = 0 as Float;
-  int shippingDiscountCost = 0;
+paypal(int id) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String stringValue = prefs.getString('cookie');
+  final PreuModel preumodel = await http_preu(id);
+  int preu = preumodel.price;
+  int totalAmount = preu;
+  String subTotalAmount = totalAmount.toString();
+  String shippingCost = "0";
+  String shippingDiscountCost = "0";
   String userFirstName = 'Gulshan';
   String userLastName = 'Yadav';
   String addressCity = 'Delhi';
@@ -37,6 +41,8 @@ paypal(int id, int numero) async {
   String addressPhoneNumber = '+919990119091';
 
   var queryParamaters = {
+    'cookie': stringValue,
+    'ticket_id': id,
     'totalAmount': totalAmount,
     'subTotalAmount': subTotalAmount,
     'shippingCost': shippingCost,
