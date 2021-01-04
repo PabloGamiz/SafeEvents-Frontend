@@ -122,7 +122,7 @@ Widget _buildEventWidget(FavsModel event) {
                   Container(
                     height: 5,
                   ),
-                  Text(event.closureDate.toString(),
+                  Text(event.closureDate.toString().substring(0, 16),
                       style: TextStyle(color: Colors.white)),
                   Container(
                     height: 5,
