@@ -2,5 +2,11 @@
     "helloWorld": "Hola Mundo!",
     "signIn": "Iniciar sesión",
     "signInGoogle": "Iniciar sesión con Google",
-    "signInGuest": "Continuar como invitado"
+    "signInGuest": "Continuar como invitado",
+    "eventsBottomBar": "Eventos",
+    "favouritesBottomBar": "Favoritos",
+    "mapBottomBar": "Mapa",
+    "chatBottomBar": "Chat",
+    "profileBottomBar": "Perfil",
+    "searchCity": "Buscar ciudad"
 }

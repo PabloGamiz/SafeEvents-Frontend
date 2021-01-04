@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:safeevents/ClientInfo.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'ConsultaFavorits.dart';
 import 'EventsGeneral.dart';
@@ -164,6 +166,26 @@ class _StructureState extends State<Structure> {
         entradas: 25,
         id: 12,
       ),
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 }

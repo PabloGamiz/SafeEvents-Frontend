@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'Structure.dart';
 import 'http_models/SignIn_model.dart';
@@ -97,6 +98,26 @@ class _SignInState extends State<SignIn> {
 
     runApp(MaterialApp(
       home: Structure(),
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 
@@ -109,6 +130,26 @@ class _SignInState extends State<SignIn> {
 
     runApp(MaterialApp(
       home: Structure(),
+      localizationsDelegates: [
+        // ... app-specific localization delegate[s] here
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 }

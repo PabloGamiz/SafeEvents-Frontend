@@ -14,5 +14,29 @@
   "signInGuest": "Continue as guest user",
   "@signInGuest": {
       "description":"Continue as guest button text"
+  },
+  "eventsBottomBar": "Events",
+  "@eventsBottomBar": {
+      "description": "Events button for bottom bar"
+  },
+  "favouritesBottomBar": "Favourites",
+  "@favouritesBottomBar": {
+      "description": "Favourites button for bottom bar"
+  },
+  "mapBottomBar": "Map",
+  "@mapBottomBar": {
+      "description": "Map button for bottom bar"
+  },
+  "chatBottomBar": "Chat",
+  "@chatBottomBar": {
+      "description": "Chat button for bottom bar"
+  },
+  "profileBottomBar": "Profile",
+  "@profileBottomBar": {
+      "description": "Profile button for bottom bar"
+  },
+  "searchCity": "Search City",
+  "@searchCity": {
+      "description": "Label for search appbars"
   }
 }

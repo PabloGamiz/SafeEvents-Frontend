@@ -28,6 +28,14 @@ void main() async {
         const Locale('es', ''),
         const Locale('ca', ''),
       ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
     ));
   } else {
     runApp(MaterialApp(
@@ -44,6 +52,14 @@ void main() async {
         const Locale('es', ''),
         const Locale('ca', ''),
       ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 }

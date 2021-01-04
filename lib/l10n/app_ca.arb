@@ -2,5 +2,10 @@
     "helloWorld": "Hola Món!",
     "signIn": "Iniciar sessió",
     "signInGoogle": "Iniciar sessió amb Google",
-    "signInGuest": "Continuar com a invitat"
+    "signInGuest": "Continuar com a invitat",
+    "eventsBottomBar": "Esdeveniments",
+    "favouritesBottomBar": "Mapa",
+    "chatBottomBar": "Xat",
+    "profileBottomBar": "Perfil",
+    "searchCity": "Cercar ciutat"
 }
