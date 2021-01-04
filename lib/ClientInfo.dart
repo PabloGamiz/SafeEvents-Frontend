@@ -196,6 +196,7 @@ class _ClientInfoState extends State<ClientInfo> {
         generalEvents = Map.fromIterable(eventsFromServer,
             key: (event) => event.id, value: (event) => event);
       });
+      print(generalEvents);
     });
   }
 
@@ -267,7 +268,7 @@ class _ClientInfoState extends State<ClientInfo> {
     return FutureBuilder<ClientInfoMod>(
       future: futureClient,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && generalEvents.isNotEmpty) {
           if (widget.id == 0)
             return buildProfileWidget(snapshot);
           else
@@ -501,46 +502,56 @@ class _ClientInfoState extends State<ClientInfo> {
   }
 
   Widget _buildTicketWidget(Purchased purchase) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 1.0,
-        horizontal: 4.0,
-      ),
-      child: Card(
-        color: Colors.lightBlue,
-        child: ListTile(
-          title: Row(
-            children: [
-              Expanded(
-                child: Text(generalEvents[purchase.eventId].title,
-                    style: TextStyle(fontSize: 30, color: Colors.white)),
-              ),
-            ],
-          ),
-          subtitle: Row(
-            children: [
-              Row(
-                children: [
-                  Container(
-                    child: Text(
-                      generalEvents[purchase.eventId].price.toString() + '€',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
+    if (generalEvents.containsKey(purchase.eventId))
+      return Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 1.0,
+          horizontal: 4.0,
+        ),
+        child: Card(
+          color: Colors.lightBlue,
+          child: ListTile(
+            title: Row(
+              children: [
+                Expanded(
+                  child: Text(generalEvents[purchase.eventId].title,
+                      style: TextStyle(fontSize: 30, color: Colors.white)),
+                ),
+              ],
+            ),
+            subtitle: Row(
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      child: Text(
+                        generalEvents[purchase.eventId].price.toString() + '€',
+                        style: TextStyle(fontSize: 24, color: Colors.white),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: Text(
-                      generalEvents[purchase.eventId]
-                          .checkInDate
-                          .toString()
-                          .split('.')[0],
-                      style: TextStyle(fontSize: 17, color: Colors.white),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
+                    Container(
+                      child: Text(
+                        generalEvents[purchase.eventId]
+                            .checkInDate
+                            .toString()
+                            .split('.')[0],
+                        style: TextStyle(fontSize: 17, color: Colors.white),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                      ),
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(left: 40),
                     ),
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 40),
+                  ],
+                  mainAxisAlignment: MainAxisAlignment.start,
+                ),
+                FlatButton(
+                  onPressed: () => _tancarSessio(),
+                  child: Icon(
+                    Icons.qr_code,
+                    color: Colors.white,
                   ),
                 ],
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -551,13 +562,12 @@ class _ClientInfoState extends State<ClientInfo> {
                   Icons.qr_code,
                   color: Colors.white,
                 ),
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.end,
+              ],
+              mainAxisAlignment: MainAxisAlignment.end,
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   List<Purchased> _selectTicket(String type, Assists assistant) {
@@ -565,7 +575,8 @@ class _ClientInfoState extends State<ClientInfo> {
     if (type == "Reservas") {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
-          if (assistant.purchased[i].option == 0) {
+          if (assistant.purchased[i].option == 0 &&
+              generalEvents.containsKey(assistant.purchased[i].eventId)) {
             selected.add(assistant.purchased[i]);
           }
         }
@@ -573,7 +584,8 @@ class _ClientInfoState extends State<ClientInfo> {
     } else if (type == "Entradas" && assistant != null) {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
-          if (assistant.purchased[i].option == 1) {
+          if (assistant.purchased[i].option == 1 &&
+              generalEvents.containsKey(assistant.purchased[i].eventId)) {
             selected.add(assistant.purchased[i]);
           }
         }

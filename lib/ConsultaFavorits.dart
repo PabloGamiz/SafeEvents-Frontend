@@ -27,18 +27,23 @@ class _ConsultaFavoritsState extends State<ConsultaFavortis> {
   }
 
   Widget createListEventWidget(AsyncSnapshot<List<FavsModel>> snapshot) {
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: snapshot.data.map(_buildEventWidget).toList(),
-              shrinkWrap: true,
+    if (snapshot.data.length != 0)
+      return Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+              child: ListView(
+                children: snapshot.data.map(_buildEventWidget).toList(),
+                shrinkWrap: true,
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    else
+      return Center(
+        child: Text('You don\' have any favourite yet. Hit the 💖 to add one.'),
+      );
   }
 
   @override
