@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-FeedbackEsdeveniments feedbackEsdevenimentsFromJson(String str) => FeedbackEsdeveniments.fromJson(json.decode(str));
+List<FeedbackEsdeveniments> feedbackEsdevenimentsFromJson(String str) => List<FeedbackEsdeveniments>.from(json.decode(str).map((x) => FeedbackEsdeveniments.fromJson(x)));
 
-String feedbackEsdevenimentsToJson(FeedbackEsdeveniments data) => json.encode(data.toJson());
+String feedbackEsdevenimentsToJson(List<FeedbackEsdeveniments> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class FeedbackEsdeveniments {
   FeedbackEsdeveniments({

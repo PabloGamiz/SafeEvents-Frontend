@@ -38,7 +38,7 @@ class MyInfo {
   dynamic tipus;
   int preu;
   String img;
-  List<String> mesures;
+  String mesures;
 
   MyInfo(
       int id,
@@ -50,7 +50,7 @@ class MyInfo {
       dynamic organizers,
       dynamic services,
       int preu,
-      String img, List<String> mesures) {
+      String img, String mesures) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -572,7 +572,7 @@ class _ModificaState extends State<Modifica> {
         event.tipus,
         event.price,
         event.image,
-        event.services,
+        event.mesures,
         /*id,
         'Kiko Rivera on Tour',
         'El Kiko Rivera torna a Barcelona en el seu tour per Europa',

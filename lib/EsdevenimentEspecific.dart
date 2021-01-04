@@ -45,7 +45,7 @@ int ide;
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
-      home: Mostra(idevent: 5),
+      home: Mostra(idevent: 2),
     ));
 
 class MyInfo {
@@ -74,7 +74,7 @@ class MyInfo {
       DateTime date,
       String location,
       dynamic organizers,
-      dynamic services,
+      String services,
       int preu,
       String image,
       String tipus,
@@ -106,7 +106,8 @@ class MyInfo {
     this.organizers = organizers;
     String serv = '';
     if(services != null) {
-      for (String s in services) {
+      var servi = services.split('\n');
+      for (String s in servi) {
         if (s != null) {
           serv = serv + '-' +s + '\n';
           print('0SERV ins ' + serv);
@@ -136,6 +137,7 @@ class Mostra extends StatefulWidget {
 }
 
 class _MostraState extends State<Mostra> {
+  var feedbackid;
   var _rate = 0.0;
   bool _esperaCarrega = true;
   MyInfo mi;
@@ -688,8 +690,7 @@ class _MostraState extends State<Mostra> {
     //cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
     final EsdevenimentEspecificModel event =
         await http_esdevenimentespecific(id, cookie);
-    /*final FeedbackEsdeveniments feedbackEsdeven =
-    await http_getfeedback(cookie,id);*/
+    await getFeedbacks(id);
     setState(() {
       if (stringValue != null)
         mostrar = true;
@@ -739,7 +740,7 @@ class _MostraState extends State<Mostra> {
         event.checkInDate,
         event.location,
         event.organizers,
-        event.services,/*["Servei de Begudes",
+        event.mesures,/*["Servei de Begudes",
           "Dispensador de gel hidroalcohòlic",
           "Aforament reduït al 60%"],*/
         event.price,
@@ -759,6 +760,31 @@ class _MostraState extends State<Mostra> {
       _markers.add(marker);
     });
 
+  }
+
+  Future getFeedbacks(int id) async {
+    final List<FeedbackEsdeveniments> feedbackEsdeven =
+    await http_getfeedback(cookie,id);
+    FeedbackEsdeveniments feedb = new FeedbackEsdeveniments();
+    int rating = 0;
+    for(var i in feedbackEsdeven){
+      rating += i.rating;
+       if(i.isOwner){
+         feedb = i;
+       }
+    }
+    setState(() {
+      if(feedbackEsdeven.length != 0) {
+        _rate = rating / feedbackEsdeven.length;
+        print('RATE: ' + _rate.toString());
+        if(feedb != null){
+          controllerfeedback.text = feedb.message;
+          _hafetFeedback = true;
+          textButtonFeedback = 'Edita';
+          feedbackid = feedb.id;
+        }
+      }
+    });
   }
 
   bool esDeLaEmpresa() {
@@ -784,7 +810,7 @@ class _MostraState extends State<Mostra> {
       }
     }
     else{
-      http_editafeedback(id,_rate.toInt(), controllerfeedback.text, cookie, id);
+      http_editafeedback(feedbackid,_rate.toInt(), controllerfeedback.text, cookie, id);
       Navigator.pop(context);
     }
 
