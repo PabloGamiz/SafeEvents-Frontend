@@ -115,14 +115,14 @@ Widget _buildEventWidget(FavsModel event) {
                         /*filteredEvents[index].location.name,*/
                         style: TextStyle(color: Colors.white),
                         maxLines: 2,
-                        //overflow: TextOverflow.fade,
+                        overflow: TextOverflow.fade,
                       ),
                     ),
                   ),
                   Container(
                     height: 5,
                   ),
-                  Text(event.closureDate.toString().substring(0, 16),
+                  Text(event.closureDate.toString(),
                       style: TextStyle(color: Colors.white)),
                   Container(
                     height: 5,

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -13,29 +12,19 @@ import 'http_requests/http_entrades.dart';
 class Reserves extends StatefulWidget {
   final int entradas;
   final int id;
-  final String eventName;
-  final String location;
 
-  const Reserves(
-      {Key key,
-      @required this.entradas,
-      @required this.id,
-      @required this.eventName,
-      @required this.location})
+  const Reserves({Key key, @required this.entradas, @required this.id})
       : super(key: key);
   @override
-  _PantallaReserva createState() =>
-      _PantallaReserva(entradas, id, eventName, location);
+  _PantallaReserva createState() => _PantallaReserva(entradas, id);
 }
 
 class _PantallaReserva extends State<Reserves> {
   final int entradas;
   final int id;
-  final String eventName;
-  final String location;
   int numero = 0;
 
-  _PantallaReserva(this.entradas, this.id, this.eventName, this.location);
+  _PantallaReserva(this.entradas, this.id);
   @override
   Widget build(BuildContext context) {
     final levelIndicator = Container(
@@ -380,8 +369,6 @@ class _PantallaReserva extends State<Reserves> {
                 home: Reserves(
                   entradas: entradas,
                   id: id,
-                  eventName: eventName,
-                  location: location,
                 ),
               )),
             });
@@ -407,17 +394,6 @@ class _PantallaReserva extends State<Reserves> {
   showConfirmationDialog(BuildContext context) {
     // set up the button
 
-    /*void share(BuildContext context) {
-      String message =
-          "He comprat entrades per a l'event $eventName - $location";
-      Share.share(message);
-    }
-
-    Widget shareButton = FlatButton(
-      child: Icon(Icons.share),
-      onPressed: () => share(context),
-    );*/
-
     Widget okButton = FlatButton(
         child: Text("Continuar"),
         key: Key("confirmation_button_alert_reserva"),
@@ -435,7 +411,7 @@ class _PantallaReserva extends State<Reserves> {
           numero.toString() +
           " entrades"),
       actions: [
-        okButton, /*shareButton*/
+        okButton,
       ],
     );
 
@@ -450,24 +426,6 @@ class _PantallaReserva extends State<Reserves> {
 
   showConfirmationDialogCompra(BuildContext context, qrCode) {
     // set up the button
-
-    void share(BuildContext context) {
-      String message =
-          "He comprat entrades per a l'event $eventName - $location";
-      Share.share(message);
-    }
-
-    Widget shareButton = FlatButton(
-        child: Icon(Icons.share),
-        onPressed: () => {
-              share(context),
-              Navigator.of(context).pop(),
-              runApp(MaterialApp(
-                home: QR(
-                  qrCode: qrCode,
-                ),
-              )),
-            });
 
     Widget okButton = FlatButton(
         child: Text("Continuar"),
@@ -488,7 +446,6 @@ class _PantallaReserva extends State<Reserves> {
           numero.toString() +
           " entrades"),
       actions: [
-        shareButton,
         okButton,
       ],
     );

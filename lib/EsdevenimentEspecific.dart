@@ -109,6 +109,7 @@ class MyInfo {
 
 class Mostra extends StatefulWidget {
   var idevent;
+  bool liked;
 
   //final String idevent
   Mostra({Key key, @required this.idevent}) : super(key: key);
@@ -461,10 +462,9 @@ class _MostraState extends State<Mostra> {
                                                             ),
                                                           ),
                                                           onPressed: () => {
-                                                            _contacta(
-                                                                mi.organizers
-                                                                    .toString(),
-                                                                context)
+                                                            _contacta(mi
+                                                                .organizers
+                                                                .toString())
                                                           },
                                                         ),
                                                       ),
@@ -537,7 +537,7 @@ class _MostraState extends State<Mostra> {
                                     Text(
                                       "-Mascareta obligatòria\n"
                                       "-Dispensador de gel hidroalcohòlic\n"
-                                      "-Aforament reduït0 al 60%\n",
+                                      "-Aforament reduït al 60%\n",
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 20,
                                       style: TextStyle(
@@ -709,10 +709,9 @@ class _MostraState extends State<Mostra> {
   _contrata() async {
     runApp(MaterialApp(
       home: Reserves(
-          entradas: (mi.capacity - mi.taken),
-          id: id,
-          eventName: mi.title,
-          location: mi.location),
+        entradas: (mi.capacity - mi.taken),
+        id: id,
+      ),
     ));
 
     //saltar a la pestanya de Comprar / Reservar
@@ -742,17 +741,16 @@ class _MostraState extends State<Mostra> {
   }
 }
 
-_contacta(String userName, BuildContext context) async {
+_contacta(String userName) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String myName = prefs.getString('email');
   String chatRoomId = database.getChatRoomId(userName, myName);
   List<String> users = [userName, myName];
   Map<String, dynamic> chatRoomMap = {"users": users, "chatroomid": chatRoomId};
   database.createChatRoom(chatRoomId, chatRoomMap);
-  Navigator.push(
-      context,
-      new MaterialPageRoute(
-          builder: (context) => ChatScreen(chatRoomId: chatRoomId)));
+  runApp(MaterialApp(
+    home: ChatScreen(chatRoomId: chatRoomId),
+  ));
 }
 
 class ReservaModel {
