@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/ModificaEsdevenimentModel.dart';
 
-Future<ModificaEsdevenimentModel> http_modificaesdeveniment (String cookie,int id, String title, String description, int capacity, int price,String data, String location,String coordenades, List<dynamic> services, String image, String tipus ) async {
+Future<ModificaEsdevenimentModel> http_modificaesdeveniment (String cookie,int id, String title, String description, int capacity, int price,String data, String location,String coordenades, String services, String image, String tipus ) async {
   print('Entra');
   final String apitUrl = "http://10.4.41.148:8080/event/modifica";
-  print('Entra+++++ '+services.toString() );
+  print('Entra+++++ '+services );
   print('Entra+++++ '+coordenades );
   String loc = location + "--" + coordenades;
   var queryParamaters = {
@@ -18,7 +18,7 @@ Future<ModificaEsdevenimentModel> http_modificaesdeveniment (String cookie,int i
     'checkInDate' : data,
     'closureDate': data,
     'location' :loc ,//location
-    'services' : services,
+    'mesures' : services,
     'image' : image,
     'tipus' : tipus
   };

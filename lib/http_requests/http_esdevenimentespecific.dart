@@ -13,6 +13,7 @@ Future<EsdevenimentEspecificModel> http_esdevenimentespecific(
   final response = await http.post(apitUrl, body: jsonID);
   if (response.statusCode == 201 || response.statusCode == 200) {
     print('Status code = ' + response.statusCode.toString());
+    print('Status body = ' + response.body.toString());
     final EsdevenimentEspecificModel list =
         esdevenimentEspecificModelFromJson(response.body);
     return list;

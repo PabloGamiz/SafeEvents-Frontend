@@ -2,27 +2,26 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safeevents/http_models/FeedbackEsdeveniments.dart';
 
-Future<http.Response> http_afegeixfeedback(int rating, String message, String cookie, int eventid  ) async {
+Future<FeedbackEsdeveniments> http_editafeedback(int id, int rating, String message, String cookie, int eventid  ) async {
   print('Entra');
-  final String apitUrl = "http://10.4.41.148:8080/event/feedback/new";
+  final String apitUrl = "http://10.4.41.148:8080/event/feedback/edit";
   var queryParamaters =
-    {
-      'id': null,
-      'rating': rating,
-      'message': message,
-      'EventId': eventid,
-      'cookie': cookie
+  {
+    'id': id,
+    'rating': rating,
+    'message': message,
+    'EventId': eventid,
+    'cookie': cookie
   };
   final jsonID = json.encode(queryParamaters);
   print('b '+jsonID.toString());
-  final response = await http.post(apitUrl,body: jsonID );
+  final response = await http.put(apitUrl,headers: { "Content-Type" : "application/json"},body: jsonID );
   print('STATUS? = '+response.statusCode.toString());
   print('STATUS body? = '+response.body.toString());
   if (response.statusCode == 201 || response.statusCode == 200) {
     print('Status code = '+response.statusCode.toString());
     /*final FeedbackEsdeveniments list = feedbackEsdevenimentsFromJson(response.body);
     return list;*/
-    return response;
   } else if (response.statusCode == 400) {
     print('Status code = '+response.statusCode.toString());
     return null;

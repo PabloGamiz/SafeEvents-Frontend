@@ -17,7 +17,7 @@ TextEditingController dircontroller = new TextEditingController();
 TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
 TextEditingController capcontroller = new TextEditingController();
-
+TextEditingController mesurescontroller = new TextEditingController();
 var idfake = 4;
 bool _esperaCarrega = true;
 
@@ -38,6 +38,7 @@ class MyInfo {
   dynamic tipus;
   int preu;
   String img;
+  String mesures;
 
   MyInfo(
       int id,
@@ -49,7 +50,7 @@ class MyInfo {
       dynamic organizers,
       dynamic services,
       int preu,
-      String img) {
+      String img, String mesures) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -61,6 +62,7 @@ class MyInfo {
     this.tipus = services;
     this.preu = preu;
     this.img = img;
+    this.mesures = mesures;
   }
 }
 
@@ -150,7 +152,20 @@ class _ModificaState extends State<Modifica> {
               padding: const EdgeInsets.all(10.0),
               child: SingleChildScrollView(
                 child: Column(
-                  children: <Widget>[
+                  children: <Widget>[Container(
+                    alignment: Alignment.centerLeft,
+                    child: Positioned(
+                      left: 8.0,
+                      top: 70.0,
+                      child: InkWell(
+                        onTap: () {
+                          _goBack();
+                        },
+                        child: Icon(Icons.arrow_back,
+                            color: Colors.blue),
+                      ),
+                    ),
+                  ),
                     TextField(
                         controller: nomcontroller,
                         decoration: InputDecoration(
@@ -189,6 +204,29 @@ class _ModificaState extends State<Modifica> {
                               borderSide: BorderSide(),
                             )),
                         maxLines: 4,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 20.0),
+                      child: TextFormField(
+                          controller: mesurescontroller,
+                          decoration: InputDecoration(
+                              labelText: "Afegeix els serveis que s'ofereixen",
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(25.0),
+                                borderSide: BorderSide(),
+                              )
+                          ),
+                          maxLines: 3
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        'Afegeix un servei per línia',
+                        style: TextStyle(
+                            fontSize: 10
+                        ),
                       ),
                     ),
                     Container(
@@ -533,7 +571,8 @@ class _ModificaState extends State<Modifica> {
         'org',
         event.tipus,
         event.price,
-        event.image
+        event.image,
+        event.mesures,
         /*id,
         'Kiko Rivera on Tour',
         'El Kiko Rivera torna a Barcelona en el seu tour per Europa',
@@ -550,6 +589,7 @@ class _ModificaState extends State<Modifica> {
 
         nomcontroller.text = mi.title;
         dircontroller.text = mi.location.toString().split('--')[0];
+        mesurescontroller.text = mi.mesures.toString();
         var coord =  mi.location.toString().split('--')[1];
         coordenades = coord;
         descrcontroller.text = mi.description;
@@ -654,6 +694,8 @@ class _ModificaState extends State<Modifica> {
   }
 
   void _callbackend(String cookie, int id, String nom, String descripcio, String capacity, String preu, String data,String hora, String dir, List<dynamic> services, String img, String tipus ) async {
+    var mesura = mesurescontroller.text;
+    List<String> mesuresCOVID = mesura.split('\n');
     String datahora = data+'T'+hora+'Z';
     final ModificaEsdevenimentModel event =
         await http_modificaesdeveniment(
@@ -666,9 +708,16 @@ class _ModificaState extends State<Modifica> {
             datahora,
         dir,
         coordenades,
-        services,
+            mesura,
         img,
         tipus);
+    nomcontroller = new TextEditingController();
+    descrcontroller = new TextEditingController();
+    dircontroller = new TextEditingController();
+    preucontroller = new TextEditingController();
+    imgcontroller = new TextEditingController();
+    capcontroller = new TextEditingController();
+    mesurescontroller = new TextEditingController();
 
     runApp(MaterialApp(
       home: Mostra(idevent: id),

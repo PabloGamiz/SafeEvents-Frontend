@@ -21,6 +21,7 @@ class EsdevenimentEspecificModel {
     this.services,
     this.image,
     this.tipus,
+    this.mesures,
     this.faved,
     this.taken,
     this.esorg,
@@ -37,6 +38,7 @@ class EsdevenimentEspecificModel {
   dynamic services;
   String image;
   String tipus;
+  String mesures;
   bool faved;
   int taken;
   bool esorg;
@@ -53,6 +55,7 @@ class EsdevenimentEspecificModel {
     services: json["services"],
     image: json["image"],
     tipus: json["tipus"],
+    mesures: json["mesures"],
     faved: json["Faved"],
     taken: json["Taken"],
     esorg: json["esorg"],
@@ -70,6 +73,7 @@ class EsdevenimentEspecificModel {
     "services": services,
     "image": image,
     "tipus": tipus,
+    "mesures": mesures,
     "Faved": faved,
     "Taken": taken,
     "esorg": esorg,
