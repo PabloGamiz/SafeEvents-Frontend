@@ -53,6 +53,9 @@ class _GeneralEventsState extends State {
 
   bool registered = false;
 
+  bool filteredcity = false;
+  bool filteredcategory = false;
+
   String cookie;
 
   _comprovarSessio() async {
@@ -68,6 +71,7 @@ class _GeneralEventsState extends State {
   List<FavsModel> favs;
 
   String _defaultValue;
+  String ciutatCercada;
 
   int counter = 0;
 
@@ -133,8 +137,21 @@ class _GeneralEventsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, string, 0);
+                  ciutatCercada = string;
+                  if (string == "") {
+                    filteredcity = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                  } else {
+                    filteredcity = true;
+                  }
+                  if (filteredcategory) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, string, 0);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, string, 0);
+                  }
                   /*generalEvents
                       .where(
                           (e) => (e.controller.location.name.contains(string)))
@@ -159,8 +176,20 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, newValue, 1);
+                  if (newValue == "") {
+                    filteredcategory = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                  } else {
+                    filteredcategory = true;
+                  }
+                  if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                  }
                   /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))
                             .toList();*/
@@ -247,7 +276,7 @@ class _GeneralEventsState extends State {
                                           .location, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
                                       style: TextStyle(color: Colors.white),
                                       maxLines: 2,
-                                      overflow: TextOverflow.fade,
+                                      //overflow: TextOverflow.fade,
                                     ),
                                   ),
                                 ),
@@ -258,7 +287,8 @@ class _GeneralEventsState extends State {
                                     /*'25/10/2020, 19:50',*/
                                     filteredEvents[index]
                                         .closureDate
-                                        .toString(),
+                                        .toString()
+                                        .substring(0, 16),
                                     style: TextStyle(color: Colors.white)),
                                 Container(
                                   height: 5,
@@ -309,11 +339,24 @@ class _GeneralEventsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, string, 0);
-                  /*filteredEvents = generalEvents
+                  ciutatCercada = string;
+                  if (string == "") {
+                    filteredcity = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                  } else {
+                    filteredcity = true;
+                  }
+                  if (filteredcategory) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, string, 0);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, string, 0);
+                  }
+                  /*generalEvents
                       .where(
-                          (e) => (e.location.characters(string)))         //MIRAR QUE ESTO ESTE BIEN
+                          (e) => (e.controller.location.name.contains(string)))
                       .toList();*/
                 });
               });
@@ -335,11 +378,23 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, newValue, 1);
-                  /*filteredEvents = generalEvents
-                          .where((e) => e.category.contains(newValue))
-                          .toList();*/
+                  if (newValue == "") {
+                    filteredcategory = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                  } else {
+                    filteredcategory = true;
+                  }
+                  if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                  }
+                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
                 });
               });
             },
