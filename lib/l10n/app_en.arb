@@ -1,0 +1,18 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "signIn": "Sign-In",
+  "@signIn": {
+      "description": "Sing in appBar text"
+  },
+  "signInGoogle": "Sign-In with Google",
+  "@signInGoogle": {
+      "description": "Sing in button text"
+  },
+  "signInGuest": "Continue as guest user",
+  "@signInGuest": {
+      "description":"Continue as guest button text"
+  }
+}

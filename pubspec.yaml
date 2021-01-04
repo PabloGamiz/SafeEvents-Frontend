@@ -42,6 +42,9 @@ dependencies:
   numberpicker: ^1.3.0
   qr_flutter: ^3.2.0
   barcode_scan: any
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +66,7 @@ flutter:
   assets:
      - assets/
 
+  generate: true
 #  fonts:
 #      - family: AppIcons
 #        fonts:
