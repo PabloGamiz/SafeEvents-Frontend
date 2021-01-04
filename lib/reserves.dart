@@ -470,6 +470,7 @@ class _PantallaReserva extends State<Reserves> {
           numero.toString() +
           " entrades"),
       actions: [
+        shareButton,
         okButton,
       ],
     );
