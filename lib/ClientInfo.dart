@@ -153,6 +153,7 @@ import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/Structure.dart';
+import 'package:safeevents/scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
@@ -398,13 +399,13 @@ class _ClientInfoState extends State<ClientInfo> {
                 FlatButton(
                   onPressed: () => _tancarSessio(),
                   child: Icon(
-                    Icons.logout,
+                    Icons.location_on,
                     color: Colors.white,
                   ),
                 ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
-          )
+          ),
         ],
       ),
     );
@@ -618,3 +619,13 @@ class _ClientInfoState extends State<ClientInfo> {
       );
     else
       return createWidget();*/
+
+/*
+
+runApp(MaterialApp(
+                home: QR(
+                  qrCode: qrCode,
+                  i: 0,
+                ),
+              );
+ */

@@ -319,7 +319,6 @@ class _PantallaReserva extends State<Reserves> {
   }
 
   _reserva() async {
-    print('reserva');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     final RespostaReservaModel session =
@@ -329,7 +328,6 @@ class _PantallaReserva extends State<Reserves> {
         prefs.setStringList(
             'entrades_' + id.toString(), session.tickets[i].controller.id);*/
       Navigator.of(context).pop();
-      print(session.tickets[0].controller.id);
       showConfirmationDialog(context);
     } else {
       Navigator.of(context).pop();
@@ -338,14 +336,15 @@ class _PantallaReserva extends State<Reserves> {
   }
 
   _compra() async {
-    final RespostaReservaModel session = compra(id, numero);
-
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    final RespostaReservaModel session =
+        await http_compra(stringValue, id, numero);
+    //compra(id, numero);
     if (session != null) {
       //prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
       Navigator.of(context).pop();
-      showConfirmationDialogCompra(
-          context, session.tickets[0].controller.qrCode);
-      print(session.tickets[0].controller.qrCode);
+      showConfirmationDialogCompra(context, session.tickets);
     } else {
       Navigator.of(context).pop();
       showErrorDialog(context);
@@ -444,9 +443,14 @@ class _PantallaReserva extends State<Reserves> {
         key: Key("confirmation_button_alert_compra"),
         onPressed: () => {
               Navigator.of(context).pop(),
+              /*
+              runApp(MaterialApp(
+                home: Structure(),
+              ) */
               runApp(MaterialApp(
                 home: QR(
                   qrCode: qrCode,
+                  i: 0,
                 ),
               )),
             });

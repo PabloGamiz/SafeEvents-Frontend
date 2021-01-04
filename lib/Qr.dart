@@ -5,52 +5,49 @@ import 'Structure.dart';
 //import 'package:barcode_scanner/barcode_scanning_data.dart';
 
 class QR extends StatefulWidget {
-  var qrCode;
-
-  QR({Key key, @required this.qrCode}) : super(key: key);
+  List qrCode;
+  int i;
+  QR({Key key, @required this.qrCode, @required this.i}) : super(key: key);
   @override
-  _QRstate createState() => _QRstate(qrCode);
+  _QRstate createState() => _QRstate(qrCode, i);
 }
 
 class _QRstate extends State<QR> {
-  var qrCode;
-
-  _QRstate(this.qrCode);
+  List qrCode;
+  int i;
+  _QRstate(this.qrCode, this.i);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text('Sign-In'),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          runApp(MaterialApp(
+            home: Structure(),
+          ));
+        },
+        child: Icon(Icons.home),
+        backgroundColor: Colors.lightBlue,
       ),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Positioned(
-            left: 8.0,
-            top: 70.0,
-            child: InkWell(
-              onTap: () {
-                runApp(MaterialApp(
-                  home: Structure(),
-                ));
-              },
-              child: Icon(Icons.arrow_back, color: Colors.black),
-            ),
+        child: Container(
+          height: MediaQuery.of(context).size.height - 150,
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            itemCount: qrCode.length,
+            itemBuilder: (context, index) {
+              return QrImage(
+                data: qrCode[index].controller.qrCode,
+                version: QrVersions.auto,
+                size: 450,
+                gapless: false,
+                embeddedImage: AssetImage('assets/SafeEventsBlack.png'),
+                embeddedImageStyle: QrEmbeddedImageStyle(size: Size(70, 70)),
+              );
+            },
           ),
-
-          //QrImage.withQr(qr: );
-          QrImage(
-            data: qrCode,
-            version: QrVersions.auto,
-            size: 320,
-            gapless: false,
-            embeddedImage: AssetImage('assets/SafeEventsBlack.png'),
-            embeddedImageStyle: QrEmbeddedImageStyle(size: Size(80, 80)),
-          )
-        ],
-      )),
+        ),
+      ),
     );
   }
 }
