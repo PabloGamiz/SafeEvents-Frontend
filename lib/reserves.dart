@@ -422,6 +422,23 @@ class _PantallaReserva extends State<Reserves> {
   showConfirmationDialogCompra(BuildContext context, qrCode) {
     // set up the button
 
+    void share(BuildContext context) {
+      String message = "He comprat entrades per a l'event $eventName";
+      Share.share(message);
+    }
+
+    Widget shareButton = FlatButton(
+        child: Icon(Icons.share),
+        onPressed: () => {
+              share(context),
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: QR(
+                  qrCode: qrCode,
+                ),
+              )),
+            });
+
     Widget okButton = FlatButton(
         child: Text("Continuar"),
         key: Key("confirmation_button_alert_compra"),

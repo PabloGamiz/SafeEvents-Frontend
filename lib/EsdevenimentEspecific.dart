@@ -13,13 +13,13 @@ import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
+import 'package:safeevents/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
 
 import 'Structure.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
-import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/reserves.dart';
@@ -28,6 +28,8 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
+
+import 'services/database.dart';
 
 //Variables globals
 int idfake = 20;
@@ -39,6 +41,7 @@ bool _esperaCarrega = true;
 MyInfo mi;
 int ide;
 bool liked;
+final DatabaseMethods database = DatabaseMethods();
 
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
@@ -75,7 +78,8 @@ class MyInfo {
       String image,
       String tipus,
       bool faved,
-      int taken, bool esorg) {
+      int taken,
+      bool esorg) {
     this.id = id;
     this.title = title;
     this.description = desc;
@@ -140,7 +144,6 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -184,7 +187,8 @@ class _MostraState extends State<Mostra> {
                                     height: 23,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color: !mi.faved ? Colors.white : Colors.red,
+                                      color:
+                                          !mi.faved ? Colors.white : Colors.red,
                                       onPressed: () => {
                                         setState(() {
                                           if (mi.faved) {
@@ -310,7 +314,6 @@ class _MostraState extends State<Mostra> {
                                                                     showDialog(
                                                                       context:
                                                                           context,
-
                                                                       builder:
                                                                           (_) =>
                                                                               new Container(
@@ -458,8 +461,11 @@ class _MostraState extends State<Mostra> {
                                                                   Colors.blue,
                                                             ),
                                                           ),
-                                                          onPressed: () =>
-                                                              {_contacta()},
+                                                          onPressed: () => {
+                                                            _contacta(mi
+                                                                .organizers
+                                                                .toString())
+                                                          },
                                                         ),
                                                       ),
                                                     )
@@ -663,21 +669,20 @@ class _MostraState extends State<Mostra> {
 //    });
 
       mi = MyInfo(
-        null,
-        event.title,
-        event.description,
-        event.capacity,
-        event.checkInDate,
-        event.location,
-        event.organizers,
-        event.services,
-        event.price,
-        event.image,
-        event.tipus,
-        event.faved,
-        event.taken,
-        event.esorg
-      );
+          null,
+          event.title,
+          event.description,
+          event.capacity,
+          event.checkInDate,
+          event.location,
+          event.organizers,
+          event.services,
+          event.price,
+          event.image,
+          event.tipus,
+          event.faved,
+          event.taken,
+          event.esorg);
     });
     final Marker marker = Marker(
         markerId: MarkerId('palau'),
@@ -689,7 +694,7 @@ class _MostraState extends State<Mostra> {
 
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra per editar
-    if(mi.esorg)return true;
+    if (mi.esorg) return true;
     return false;
   }
 
@@ -736,8 +741,16 @@ class _MostraState extends State<Mostra> {
   }
 }
 
-_contacta() {
-  //saltar a la pestanya de Xat amb la empresa
+_contacta(String userName) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String myName = prefs.getString('email');
+  String chatRoomId = database.getChatRoomId(userName, myName);
+  List<String> users = [userName, myName];
+  Map<String, dynamic> chatRoomMap = {"users": users, "chatroomid": chatRoomId};
+  database.createChatRoom(chatRoomId, chatRoomMap);
+  runApp(MaterialApp(
+    home: ChatScreen(chatRoomId: chatRoomId),
+  ));
 }
 
 class ReservaModel {

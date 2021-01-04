@@ -5,8 +5,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ConsultaFavorits.dart';
 import 'EventsGeneral.dart';
+import 'MapGeneralEvents.dart';
 import 'no_login.dart';
 import 'reserves.dart';
+import 'chatgeneral_screen.dart';
 
 class Structure extends StatefulWidget {
   @override
@@ -34,14 +36,8 @@ class _StructureState extends State<Structure> {
     EventsGeneral(),
     //ClientInfo(0),
     ConsultaFavortis(),
-    Text(
-      'Index 3: Map',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 4: Chat',
-      style: optionStyle,
-    ),
+    MapGeneralEvents(),
+    ChatGeneralScreen(),
     ClientInfo(0),
   ];
 
@@ -49,10 +45,7 @@ class _StructureState extends State<Structure> {
     EventsGeneral(),
     //ClientInfo(0),
     Nologin(),
-    Text(
-      'Index 3: Map',
-      style: optionStyle,
-    ),
+    MapGeneralEvents(),
     Nologin(),
     Nologin(),
   ];
@@ -94,7 +87,7 @@ class _StructureState extends State<Structure> {
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.maps_ugc),
+              icon: Icon(Icons.map),
               label: 'Map',
               backgroundColor: Colors.blueGrey,
             ),
@@ -142,7 +135,7 @@ class _StructureState extends State<Structure> {
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.maps_ugc),
+              icon: Icon(Icons.map),
               label: 'Map',
               backgroundColor: Colors.blueGrey,
             ),
