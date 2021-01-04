@@ -21,7 +21,7 @@ class Reserves extends StatefulWidget {
       @required this.eventName})
       : super(key: key);
   @override
-  _PantallaReserva createState() => _PantallaReserva(entradas, id);
+  _PantallaReserva createState() => _PantallaReserva(entradas, id, eventName);
 }
 
 class _PantallaReserva extends State<Reserves> {
