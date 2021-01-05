@@ -12,7 +12,7 @@ Future<int> http_pasarQr(String result, int event_id) async {
     "qr_code": result,
   };
   final jsonCliend = json.encode(queryParamaters);
-  final response = await http.post(apitUrl, body: jsonCliend);
+  final response = await http.put(apitUrl, body: jsonCliend);
   print(response.statusCode);
   print(json.decode(response.body));
   if (response.statusCode == 201 || response.statusCode == 200) {

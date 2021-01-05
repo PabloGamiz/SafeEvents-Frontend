@@ -515,7 +515,7 @@ class _ClientInfoState extends State<ClientInfo> {
               ),
               if (purchase.option == 1)
                 FlatButton(
-                  onPressed: () => _mostrarqr(),
+                  onPressed: () => _mostrarqr(purchase.eventId),
                   child: Icon(
                     Icons.qr_code,
                     color: Colors.white,
@@ -754,7 +754,7 @@ class _ClientInfoState extends State<ClientInfo> {
     ));*/
   }
 
-  _mostrarqr() async {
+  _mostrarqr(int eventId) async {
     print('mostrar qr');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
