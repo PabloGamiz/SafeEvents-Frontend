@@ -12,6 +12,7 @@ import 'package:safeevents/http_requests/http_publishevents.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'EsdevenimentEspecific.dart';
+import 'Structure.dart';
 
 TextEditingController nomcontroller = new TextEditingController();
 TextEditingController descrcontroller = new TextEditingController();
@@ -588,10 +589,10 @@ class _PublishState extends State<Publish> {
   }
   _goBackDef() {
 
-    runApp(
-        MaterialApp(
-          home: EventsGeneral(),
-        ));
+
+      runApp(MaterialApp(
+        home: Structure(),
+      ));
   }
 
 
