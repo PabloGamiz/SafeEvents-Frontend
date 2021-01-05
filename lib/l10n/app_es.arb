@@ -8,5 +8,8 @@
     "mapBottomBar": "Mapa",
     "chatBottomBar": "Chat",
     "profileBottomBar": "Perfil",
-    "searchCity": "Buscar ciudad"
+    "searchCity": "Buscar ciudad",
+    "bookingsClientInfo": "Reservas",
+    "ticketsClientInfo": "Entradas",
+    "organizedClientInfo": "Eventos organizados"
 }

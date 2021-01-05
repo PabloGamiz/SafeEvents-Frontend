@@ -7,7 +7,7 @@ import 'package:safeevents/http_models/ClientInfoModel.dart';
 Future<ClientInfoMod> fetchClient(int id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String stringValue = prefs.getString('cookie');
-  var uri = Uri.http('10.4.41.148:8080', '/clientInfo');
+  var uri = Uri.http('10.4.41.148:8080', '/clientinfo');
   var body;
   if (id != 0) {
     body = jsonEncode({"id": id, "cookie": stringValue});

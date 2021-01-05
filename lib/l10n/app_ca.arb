@@ -7,5 +7,8 @@
     "favouritesBottomBar": "Mapa",
     "chatBottomBar": "Xat",
     "profileBottomBar": "Perfil",
-    "searchCity": "Cercar ciutat"
+    "searchCity": "Cercar ciutat",
+    "bookingsClientInfo": "Reserves",
+    "ticketsClientInfo": "Entrades",
+    "organizedClientInfo": "Esdeveniments organitzats"
 }

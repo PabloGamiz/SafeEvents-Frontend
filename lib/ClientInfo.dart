@@ -161,6 +161,7 @@ import 'http_models/ClientInfoModel.dart';
 import 'http_requests/http_generalevents.dart';
 import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /*
 void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
@@ -177,16 +178,17 @@ class ClientInfo extends StatefulWidget {
 
 class _ClientInfoState extends State<ClientInfo> {
   Future<ClientInfoMod> futureClient;
-  var dropdownValue = "Reservas";
   List<Purchased> selected = new List();
+  String dropdownValue;
   String result = "Hey there !";
   int eventid = 1;
   Map<int, ListEsdevenimentsModel> generalEvents;
+  BuildContext ctx;
 
   @override
   void initState() {
     super.initState();
-    futureClient = fetchLocalClient(widget.id);
+    futureClient = fetchClient(widget.id);
     http_GeneralEvents().then((eventsFromServer) {
       setState(() {
         generalEvents = Map.fromIterable(eventsFromServer,
@@ -260,6 +262,10 @@ class _ClientInfoState extends State<ClientInfo> {
 
   @override
   Widget build(BuildContext context) {
+    ctx = context;
+    print(dropdownValue);
+    if (dropdownValue == null)
+      dropdownValue = AppLocalizations.of(context).bookingsClientInfo;
     return FutureBuilder<ClientInfoMod>(
       future: futureClient,
       builder: (context, snapshot) {
@@ -282,14 +288,18 @@ class _ClientInfoState extends State<ClientInfo> {
     var assistant = client.assists;
     var organizer = client.organize;
     selected = _selectTicket(dropdownValue, assistant);
+    print('buildprofileWidget dropdown: ' + dropdownValue);
     return Column(
       children: [
         generalInfo(client),
         DropdownButton(
           value: dropdownValue,
           elevation: 16,
-          items: ["Reservas", "Entradas", "Eventos organizados"]
-              .map((String value) {
+          items: [
+            AppLocalizations.of(context).bookingsClientInfo,
+            AppLocalizations.of(context).ticketsClientInfo,
+            AppLocalizations.of(context).organizedClientInfo
+          ].map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -302,13 +312,18 @@ class _ClientInfoState extends State<ClientInfo> {
           ),
           onChanged: (String newValue) {
             setState(() {
+              print('SetSate newValue antes: ' + newValue);
+              print('SetSate dropValue antes: ' + dropdownValue);
               dropdownValue = newValue;
-              if (dropdownValue != "Eventos organizados")
+              print('SetSate newValue despues: ' + newValue);
+              print('SetSate dropValue despues: ' + dropdownValue);
+              if (dropdownValue !=
+                  AppLocalizations.of(context).organizedClientInfo)
                 selected = _selectTicket(dropdownValue, assistant);
             });
           },
         ),
-        if (dropdownValue != "Eventos organizados")
+        if (dropdownValue != AppLocalizations.of(context).organizedClientInfo)
           _ticketsList()
         else
           _eventsList(organizer)
@@ -350,7 +365,7 @@ class _ClientInfoState extends State<ClientInfo> {
         generalInfo(client),
         Container(
           child: Text(
-            "Eventos organizados",
+            AppLocalizations.of(context).organizedClientInfo,
             style: TextStyle(
                 color: Colors.black,
                 decoration: TextDecoration.underline,
@@ -558,7 +573,7 @@ class _ClientInfoState extends State<ClientInfo> {
 
   List<Purchased> _selectTicket(String type, Assists assistant) {
     selected.clear();
-    if (type == "Reservas") {
+    if (type == AppLocalizations.of(context).signIn) {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
           if (assistant.purchased[i].option == 0) {
@@ -566,7 +581,8 @@ class _ClientInfoState extends State<ClientInfo> {
           }
         }
       }
-    } else if (type == "Entradas" && assistant != null) {
+    } else if (type == AppLocalizations.of(context).ticketsClientInfo &&
+        assistant != null) {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
           if (assistant.purchased[i].option == 1) {

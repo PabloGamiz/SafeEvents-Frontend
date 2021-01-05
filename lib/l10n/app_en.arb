@@ -38,5 +38,17 @@
   "searchCity": "Search City",
   "@searchCity": {
       "description": "Label for search appbars"
+  },
+  "bookingsClientInfo": "Bookings",
+  "@bookingsClientInfo": {
+      "description": "Text for dropdownValue"
+  },
+  "ticketsClientInfo": "Tickets",
+  "@ticketsClientInfo": {
+      "description": "Text for dropdownValue"
+  },
+  "organizedClientInfo": "Organized events",
+  "@organizedClientInfo": {
+      "description": "Text for dropdownValue"
   }
 }
