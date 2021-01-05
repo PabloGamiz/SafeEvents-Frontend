@@ -427,8 +427,9 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
 
     void share(BuildContext context) {
-      // String message = "He comprat entrades per a l'event $eventName";
-      //Share.share(message);
+      String message =
+          "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents";
+      Share.share(message);
     }
 
     Widget shareButton = FlatButton(

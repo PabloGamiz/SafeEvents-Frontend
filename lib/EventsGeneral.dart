@@ -272,8 +272,8 @@ class _GeneralEventsState extends State {
                                 Center(
                                   child: Container(
                                     child: Text(
-                                      filteredEvents[index]
-                                          .location, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
+                                      filteredEvents[index].location
+                                      /*"ácéntó"*/, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
                                       style: TextStyle(color: Colors.white),
                                       maxLines: 2,
                                       //overflow: TextOverflow.fade,
@@ -293,7 +293,7 @@ class _GeneralEventsState extends State {
                                 Container(
                                   height: 5,
                                 ),
-                                Text('Música', //filteredEvents[index].category,
+                                Text(filteredEvents[index].tipus,
                                     style: TextStyle(color: Colors.white)),
                               ],
                             ),
@@ -443,7 +443,8 @@ class _GeneralEventsState extends State {
                           Container(
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text('45€',
+                              child: Text(
+                                  filteredEvents[index].price.toString(),
                                   /*sumadelpreu(filteredEvents[index]).toString(),*/
                                   style: TextStyle(
                                       fontSize: 40, color: Colors.white)),
@@ -473,12 +474,13 @@ class _GeneralEventsState extends State {
                                     /*'25/10/2020, 19:50',*/
                                     filteredEvents[index]
                                         .closureDate
-                                        .toString(),
+                                        .toString()
+                                        .substring(0, 16),
                                     style: TextStyle(color: Colors.white)),
                                 Container(
                                   height: 5,
                                 ),
-                                Text('Música', //filteredEvents[index].category,
+                                Text(filteredEvents[index].tipus,
                                     style: TextStyle(color: Colors.white)),
                               ],
                             ),
