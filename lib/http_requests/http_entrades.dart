@@ -1,9 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
-import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:safeevents/http_models/Reserva_model.dart';
+
+import 'package:safeevents/http_models/get_tickets_model.dart';
 import 'package:safeevents/http_models/resposta_reserva_model.dart';
 
 Future<int> http_entradas(int id) async {
@@ -67,12 +67,12 @@ Future<RespostaReservaModel> http_compra(
 }
 
 Future<RespostaReservaModel> http_compra_reserva(
-    String stringValue, int id, int howmany) async {
+    String stringValue, int id) async {
   final String apitUrl = "http://10.4.41.148:8080/ticket/activate";
   var queryParamaters = {
     'cookie': stringValue,
     'event_id': id,
-    'how_many': howmany,
+    'how_many': 1,
   };
   String reservaModel = json.encode(queryParamaters);
   final response = await http.put(apitUrl, body: reservaModel);
@@ -87,32 +87,20 @@ Future<RespostaReservaModel> http_compra_reserva(
   }
 }
 
-Future<RespostaReservaModel> http_get_tickets(
+Future<List<GetTicketsModel>> http_get_tickets(
     String stringValue, int id) async {
   final String apitUrl = "http://10.4.41.148:8080/ticket";
   var queryParamaters = {'cookie': stringValue, 'event_id': id};
-  String dades = json.encode(queryParamaters);
-  final uri = Uri.http('http://10.4.41.148:8080', '/ticket', queryParamaters);
-  http.Request rq = http.Request('GET', Uri.parse(apitUrl));
-  rq.body = dades;
-  print("comença");
-  final response = await http.Client().send(rq);
-  //final request = Request('GET', 'http://10.4.41.148:8080/ticket');
-  //request.body = dades;
-  //final response = request.send().stream.first;
-  //final response = await http.get(uri);
+  String reservaModel = json.encode(queryParamaters);
+  final response = await http.put(apitUrl, body: reservaModel);
   print(response.statusCode);
-  print(response.reasonPhrase);
+  print(response.body);
   if (response.statusCode == 201 || response.statusCode == 200) {
-    print(response.reasonPhrase);
-    return respostaReservaModelFromJson(response.reasonPhrase);
+    print(response.body);
+    return getTicketsModelFromJson(response.body);
   } else if (response.statusCode == 400) {
     return null;
   } else {
     return null;
   }
 }
-
-/*
-APIActivatePath = "/ticket/activate"
-*/

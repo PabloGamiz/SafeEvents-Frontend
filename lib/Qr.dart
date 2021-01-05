@@ -55,7 +55,7 @@ class _QRstate extends State<QR> {
             itemCount: qrCode.length,
             itemBuilder: (context, index) {
               return QrImage(
-                data: qrCode[index].controller.qrCode,
+                data: qrCode[index].qrCode,
                 version: QrVersions.auto,
                 size: 450,
                 gapless: false,

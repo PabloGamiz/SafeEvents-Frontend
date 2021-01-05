@@ -1,149 +1,3 @@
-/*//This page shows the information of a selected user
-
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-class ClientInfo extends StatefulWidget {
-  final String email;
-
-  ClientInfo(this.email);
-
-  _ClientInfoState createState() => _ClientInfoState(email);
-}
-
-class _ClientInfoState extends State<ClientInfo> {
-  String email;
-
-  _ClientInfoState(this.email);
-
-  Future<Client> futureClient;
-
-  @override
-  void initState() {
-    super.initState();
-    futureClient = fetchClient(email);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Client>(
-      future: futureClient,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return createClientWidget(snapshot);
-        } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        }
-
-        // By default, show a loading spinner.
-        return CircularProgressIndicator();
-      },
-    );
-  }
-}
-
-Future<Client> fetchClient(String email) async {
-  var queryParameters = {'email': email};
-  var uri = Uri.http('10.4.41.148:9090', '/clientInfo/', queryParameters);
-  final response = await http.get(uri);
-  if (response.statusCode == 200) {
-    return Client.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load album');
-  }
-}
-
-class Client {
-  final String clientname;
-  final String email;
-  final bool verified;
-  final events;
-
-  Client({this.clientname, this.email, this.verified, this.events});
-
-  factory Client.fromJson(Map<String, dynamic> json) {
-    return Client(
-      clientname: json['username'],
-      email: json['email'],
-      verified: json['verified'] == 'true',
-      events: json['events'],
-    );
-  }
-}
-
-Widget createClientWidget(AsyncSnapshot<Client> snapshot) {
-  return Scaffold(
-    body: Column(children: [
-      Text(
-        'Username',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Text(snapshot.data.clientname),
-      Text(
-        'Email',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Text(snapshot.data.email),
-      Text(
-        'Verified',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      if (snapshot.data.verified)
-        Text('This user is verified')
-      else
-        Text('This user is not verified'),
-      Text(
-        'Events',
-        style: TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
-      ),
-      Expanded(
-        child: ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(snapshot.data.events[index]['eventName']),
-              subtitle: Text(snapshot.data.events[index]['Date']),
-            );
-          },
-          itemCount: snapshot.data.events.length,
-          shrinkWrap: true,
-        ),
-      ),
-    ]),
-  );
-}
-
-/*
-  void setUserInfo() async {
-    //var user = Request.Get(URI).addheader("email", email).execute().returnContent());
-    String user = await rootBundle.loadString("assets/userTest.json");
-    var showData = json.decode(user.toString());
-    this.username = showData['username'];
-    this.verified = showData['verified'] == 'true';
-    this.events = showData['events'];
-    setState(() {
-      parsed = true;
-    });
-  }
-  */
-/*setUserInfo();
-    if (!parsed)
-      return Scaffold(
-        body: Center(
-          child: (Text('Parsing...')),
-        ),
-      );
-    else
-      return createWidget();*/
-
-*/
-
-//This page shows the information of a selected user
-
 import 'dart:io';
 
 import 'package:barcode_scan/barcode_scan.dart';
@@ -156,11 +10,14 @@ import 'package:safeevents/Qr.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/Structure.dart';
 import 'package:safeevents/http_models/resposta_reserva_model.dart';
+import 'package:safeevents/payment.dart';
 import 'package:safeevents/scan.dart';
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'bluetooth.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
+import 'http_models/get_tickets_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
 import 'http_requests/http_entrades.dart';
@@ -168,11 +25,6 @@ import 'http_requests/http_generalevents.dart';
 import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-/*
-void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
-    ['kiko rivera concert', 'Getafe - Osasuna']));
-*/
 
 class ClientInfo extends StatefulWidget {
   final int id;
@@ -637,7 +489,8 @@ class _ClientInfoState extends State<ClientInfo> {
                 )
               else
                 FlatButton(
-                  onPressed: () => null,
+                  onPressed: () => _compra_reserva(
+                      purchase.eventId, generalEvents[purchase.eventId].title),
                   child: Icon(
                     Icons.payment,
                     color: Colors.white,
@@ -675,13 +528,151 @@ class _ClientInfoState extends State<ClientInfo> {
     return selected;
   }
 
+  showAlertDialogcompra(BuildContext context, int id, String name) {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      key: Key("Okey_button_alert_compra_2"),
+      onPressed: () => _compra(id, name),
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Avis"),
+      content: Text("S'està processant la compra, si us plau esperi."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  compra(int id) async {
+    //sleep(const Duration(seconds: 2));
+    print('compra');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    RespostaReservaModel session = await http_compra_reserva(stringValue, id);
+    for (int i = 0; i < session.tickets.length; ++i) {
+      var resposta = paypal(session.tickets[i].controller.id);
+    }
+
+    return session;
+  }
+
+  _compra(int id, String name) async {
+    final RespostaReservaModel session = await compra(id);
+    Navigator.of(context).pop();
+    if (session != null) {
+      showConfirmationDialogCompra(context, session.tickets, id, name);
+    } else {
+      showErrorDialog(context);
+    }
+  }
+
+  showErrorDialog(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text("Continuar"),
+        key: Key("error_button_alert"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: Structure(),
+              )),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Avis"),
+      content: Text("No s'ha pogut fer l'acció si us plau torna a intentar-ho"),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showConfirmationDialogCompra(
+      BuildContext context, qrCode, int id, String eventName) {
+    // set up the button
+
+    void share(BuildContext context) {
+      String message =
+          "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents";
+      Share.share(message);
+    }
+
+    Widget shareButton = FlatButton(
+        child: Icon(Icons.share),
+        onPressed: () => {
+              share(context),
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: QR(qrCode: qrCode),
+              )),
+            });
+
+    Widget okButton = FlatButton(
+        child: Text("Continuar"),
+        key: Key("confirmation_button_alert_compra"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: Structure(),
+              )),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Avis"),
+      content: Text("S'ha fer la compra correctament de les " +
+          1.toString() +
+          " entrades"),
+      actions: [
+        shareButton,
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  _compra_reserva(int id, String name) async {
+    print('compra reserva');
+    showAlertDialogcompra(context, id, name);
+
+    /*runApp(MaterialApp(
+      home: QR(qrCode: session.tickets),
+    ));*/
+  }
+
   _mostrarqr() async {
     print('mostrar qr');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    print(stringValue);
-    RespostaReservaModel session = await http_get_tickets(stringValue, eventid);
-
+    List<GetTicketsModel> session =
+        await http_get_tickets(stringValue, eventid);
+    print(session.first.qrCode);
     runApp(MaterialApp(
       home: QR(qrCode: session.tickets),
       localizationsDelegates: [
@@ -711,11 +702,6 @@ class _ClientInfoState extends State<ClientInfo> {
     String stringValue = prefs.getString('cookie');
     print(stringValue);
     SignInModel session = await http_SignOut(stringValue);
-    /*var now;
-    do {
-      session = await http_SignOut(stringValue);
-      now = new DateTime.now();
-    } while (!(session.cookie == stringValue) && (session.deadline < now));*/
     prefs.setString('cookie', null);
     runApp(MaterialApp(
       home: SignIn(),
@@ -740,36 +726,3 @@ class _ClientInfoState extends State<ClientInfo> {
     ));
   }
 }
-
-/*
-  void setUserInfo() async {
-    //var user = Request.Get(URI).addheader("email", email).execute().returnContent());
-    String user = await rootBundle.loadString("assets/userTest.json");
-    var showData = json.decode(user.toString());
-    this.username = showData['username'];
-    this.verified = showData['verified'] == 'true';
-    this.events = showData['events'];
-    setState(() {
-      parsed = true;
-    });
-  }
-  */
-/*setUserInfo();
-    if (!parsed)
-      return Scaffold(
-        body: Center(
-          child: (Text('Parsing...')),
-        ),
-      );
-    else
-      return createWidget();*/
-
-/*
-
-runApp(MaterialApp(
-                home: QR(
-                  qrCode: qrCode,
-                  i: 0,
-                ),
-              );
- */
