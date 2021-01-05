@@ -7,6 +7,7 @@ import 'http_requests/http_signin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/database.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 //esto es chat
 class SignIn extends StatefulWidget {
@@ -24,7 +25,7 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Sign-In'),
+        title: Text(AppLocalizations.of(context).signIn),
       ),
       body: Center(
           child: Column(
