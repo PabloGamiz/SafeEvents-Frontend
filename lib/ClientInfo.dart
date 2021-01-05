@@ -524,23 +524,34 @@ class _ClientInfoState extends State<ClientInfo> {
                   Container(
                     child: Text(
                       generalEvents[purchase.eventId].price.toString() + '€',
-                      style: TextStyle(fontSize: 24, color: Colors.white),
+                      style: TextStyle(fontSize: 30, color: Colors.white),
                       maxLines: 2,
                       overflow: TextOverflow.fade,
                     ),
+                    margin: EdgeInsets.only(right: 15),
+                    alignment: Alignment.centerLeft,
                   ),
-                  Container(
-                    child: Text(
-                      generalEvents[purchase.eventId]
-                          .checkInDate
-                          .toString()
-                          .substring(0, 16),
-                      style: TextStyle(fontSize: 17, color: Colors.white),
-                      maxLines: 2,
-                      overflow: TextOverflow.fade,
-                    ),
-                    alignment: Alignment.center,
-                    margin: EdgeInsets.only(left: 40),
+                  Column(
+                    children: [
+                      Text(
+                        generalEvents[purchase.eventId]
+                            .checkInDate
+                            .toString()
+                            .substring(0, 10),
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                      ),
+                      Text(
+                        generalEvents[purchase.eventId]
+                            .checkInDate
+                            .toString()
+                            .substring(11, 16),
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                      ),
+                    ],
                   ),
                 ],
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -562,7 +573,7 @@ class _ClientInfoState extends State<ClientInfo> {
                   ),
                 ),
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
           ),
         ),
       ),

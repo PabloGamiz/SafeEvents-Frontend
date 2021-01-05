@@ -127,8 +127,7 @@ Widget _buildEventWidget(FavsModel event) {
                   Container(
                     height: 5,
                   ),
-                  Text('Música', //filteredEvents[index].category,
-                      style: TextStyle(color: Colors.white)),
+                  Text(event.tipus, style: TextStyle(color: Colors.white)),
                 ],
               ),
             ),
