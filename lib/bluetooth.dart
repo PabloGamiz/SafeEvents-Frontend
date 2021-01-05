@@ -46,6 +46,18 @@ class _BluetoothState extends State<Bluetooth> {
             onPressed: (bluetooth),
             color: Colors.lightBlue,
           ),
+          FlatButton(
+            key: Key("scanning"),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "Pulsar per detenir l'escanner",
+                style: TextStyle(color: Colors.white, fontSize: 15),
+              ),
+            ),
+            onPressed: (bluetooth),
+            color: Colors.grey,
+          ), /*
           Container(
             key: Key("scanning"),
             width: 250.0,
@@ -61,7 +73,7 @@ class _BluetoothState extends State<Bluetooth> {
                 ),
               ),
             ),
-          ),
+          ),*/
         ],
       )),
     );
@@ -121,6 +133,7 @@ class _BluetoothState extends State<Bluetooth> {
   }
 
   bluetooth() async {
+    exit = false;
     start = true;
     print("scanning");
     showAlertDialog(context);
@@ -159,7 +172,7 @@ class _BluetoothState extends State<Bluetooth> {
 
   scan_device() async {
     Timer timer;
-
+    print("exit: " + exit.toString());
     while (!exit) {
       if (scan) {
         print("scannning");
@@ -210,6 +223,7 @@ class _BluetoothState extends State<Bluetooth> {
           ),
         );
       }
+      print("exit: " + exit.toString());
     }
   }
 }

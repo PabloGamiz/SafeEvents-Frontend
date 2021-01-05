@@ -17,7 +17,7 @@ compra(int id, int numero) async {
   String stringValue = prefs.getString('cookie');
   RespostaReservaModel session = await http_compra(stringValue, id, numero);
   for (int i = 0; i < session.tickets.length; ++i) {
-    var resposta = paypal(session.tickets[i].controller.id);
+    var resposta = paypal(session.tickets[i].id);
   }
 
   return session;

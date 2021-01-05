@@ -26,6 +26,8 @@ import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'notificar.dart';
+
 class ClientInfo extends StatefulWidget {
   final int id;
 
@@ -311,6 +313,38 @@ class _ClientInfoState extends State<ClientInfo> {
                     color: Colors.white,
                   ),
                 ),
+              if (widget.id == 0)
+                FlatButton(
+                  onPressed: () {
+                    runApp(
+                      MaterialApp(
+                        home: Notificar(),
+                        localizationsDelegates: [
+                          AppLocalizations.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                        ],
+                        supportedLocales: [
+                          const Locale('en', ''),
+                          const Locale('es', ''),
+                          const Locale('ca', ''),
+                        ],
+                        localeResolutionCallback: (locale, supportedLocales) {
+                          for (var supportedLocale in supportedLocales) {
+                            if (supportedLocale.languageCode ==
+                                locale.languageCode) return supportedLocale;
+                          }
+                          return supportedLocales.first;
+                        },
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    Icons.coronavirus,
+                    color: Colors.white,
+                  ),
+                ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           ),
@@ -559,7 +593,7 @@ class _ClientInfoState extends State<ClientInfo> {
     String stringValue = prefs.getString('cookie');
     RespostaReservaModel session = await http_compra_reserva(stringValue, id);
     for (int i = 0; i < session.tickets.length; ++i) {
-      var resposta = paypal(session.tickets[i].controller.id);
+      var resposta = paypal(session.tickets[i].id);
     }
 
     return session;
@@ -726,7 +760,7 @@ class _ClientInfoState extends State<ClientInfo> {
     String stringValue = prefs.getString('cookie');
     List<GetTicketsModel> session =
         await http_get_tickets(stringValue, eventid);
-    print(session.first.qrCode);
+    print(session.length);
     runApp(MaterialApp(
       home: QR(qrCode: session),
       localizationsDelegates: [

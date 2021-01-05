@@ -26,22 +26,6 @@ class RespostaReservaModel {
 
 class Ticket {
   Ticket({
-    this.controller,
-  });
-
-  Controller controller;
-
-  factory Ticket.fromJson(Map<String, dynamic> json) => Ticket(
-        controller: Controller.fromJson(json["Controller"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "Controller": controller.toJson(),
-      };
-}
-
-class Controller {
-  Controller({
     this.id,
     this.description,
     this.eventId,
@@ -49,6 +33,7 @@ class Controller {
     this.option,
     this.qrCode,
     this.createdAt,
+    this.checkIn,
     this.clientId,
   });
 
@@ -57,11 +42,12 @@ class Controller {
   int eventId;
   int assistantId;
   int option;
-  dynamic qrCode;
+  String qrCode;
   DateTime createdAt;
+  dynamic checkIn;
   int clientId;
 
-  factory Controller.fromJson(Map<String, dynamic> json) => Controller(
+  factory Ticket.fromJson(Map<String, dynamic> json) => Ticket(
         id: json["id"],
         description: json["description"],
         eventId: json["event_id"],
@@ -69,6 +55,7 @@ class Controller {
         option: json["option"],
         qrCode: json["qr_code"],
         createdAt: DateTime.parse(json["createdAt"]),
+        checkIn: json["check_in"],
         clientId: json["client_id"],
       );
 
@@ -80,6 +67,7 @@ class Controller {
         "option": option,
         "qr_code": qrCode,
         "createdAt": createdAt.toIso8601String(),
+        "check_in": checkIn,
         "client_id": clientId,
       };
 }
