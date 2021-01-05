@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:address_search_text_field/address_search_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'http_models/GeneralEventsModel.dart';
 import 'http_requests/http_generalevents.dart';
@@ -138,6 +140,24 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
                 onTap: () {
                   runApp(MaterialApp(
                     home: Mostra(idevent: e.id),
+                    localizationsDelegates: [
+                      AppLocalizations.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                    ],
+                    supportedLocales: [
+                      const Locale('en', ''),
+                      const Locale('es', ''),
+                      const Locale('ca', ''),
+                    ],
+                    localeResolutionCallback: (locale, supportedLocales) {
+                      for (var supportedLocale in supportedLocales) {
+                        if (supportedLocale.languageCode == locale.languageCode)
+                          return supportedLocale;
+                      }
+                      return supportedLocales.first;
+                    },
                   ));
                 },
               ),

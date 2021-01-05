@@ -6,10 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_blue/flutter_blue.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:safeevents/Structure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'http_requests/http_bluetooth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Bluetooth extends StatefulWidget {
   @override
@@ -71,6 +73,24 @@ class _BluetoothState extends State<Bluetooth> {
       runApp(
         MaterialApp(
           home: Structure(),
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en', ''),
+            const Locale('es', ''),
+            const Locale('ca', ''),
+          ],
+          localeResolutionCallback: (locale, supportedLocales) {
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode)
+                return supportedLocale;
+            }
+            return supportedLocales.first;
+          },
         ),
       );
     }
@@ -169,6 +189,24 @@ class _BluetoothState extends State<Bluetooth> {
         runApp(
           MaterialApp(
             home: Structure(),
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              const Locale('en', ''),
+              const Locale('es', ''),
+              const Locale('ca', ''),
+            ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode)
+                  return supportedLocale;
+              }
+              return supportedLocales.first;
+            },
           ),
         );
       }

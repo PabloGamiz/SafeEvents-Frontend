@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:share/share.dart';
 import 'package:safeevents/payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +9,7 @@ import 'Qr.dart';
 import 'Structure.dart';
 import 'http_models/resposta_reserva_model.dart';
 import 'http_requests/http_entrades.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Reserves extends StatefulWidget {
   final int entradas;
@@ -49,7 +51,7 @@ class _PantallaReserva extends State<Reserves> {
           border: new Border.all(color: Colors.white),
           borderRadius: BorderRadius.circular(5.0)),
       child: new Text(
-        entradas.toString() + " entrades disponibles",
+        entradas.toString() + AppLocalizations.of(context).entradesDisponibles,
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white),
       ),
@@ -109,7 +111,6 @@ class _PantallaReserva extends State<Reserves> {
     final topContentText = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        SizedBox(height: 80.0),
         Container(
           width: 200.0,
           child: new Divider(color: Colors.green),
@@ -176,6 +177,24 @@ class _PantallaReserva extends State<Reserves> {
                 home: Mostra(
                   idevent: id,
                 ),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               ));
             },
             child: Icon(Icons.arrow_back, color: Colors.white),
@@ -369,6 +388,24 @@ class _PantallaReserva extends State<Reserves> {
                   id: id,
                   eventName: eventName,
                 ),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 
@@ -400,6 +437,24 @@ class _PantallaReserva extends State<Reserves> {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
                 home: Structure(),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 
@@ -439,6 +494,24 @@ class _PantallaReserva extends State<Reserves> {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
                 home: QR(qrCode: qrCode),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 
@@ -449,6 +522,24 @@ class _PantallaReserva extends State<Reserves> {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
                 home: Structure(),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 

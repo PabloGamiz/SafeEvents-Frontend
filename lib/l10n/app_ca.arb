@@ -1,4 +1,6 @@
 {
     "helloWorld": "Hola món!",
-    "signIn": "Iniciar sessió"
+    "signIn": "Iniciar sessió",
+    "signInButton": "Iniciar sessió amb Google",
+    "entradesDisponibles": " entrades disponibles"
 }

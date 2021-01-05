@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'http_models/FavsModel.dart';
 import 'http_requests/http_favs.dart';
@@ -62,6 +64,24 @@ class _ConsultaFavoritsState extends State<ConsultaFavortis> {
 _esdevenimentEspecific(int id) {
   runApp(MaterialApp(
     home: Mostra(idevent: id),
+    localizationsDelegates: [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: [
+      const Locale('en', ''),
+      const Locale('es', ''),
+      const Locale('ca', ''),
+    ],
+    localeResolutionCallback: (locale, supportedLocales) {
+      for (var supportedLocale in supportedLocales) {
+        if (supportedLocale.languageCode == locale.languageCode)
+          return supportedLocale;
+      }
+      return supportedLocales.first;
+    },
   ));
 }
 

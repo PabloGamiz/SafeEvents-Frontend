@@ -6,5 +6,13 @@
     "signIn": "SignIn",
     "@signIn": {
       "description": "signin text"
+    },
+    "signInButton": "Sign-In with Googlesdf",
+    "@signInButton": {
+      "description": "signin text button"
+    },
+    "entradesDisponibles": " tickets available",
+    "@entradesDisponibles": {
+        "description": "syhkgyhkklil"
     }
 }

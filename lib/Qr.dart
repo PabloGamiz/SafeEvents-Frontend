@@ -1,7 +1,9 @@
 //import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'Structure.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 //import 'package:barcode_scanner/barcode_scanning_data.dart';
 
 class QR extends StatefulWidget {
@@ -21,6 +23,24 @@ class _QRstate extends State<QR> {
         onPressed: () {
           runApp(MaterialApp(
             home: Structure(),
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              const Locale('en', ''),
+              const Locale('es', ''),
+              const Locale('ca', ''),
+            ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale.languageCode)
+                  return supportedLocale;
+              }
+              return supportedLocales.first;
+            },
           ));
         },
         child: Icon(Icons.home),

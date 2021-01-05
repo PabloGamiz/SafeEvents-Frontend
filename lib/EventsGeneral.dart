@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/http_requests/http_generalevents.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,6 +13,7 @@ import 'http_requests/http_generalevents.dart';
 import 'http_models/Favourite_model.dart';
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 List<ListEsdevenimentsModel> filtrarEsdeveniments(
     List<ListEsdevenimentsModel> esdev, String paraula, int tipus) {
@@ -120,458 +122,553 @@ class _GeneralEventsState extends State {
     });
     if (registered && filteredEvents.length > 0) {
       return MaterialApp(
-          home: Scaffold(
-        body: Column(children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: "Cercar ciutat",
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25.0),
-                borderSide: BorderSide(),
-              ),
+        home: Scaffold(
+          body: Column(children: <Widget>[
+            SizedBox(
+              height: 10,
             ),
-            onChanged: (string) {
-              _debouncer.run(() {
-                setState(() {
-                  ciutatCercada = string;
-                  if (string == "") {
-                    filteredcity = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
-                  } else {
-                    filteredcity = true;
-                  }
-                  if (filteredcategory) {
-                    filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, string, 0);
-                  } else {
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, string, 0);
-                  }
-                  /*generalEvents
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: "Cercar ciutat",
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide(),
+                ),
+              ),
+              onChanged: (string) {
+                _debouncer.run(() {
+                  setState(() {
+                    ciutatCercada = string;
+                    if (string == "") {
+                      filteredcity = false;
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                    } else {
+                      filteredcity = true;
+                    }
+                    if (filteredcategory) {
+                      filteredEvents =
+                          filtrarEsdeveniments(filteredEvents, string, 0);
+                    } else {
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, string, 0);
+                    }
+                    /*generalEvents
                       .where(
                           (e) => (e.controller.location.name.contains(string)))
                       .toList();*/
+                  });
                 });
-              });
-            },
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          DropdownButton<String>(
-            hint: Text('Select category'),
-            value: _defaultValue,
-            items: categories.map((newValue) {
-              return DropdownMenuItem<String>(
-                value: newValue,
-                child: Text(newValue),
-              );
-            }).toList(),
-            onChanged: (newValue) {
-              _debouncer.run(() {
-                setState(() {
-                  _defaultValue = newValue;
-                  if (newValue == "") {
-                    filteredcategory = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
-                  } else {
-                    filteredcategory = true;
-                  }
-                  if (filteredcity) {
-                    filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, newValue, 1);
-                  } else {
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, newValue, 1);
-                  }
-                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            DropdownButton<String>(
+              hint: Text('Select category'),
+              value: _defaultValue,
+              items: categories.map((newValue) {
+                return DropdownMenuItem<String>(
+                  value: newValue,
+                  child: Text(newValue),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                _debouncer.run(() {
+                  setState(() {
+                    _defaultValue = newValue;
+                    if (newValue == "") {
+                      filteredcategory = false;
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                    } else {
+                      filteredcategory = true;
+                    }
+                    if (filteredcity) {
+                      filteredEvents =
+                          filtrarEsdeveniments(filteredEvents, newValue, 1);
+                    } else {
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, newValue, 1);
+                    }
+                    /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))
                             .toList();*/
+                  });
                 });
-              });
-            },
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredEvents.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 1.0,
-                    horizontal: 4.0,
-                  ),
-                  child: Card(
-                    color: Colors.lightBlue,
-                    child: ListTile(
-                      onTap: () {
-                        _esdevenimentEspecific(index);
-                      },
-                      title: Column(
-                        children: [
-                          Container(
-                            height: 30,
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.favorite,
-                                  color: liked(filteredEvents[index].id)
-                                      ? Colors.red
-                                      : Colors.white,
+              },
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredEvents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 1.0,
+                      horizontal: 4.0,
+                    ),
+                    child: Card(
+                      color: Colors.lightBlue,
+                      child: ListTile(
+                        onTap: () {
+                          _esdevenimentEspecific(index);
+                        },
+                        title: Column(
+                          children: [
+                            Container(
+                              height: 30,
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.favorite,
+                                    color: liked(filteredEvents[index].id)
+                                        ? Colors.red
+                                        : Colors.white,
+                                  ),
+                                  onPressed: () => setState(() {
+                                    if (liked(filteredEvents[index].id)) {
+                                      http_delfavourite(
+                                          cookie, filteredEvents[index].id);
+                                    } else {
+                                      http_addfavourite(
+                                          cookie, filteredEvents[index].id);
+                                    }
+                                  }),
                                 ),
-                                onPressed: () => setState(() {
-                                  if (liked(filteredEvents[index].id)) {
-                                    http_delfavourite(
-                                        cookie, filteredEvents[index].id);
-                                  } else {
-                                    http_addfavourite(
-                                        cookie, filteredEvents[index].id);
-                                  }
-                                }),
                               ),
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              filteredEvents[index].title,
-                              style:
-                                  TextStyle(fontSize: 24, color: Colors.white),
-                              maxLines: 2,
-                              overflow: TextOverflow.fade,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                      subtitle: Row(
-                        children: [
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Expanded(
-                            child: Text(filteredEvents[index].price.toString(),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                filteredEvents[index].title,
                                 style: TextStyle(
-                                    fontSize: 40, color: Colors.white)),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Container(
-                                    child: Text(
-                                      filteredEvents[index].location
-                                      /*"ácéntó"*/, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
-                                      style: TextStyle(color: Colors.white),
-                                      maxLines: 2,
-                                      //overflow: TextOverflow.fade,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(
-                                    /*'25/10/2020, 19:50',*/
-                                    filteredEvents[index]
-                                        .closureDate
-                                        .toString()
-                                        .substring(0, 16),
-                                    style: TextStyle(color: Colors.white)),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(filteredEvents[index].tipus,
-                                    style: TextStyle(color: Colors.white)),
-                              ],
+                                    fontSize: 24, color: Colors.white),
+                                maxLines: 2,
+                                overflow: TextOverflow.fade,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-              shrinkWrap: true,
-            ),
-          ),
-        ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _publishEsdeveniment();
-          },
-          tooltip: 'Publish event',
-          child: Icon(
-            Icons.add,
-          ),
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
-        ),
-      ));
-    } else if (!registered && filteredEvents.length > 0) {
-      return MaterialApp(
-          home: Scaffold(
-        body: Column(children: <Widget>[
-          SizedBox(
-            height: 10,
-          ),
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: "Cercar ciutat",
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25.0),
-                borderSide: BorderSide(),
-              ),
-            ),
-            onChanged: (string) {
-              _debouncer.run(() {
-                setState(() {
-                  ciutatCercada = string;
-                  if (string == "") {
-                    filteredcity = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
-                  } else {
-                    filteredcity = true;
-                  }
-                  if (filteredcategory) {
-                    filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, string, 0);
-                  } else {
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, string, 0);
-                  }
-                  /*generalEvents
-                      .where(
-                          (e) => (e.controller.location.name.contains(string)))
-                      .toList();*/
-                });
-              });
-            },
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          DropdownButton<String>(
-            hint: Text('Select category'),
-            value: _defaultValue,
-            items: categories.map((newValue) {
-              return DropdownMenuItem<String>(
-                value: newValue,
-                child: Text(newValue),
-              );
-            }).toList(),
-            onChanged: (newValue) {
-              _debouncer.run(() {
-                setState(() {
-                  _defaultValue = newValue;
-                  if (newValue == "") {
-                    filteredcategory = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
-                  } else {
-                    filteredcategory = true;
-                  }
-                  if (filteredcity) {
-                    filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, newValue, 1);
-                  } else {
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, newValue, 1);
-                  }
-                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
-                            .where((e) => e.category.contains(newValue))
-                            .toList();*/
-                });
-              });
-            },
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredEvents.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 1.0,
-                    horizontal: 4.0,
-                  ),
-                  child: Card(
-                    color: Colors.lightBlue,
-                    child: ListTile(
-                      onTap: () {
-                        _esdevenimentEspecific(index);
-                      },
-                      title: Column(
-                        children: [
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              /*'KIKO RIVERA ON CONCERT',*/
-                              filteredEvents[index].title,
-                              style:
-                                  TextStyle(fontSize: 24, color: Colors.white),
-                              maxLines: 2,
-                              overflow: TextOverflow.fade,
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
-                      ),
-                      subtitle: Row(
-                        children: [
-                          SizedBox(
-                            width: 25,
-                          ),
-                          Container(
-                            child: Align(
-                              alignment: Alignment.center,
+                          ],
+                        ),
+                        subtitle: Row(
+                          children: [
+                            SizedBox(
+                              width: 25,
+                            ),
+                            Expanded(
                               child: Text(
                                   filteredEvents[index].price.toString(),
-                                  /*sumadelpreu(filteredEvents[index]).toString(),*/
                                   style: TextStyle(
                                       fontSize: 40, color: Colors.white)),
                             ),
-                          ),
-                          Expanded(
-                            //color: Colors.red,
-                            //height: 80,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Center(
-                                  child: Container(
-                                    child: Text(
-                                      /*'Palau Sant Jordi',*/
-                                      filteredEvents[index].location,
-                                      style: TextStyle(color: Colors.white),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      child: Text(
+                                        filteredEvents[index].location
+                                        /*"ácéntó"*/, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
+                                        style: TextStyle(color: Colors.white),
+                                        maxLines: 2,
+                                        //overflow: TextOverflow.fade,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(
-                                    /*'25/10/2020, 19:50',*/
-                                    filteredEvents[index]
-                                        .closureDate
-                                        .toString()
-                                        .substring(0, 16),
-                                    style: TextStyle(color: Colors.white)),
-                                Container(
-                                  height: 5,
-                                ),
-                                Text(filteredEvents[index].tipus,
-                                    style: TextStyle(color: Colors.white)),
-                              ],
+                                  Container(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                      /*'25/10/2020, 19:50',*/
+                                      filteredEvents[index]
+                                          .closureDate
+                                          .toString()
+                                          .substring(0, 16),
+                                      style: TextStyle(color: Colors.white)),
+                                  Container(
+                                    height: 5,
+                                  ),
+                                  Text(filteredEvents[index].tipus,
+                                      style: TextStyle(color: Colors.white)),
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-              shrinkWrap: true,
+                  );
+                },
+                shrinkWrap: true,
+              ),
             ),
+          ]),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              _publishEsdeveniment();
+            },
+            tooltip: 'Publish event',
+            child: Icon(
+              Icons.add,
+            ),
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
           ),
-        ]),
-      ));
+        ),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('es', ''),
+          const Locale('ca', ''),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode)
+              return supportedLocale;
+          }
+          return supportedLocales.first;
+        },
+      );
+    } else if (!registered && filteredEvents.length > 0) {
+      return MaterialApp(
+        home: Scaffold(
+          body: Column(children: <Widget>[
+            SizedBox(
+              height: 10,
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                labelText: "Cercar ciutat",
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: BorderSide(),
+                ),
+              ),
+              onChanged: (string) {
+                _debouncer.run(() {
+                  setState(() {
+                    ciutatCercada = string;
+                    if (string == "") {
+                      filteredcity = false;
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                    } else {
+                      filteredcity = true;
+                    }
+                    if (filteredcategory) {
+                      filteredEvents =
+                          filtrarEsdeveniments(filteredEvents, string, 0);
+                    } else {
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, string, 0);
+                    }
+                    /*generalEvents
+                      .where(
+                          (e) => (e.controller.location.name.contains(string)))
+                      .toList();*/
+                  });
+                });
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            DropdownButton<String>(
+              hint: Text('Select category'),
+              value: _defaultValue,
+              items: categories.map((newValue) {
+                return DropdownMenuItem<String>(
+                  value: newValue,
+                  child: Text(newValue),
+                );
+              }).toList(),
+              onChanged: (newValue) {
+                _debouncer.run(() {
+                  setState(() {
+                    _defaultValue = newValue;
+                    if (newValue == "") {
+                      filteredcategory = false;
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                    } else {
+                      filteredcategory = true;
+                    }
+                    if (filteredcity) {
+                      filteredEvents =
+                          filtrarEsdeveniments(filteredEvents, newValue, 1);
+                    } else {
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, newValue, 1);
+                    }
+                    /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
+                  });
+                });
+              },
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredEvents.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 1.0,
+                      horizontal: 4.0,
+                    ),
+                    child: Card(
+                      color: Colors.lightBlue,
+                      child: ListTile(
+                        onTap: () {
+                          _esdevenimentEspecific(index);
+                        },
+                        title: Column(
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                /*'KIKO RIVERA ON CONCERT',*/
+                                filteredEvents[index].title,
+                                style: TextStyle(
+                                    fontSize: 24, color: Colors.white),
+                                maxLines: 2,
+                                overflow: TextOverflow.fade,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                        subtitle: Row(
+                          children: [
+                            SizedBox(
+                              width: 25,
+                            ),
+                            Container(
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Text(
+                                    filteredEvents[index].price.toString(),
+                                    /*sumadelpreu(filteredEvents[index]).toString(),*/
+                                    style: TextStyle(
+                                        fontSize: 40, color: Colors.white)),
+                              ),
+                            ),
+                            Expanded(
+                              //color: Colors.red,
+                              //height: 80,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      child: Text(
+                                        /*'Palau Sant Jordi',*/
+                                        filteredEvents[index].location,
+                                        style: TextStyle(color: Colors.white),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                      /*'25/10/2020, 19:50',*/
+                                      filteredEvents[index]
+                                          .closureDate
+                                          .toString()
+                                          .substring(0, 16),
+                                      style: TextStyle(color: Colors.white)),
+                                  Container(
+                                    height: 5,
+                                  ),
+                                  Text(filteredEvents[index].tipus,
+                                      style: TextStyle(color: Colors.white)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+                shrinkWrap: true,
+              ),
+            ),
+          ]),
+        ),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('es', ''),
+          const Locale('ca', ''),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode)
+              return supportedLocale;
+          }
+          return supportedLocales.first;
+        },
+      );
     } else {
       return MaterialApp(
-          home: Scaffold(
-              body: Column(children: <Widget>[
-        SizedBox(
-          height: 10,
-        ),
-        TextFormField(
-          decoration: InputDecoration(
-            labelText: "Cercar ciutat",
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.0),
-              borderSide: BorderSide(),
-            ),
+        home: Scaffold(
+            body: Column(children: <Widget>[
+          SizedBox(
+            height: 10,
           ),
-          onChanged: (string) {
-            _debouncer.run(() {
-              setState(() {
-                filteredEvents = filtrarEsdeveniments(generalEvents, string, 0);
-                /* filteredEvents = generalEvents
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: "Cercar ciutat",
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(),
+              ),
+            ),
+            onChanged: (string) {
+              _debouncer.run(() {
+                setState(() {
+                  filteredEvents =
+                      filtrarEsdeveniments(generalEvents, string, 0);
+                  /* filteredEvents = generalEvents
                     .where((e) => (e.location.contains(string)))
                     .toList();*/
+                });
               });
-            });
-          },
-        ),
-        SizedBox(
-          height: 10,
-        ),
-        DropdownButton<String>(
-          hint: Text('Select category'),
-          value: _defaultValue,
-          items: categories.map((newValue) {
-            return DropdownMenuItem<String>(
-              value: newValue,
-              child: Text(newValue),
-            );
-          }).toList(),
-          onChanged: (newValue) {
-            _debouncer.run(() {
-              setState(() {
-                _defaultValue = newValue;
-                filteredEvents =
-                    filtrarEsdeveniments(generalEvents, newValue, 1);
-                /*filteredEvents = generalEvents
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          DropdownButton<String>(
+            hint: Text('Select category'),
+            value: _defaultValue,
+            items: categories.map((newValue) {
+              return DropdownMenuItem<String>(
+                value: newValue,
+                child: Text(newValue),
+              );
+            }).toList(),
+            onChanged: (newValue) {
+              _debouncer.run(() {
+                setState(() {
+                  _defaultValue = newValue;
+                  filteredEvents =
+                      filtrarEsdeveniments(generalEvents, newValue, 1);
+                  /*filteredEvents = generalEvents
                           .where((e) => e.category.contains(newValue))
                           .toList();*/
+                });
               });
-            });
-          },
-        ),
-        SizedBox(
-          height: 180,
-        ),
-        Expanded(
-          child: Text(
-            'No event matching with the location or category indicated',
-            style: TextStyle(
-              color: Colors.grey,
-            ),
+            },
           ),
-        )
-      ])));
+          SizedBox(
+            height: 180,
+          ),
+          Expanded(
+            child: Text(
+              'No event matching with the location or category indicated',
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          )
+        ])),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('es', ''),
+          const Locale('ca', ''),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode)
+              return supportedLocale;
+          }
+          return supportedLocales.first;
+        },
+      );
     }
   }
 
   _publishEsdeveniment() {
     runApp(MaterialApp(
       home: Publish(),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 
   _esdevenimentEspecific(int index) {
     runApp(MaterialApp(
       home: Mostra(idevent: filteredEvents[index].id),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 }

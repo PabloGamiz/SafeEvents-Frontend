@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 scan() async {
   print("scanning");

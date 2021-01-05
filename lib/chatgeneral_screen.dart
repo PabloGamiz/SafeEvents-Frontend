@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'services/database.dart';
 import 'chat_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatGeneralScreen extends StatefulWidget {
   _ChatRoomState createState() => _ChatRoomState();

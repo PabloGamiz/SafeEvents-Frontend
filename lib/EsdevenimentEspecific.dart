@@ -37,6 +37,9 @@ import 'http_requests/http_delfavourite.dart';
 import 'http_requests/http_getfeedback.dart';
 import 'services/database.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 //Variables globals
 int idfake = 20;
 var _colorFav = Colors.white;
@@ -51,6 +54,24 @@ final DatabaseMethods database = DatabaseMethods();
 void main() => runApp(MaterialApp(
       title: "EsdevenimentEspecific",
       home: Mostra(idevent: 2),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
     ));
 
 class MyInfo {
@@ -663,6 +684,24 @@ class _MostraState extends State<Mostra> {
                       onPressed: () {
                         runApp(MaterialApp(
                           home: Modifica(idevent: id),
+                          localizationsDelegates: [
+                            AppLocalizations.delegate,
+                            GlobalMaterialLocalizations.delegate,
+                            GlobalWidgetsLocalizations.delegate,
+                            GlobalCupertinoLocalizations.delegate,
+                          ],
+                          supportedLocales: [
+                            const Locale('en', ''),
+                            const Locale('es', ''),
+                            const Locale('ca', ''),
+                          ],
+                          localeResolutionCallback: (locale, supportedLocales) {
+                            for (var supportedLocale in supportedLocales) {
+                              if (supportedLocale.languageCode ==
+                                  locale.languageCode) return supportedLocale;
+                            }
+                            return supportedLocales.first;
+                          },
                         ));
                       },
                       tooltip: 'Publish event',
@@ -676,6 +715,24 @@ class _MostraState extends State<Mostra> {
                 ),
         ),
       ),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
     );
   }
   /*void setPermissions() async{
@@ -823,6 +880,24 @@ class _MostraState extends State<Mostra> {
     runApp(MaterialApp(
       home: Reserves(
           entradas: (mi.capacity - mi.taken), id: id, eventName: mi.title),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
     ));
 
     //saltar a la pestanya de Comprar / Reservar
@@ -839,10 +914,46 @@ class _MostraState extends State<Mostra> {
     if (!veDeRecomanats) {
       runApp(MaterialApp(
         home: Structure(),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('es', ''),
+          const Locale('ca', ''),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode)
+              return supportedLocale;
+          }
+          return supportedLocales.first;
+        },
       ));
     } else {
       runApp(MaterialApp(
         home: EsdevenimentsRecomanats(),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('es', ''),
+          const Locale('ca', ''),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode)
+              return supportedLocale;
+          }
+          return supportedLocales.first;
+        },
       ));
     }
   }
@@ -855,6 +966,24 @@ class _MostraState extends State<Mostra> {
 _mesures() {
   runApp(MaterialApp(
     home: Template(id: ide),
+    localizationsDelegates: [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+    supportedLocales: [
+      const Locale('en', ''),
+      const Locale('es', ''),
+      const Locale('ca', ''),
+    ],
+    localeResolutionCallback: (locale, supportedLocales) {
+      for (var supportedLocale in supportedLocales) {
+        if (supportedLocale.languageCode == locale.languageCode)
+          return supportedLocale;
+      }
+      return supportedLocales.first;
+    },
   ));
 }
 

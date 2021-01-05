@@ -149,6 +149,7 @@ import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/Qr.dart';
@@ -166,6 +167,7 @@ import 'http_requests/http_entrades.dart';
 import 'http_requests/http_generalevents.dart';
 import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /*
 void main() => runApp(UserInfo('Paco', 'paco@gmail.com', false,
@@ -242,6 +244,24 @@ class _ClientInfoState extends State<ClientInfo> {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
                 home: Structure(),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 
@@ -413,6 +433,24 @@ class _ClientInfoState extends State<ClientInfo> {
                     runApp(
                       MaterialApp(
                         home: Bluetooth(),
+                        localizationsDelegates: [
+                          AppLocalizations.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                        ],
+                        supportedLocales: [
+                          const Locale('en', ''),
+                          const Locale('es', ''),
+                          const Locale('ca', ''),
+                        ],
+                        localeResolutionCallback: (locale, supportedLocales) {
+                          for (var supportedLocale in supportedLocales) {
+                            if (supportedLocale.languageCode ==
+                                locale.languageCode) return supportedLocale;
+                          }
+                          return supportedLocales.first;
+                        },
                       ),
                     );
                   },
@@ -442,6 +480,24 @@ class _ClientInfoState extends State<ClientInfo> {
             runApp(
               MaterialApp(
                 home: Mostra(idevent: event.id),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               ),
             );
           },
@@ -628,6 +684,24 @@ class _ClientInfoState extends State<ClientInfo> {
 
     runApp(MaterialApp(
       home: QR(qrCode: session.tickets),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 
@@ -645,6 +719,24 @@ class _ClientInfoState extends State<ClientInfo> {
     prefs.setString('cookie', null);
     runApp(MaterialApp(
       home: SignIn(),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
     ));
   }
 }

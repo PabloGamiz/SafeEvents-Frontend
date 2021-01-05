@@ -8,6 +8,7 @@ import 'http_models/preuModel.dart';
 import 'http_models/resposta_reserva_model.dart';
 import 'http_requests/http_entrades.dart';
 import 'http_requests/http_payment.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 compra(int id, int numero) async {
   sleep(const Duration(seconds: 2));

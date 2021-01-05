@@ -6,9 +6,11 @@
 // tree, read text, and verify that the values of widget properties are correct.
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/reserves.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   testWidgets("login screen", (WidgetTester tester) async {
@@ -17,11 +19,51 @@ void main() {
     final withoutsessionfield = find.byKey(ValueKey("without_session"));
     final signinsessionfield = find.byKey(ValueKey("login_button"));
 
-    await tester.pumpWidget(MaterialApp(home: SignIn()));
+    await tester.pumpWidget(MaterialApp(
+      home: SignIn(),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
+    ));
     await tester.tap(withoutsessionfield);
     await tester.pump(); //rebuild your widget
 
-    await tester.pumpWidget(MaterialApp(home: SignIn()));
+    await tester.pumpWidget(MaterialApp(
+      home: SignIn(),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('en', ''),
+        const Locale('es', ''),
+        const Locale('ca', ''),
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale.languageCode)
+            return supportedLocale;
+        }
+        return supportedLocales.first;
+      },
+    ));
     await tester.tap(signinsessionfield);
     await tester.pump(); //rebuild your widget
   });
