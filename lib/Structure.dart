@@ -4,6 +4,7 @@ import 'package:safeevents/EsdevenimentEspecific.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ConsultaFavorits.dart';
+import 'EsdevenimentsRecomanats.dart';
 import 'EventsGeneral.dart';
 import 'MapGeneralEvents.dart';
 import 'no_login.dart';
@@ -36,6 +37,7 @@ class _StructureState extends State<Structure> {
     EventsGeneral(),
     //ClientInfo(0),
     ConsultaFavortis(),
+    EsdevenimentsRecomanats(),
     MapGeneralEvents(),
     ChatGeneralScreen(),
     ClientInfo(0),
@@ -44,6 +46,7 @@ class _StructureState extends State<Structure> {
   static List<Widget> _widgetOptionsIfNotRegistered = <Widget>[
     EventsGeneral(),
     //ClientInfo(0),
+    Nologin(),
     Nologin(),
     MapGeneralEvents(),
     Nologin(),
@@ -84,6 +87,11 @@ class _StructureState extends State<Structure> {
             BottomNavigationBarItem(
               icon: Icon(Icons.star),
               label: 'Favourites',
+              backgroundColor: Colors.blueGrey,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.recommend),
+              label: 'Recommended',
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(
@@ -132,6 +140,11 @@ class _StructureState extends State<Structure> {
             BottomNavigationBarItem(
               icon: Icon(Icons.star),
               label: 'Favourites',
+              backgroundColor: Colors.blueGrey,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.recommend),
+              label: 'Recommended',
               backgroundColor: Colors.blueGrey,
             ),
             BottomNavigationBarItem(

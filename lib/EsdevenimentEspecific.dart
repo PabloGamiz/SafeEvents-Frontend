@@ -284,7 +284,7 @@ class _MostraState extends State<Mostra> {
                                                   mi.description,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  maxLines: 3,
+                                                  maxLines: 13,
                                                   style: TextStyle(
                                                       fontSize: 11,
                                                       color: Colors.white

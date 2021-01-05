@@ -6,9 +6,15 @@ import 'package:safeevents/http_requests/http_esdevenimentsrecomanats.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'PublishEvents.dart';
 import 'PublishEvents.dart';
+import 'http_models/FavsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/GeneralEventsModel.dart';
+import 'http_requests/http_addfavourite.dart';
+import 'http_requests/http_delfavourite.dart';
+import 'http_requests/http_favs.dart';
+
+
 
 void main() => runApp(MaterialApp(
   title: "EsdevenimentsRecomanats",
@@ -37,6 +43,7 @@ class EsdevenimentsRecomanats extends StatefulWidget {
 }
 
 class _EsdevenimentsRecomanatsState extends State {
+  bool _esperaCarrega = true;
   /*OBTENER LISTA DE EVENTOS*/
   final _debouncer = Debouncer(milliseconds: 500);
   String cookie = "";
@@ -59,9 +66,16 @@ class _EsdevenimentsRecomanatsState extends State {
     'Art',
     'Altres'
   ]; //nombre de las categorias
-
+  bool liked(int id) {
+    if (favs != null) {
+      for (int i = 0; i < favs.length; ++i) {
+        if (favs[i].id == id) return true;
+      }
+    }
+    return false;
+  }
   List<ListEsdevenimentsModel> generalEvents = List();
-
+  List<FavsModel> favs;
   List<ListEsdevenimentsModel> filteredEvents = List();
   _comprovarSessio() async {
     await SharedPreferences.getInstance().then((value) {
@@ -76,12 +90,14 @@ class _EsdevenimentsRecomanatsState extends State {
 
     http_esdevenimentsrecomanats(cookie).then((eventsFromServer) {
       setState(() {
+        if (eventsFromServer.isNotEmpty) _esperaCarrega = false;
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
 
         print('Llista desd_: '+filteredEvents.toString());
       });
     });
+
   }
 
   void initState()  {
@@ -115,10 +131,22 @@ class _EsdevenimentsRecomanatsState extends State {
     print('LLISTA : '+generalEvents.toString());
   }
   Widget build(BuildContext context) {
+    http_Favs().then((favourites) {
+      setState(() {
+        if (favourites == null)
+          favs = List();
+        else
+          favs = favourites;
+      });
+    });
     if (registered /*&& filteredEvents.length > 0*/) {
       return MaterialApp(
           home: Scaffold(
-            body: Column(children: <Widget>[
+            body: _esperaCarrega
+                ? Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator())
+                :Column(children: <Widget>[
               SizedBox(
                 height: 10,
               ),
@@ -191,14 +219,18 @@ class _EsdevenimentsRecomanatsState extends State {
                                   alignment: Alignment.centerRight,
                                   child: IconButton(
                                     icon: Icon(
-                                      likeds[index]
-                                          ? Icons.favorite
-                                          : Icons.favorite,
+                                      Icons.favorite,
                                       color:
-                                      likeds[index] ? Colors.red : Colors.white,
+                                      liked(filteredEvents[index].id) ? Colors.red : Colors.white,
                                     ),
                                     onPressed: () => setState(() {
-                                      likeds[index] = !likeds[index];
+                                      if (liked(filteredEvents[index].id)) {
+                                        http_delfavourite(
+                                            cookie, filteredEvents[index].id);
+                                      } else {
+                                        http_addfavourite(
+                                            cookie, filteredEvents[index].id);
+                                      }
                                     }),
                                   ),
                                 ),
@@ -225,11 +257,10 @@ class _EsdevenimentsRecomanatsState extends State {
                                 width: 25,
                               ),
                               Expanded(
-                                child: Text('45€',
-                                    /*sumadelpreu(filteredEvents[index]).toString(),*/
+                                child: Text(filteredEvents[index].price.toString(),
                                     style: TextStyle(
                                         fontSize: 40, color: Colors.white)),
-                              ),
+                                ),
                               Expanded(
                                 //color: Colors.red,
                                 //height: 80,
@@ -380,8 +411,8 @@ class _EsdevenimentsRecomanatsState extends State {
                                 width: 25,
                               ),
                               Expanded(
-                                child: Text('45€',
-                                    /*sumadelpreu(filteredEvents[index]).toString(),*/
+                                child: Text(
+                                   filteredEvents[index].price.toString(),
                                     style: TextStyle(
                                         fontSize: 40, color: Colors.white)),
                               ),
