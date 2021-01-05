@@ -149,12 +149,21 @@ import 'dart:io';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:safeevents/EsdevenimentEspecific.dart';
+import 'package:safeevents/EventsGeneral.dart';
+import 'package:safeevents/Qr.dart';
 import 'package:safeevents/SignIn.dart';
 import 'package:safeevents/Structure.dart';
+import 'package:safeevents/http_models/resposta_reserva_model.dart';
+import 'package:safeevents/scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'bluetooth.dart';
+import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
+import 'http_requests/http_entrades.dart';
+import 'http_requests/http_generalevents.dart';
 import 'http_requests/http_pasarQr.dart';
 import 'http_requests/http_signout.dart';
 
@@ -177,11 +186,18 @@ class _ClientInfoState extends State<ClientInfo> {
   List<Purchased> selected = new List();
   String result = "Hey there !";
   int eventid = 1;
+  Map<int, ListEsdevenimentsModel> generalEvents = Map();
 
   @override
   void initState() {
     super.initState();
-    futureClient = fetchLocalClient(widget.id);
+    futureClient = fetchClient(widget.id);
+    http_GeneralEvents().then((eventsFromServer) {
+      setState(() {
+        generalEvents = Map.fromIterable(eventsFromServer,
+            key: (event) => event.id, value: (event) => event);
+      });
+    });
   }
 
   Future _scanQr(int event_id) async {
@@ -252,7 +268,7 @@ class _ClientInfoState extends State<ClientInfo> {
     return FutureBuilder<ClientInfoMod>(
       future: futureClient,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && generalEvents.isNotEmpty) {
           if (widget.id == 0)
             return buildProfileWidget(snapshot);
           else
@@ -385,23 +401,29 @@ class _ClientInfoState extends State<ClientInfo> {
             children: [
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: () => _scanQr(eventid),
+                  onPressed: () => _tancarSessio(),
                   child: Icon(
-                    Icons.qr_code,
+                    Icons.exit_to_app,
                     color: Colors.white,
                   ),
                 ),
               if (widget.id == 0)
                 FlatButton(
-                  onPressed: () => _tancarSessio(),
+                  onPressed: () {
+                    runApp(
+                      MaterialApp(
+                        home: Bluetooth(),
+                      ),
+                    );
+                  },
                   child: Icon(
-                    Icons.logout,
+                    Icons.location_on,
                     color: Colors.white,
                   ),
                 ),
             ],
             mainAxisAlignment: MainAxisAlignment.center,
-          )
+          ),
         ],
       ),
     );
@@ -417,7 +439,11 @@ class _ClientInfoState extends State<ClientInfo> {
         color: Colors.lightBlue,
         child: ListTile(
           onTap: () {
-            //_esdevenimentEspecific();
+            runApp(
+              MaterialApp(
+                home: Mostra(idevent: event.id),
+              ),
+            );
           },
           title: Column(
             children: [
@@ -464,7 +490,7 @@ class _ClientInfoState extends State<ClientInfo> {
                     Container(
                       height: 5,
                     ),
-                    Text(event.closureDate.toString(),
+                    Text(event.checkInDate.toString().substring(0, 16),
                         style: TextStyle(color: Colors.white)),
                     Container(
                       height: 5,
@@ -473,6 +499,14 @@ class _ClientInfoState extends State<ClientInfo> {
                         style: TextStyle(color: Colors.white)),
                   ],
                 ),
+              ),
+              FlatButton(
+                onPressed: () => _scanQr(event.id),
+                child: Icon(
+                  Icons.qr_code_scanner,
+                  color: Colors.white,
+                ),
+                minWidth: 0.5,
               ),
             ],
           ),
@@ -490,35 +524,71 @@ class _ClientInfoState extends State<ClientInfo> {
       child: Card(
         color: Colors.lightBlue,
         child: ListTile(
-          onTap: () {
-            //_esdevenimentEspecific();
-          },
-          title: Column(
+          title: Row(
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  purchase.id.toString(),
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                  maxLines: 2,
-                  overflow: TextOverflow.fade,
-                ),
-              ),
-              SizedBox(
-                height: 10,
+              Expanded(
+                child: Text(generalEvents[purchase.eventId].title,
+                    style: TextStyle(fontSize: 30, color: Colors.white)),
               ),
             ],
           ),
           subtitle: Row(
             children: [
-              SizedBox(
-                width: 25,
+              Row(
+                children: [
+                  Container(
+                    child: Text(
+                      generalEvents[purchase.eventId].price.toString() + '€',
+                      style: TextStyle(fontSize: 30, color: Colors.white),
+                      maxLines: 2,
+                      overflow: TextOverflow.fade,
+                    ),
+                    margin: EdgeInsets.only(right: 15),
+                    alignment: Alignment.centerLeft,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        generalEvents[purchase.eventId]
+                            .checkInDate
+                            .toString()
+                            .substring(0, 10),
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                      ),
+                      Text(
+                        generalEvents[purchase.eventId]
+                            .checkInDate
+                            .toString()
+                            .substring(11, 16),
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                        maxLines: 2,
+                        overflow: TextOverflow.fade,
+                      ),
+                    ],
+                  ),
+                ],
+                mainAxisAlignment: MainAxisAlignment.start,
               ),
-              Expanded(
-                child: Text(purchase.description.toString(),
-                    style: TextStyle(fontSize: 40, color: Colors.white)),
-              ),
+              if (purchase.option == 1)
+                FlatButton(
+                  onPressed: () => _mostrarqr(),
+                  child: Icon(
+                    Icons.qr_code,
+                    color: Colors.white,
+                  ),
+                )
+              else
+                FlatButton(
+                  onPressed: () => null,
+                  child: Icon(
+                    Icons.payment,
+                    color: Colors.white,
+                  ),
+                ),
             ],
+            mainAxisAlignment: MainAxisAlignment.start,
           ),
         ),
       ),
@@ -530,7 +600,8 @@ class _ClientInfoState extends State<ClientInfo> {
     if (type == "Reservas") {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
-          if (assistant.purchased[i].option == 0) {
+          if (assistant.purchased[i].option == 0 &&
+              generalEvents.containsKey(assistant.purchased[i].eventId)) {
             selected.add(assistant.purchased[i]);
           }
         }
@@ -538,13 +609,26 @@ class _ClientInfoState extends State<ClientInfo> {
     } else if (type == "Entradas" && assistant != null) {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
-          if (assistant.purchased[i].option == 1) {
+          if (assistant.purchased[i].option == 1 &&
+              generalEvents.containsKey(assistant.purchased[i].eventId)) {
             selected.add(assistant.purchased[i]);
           }
         }
       }
     }
     return selected;
+  }
+
+  _mostrarqr() async {
+    print('mostrar qr');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String stringValue = prefs.getString('cookie');
+    print(stringValue);
+    RespostaReservaModel session = await http_get_tickets(stringValue, eventid);
+
+    runApp(MaterialApp(
+      home: QR(qrCode: session.tickets),
+    ));
   }
 
   _tancarSessio() async {
@@ -587,3 +671,13 @@ class _ClientInfoState extends State<ClientInfo> {
       );
     else
       return createWidget();*/
+
+/*
+
+runApp(MaterialApp(
+                home: QR(
+                  qrCode: qrCode,
+                  i: 0,
+                ),
+              );
+ */

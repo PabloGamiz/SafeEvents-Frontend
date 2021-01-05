@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'EsdevenimentsRecomanats.dart';
 import 'services/database.dart';
-import 'Structure.dart'; 
+import 'Structure.dart';
 import 'http_models/message_model.dart';
 import 'http_models/user_model.dart';
 
@@ -92,28 +93,41 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            Center(
-              child: Text(
-                chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ],
+        title: Text(
+          chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
+          style: TextStyle(color: Colors.white),
         ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
+        leading: Builder(builder: (BuildContext context) {
+          return IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: () { Scaffold.of(context).openDrawer(); }
-            );
-          }
-        ),
+              onPressed: () {
+                Navigator.pop(context);
+              });
+        }),
       ),
       body: Container(
         child: Column(
           children: [
+            /*Container(
+              height: 60,
+              color: Colors.blueAccent,
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      goBack();
+                    },
+                    child: Icon(Icons.arrow_back, color: Colors.blue),
+                  ),
+                  Center(
+                    child: Text(
+                      chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
+                      style: TextStyle(color: Colors.white, fontSize: 19),
+                    ),
+                  ),
+                ],
+              ),
+            ),*/
             Expanded(
               child: ChatMessageList(),
             ),
@@ -180,6 +194,20 @@ class _ChatScreenState extends State<ChatScreen> {
           chatMessageStream = value;
         });
       });
+    }
+  }
+
+  _goBack() {
+    //Depenent de si venim de events generals o de recomanats anar a un o altre
+    bool veDeRecomanats = false;
+    if (!veDeRecomanats) {
+      runApp(MaterialApp(
+        home: Structure(),
+      ));
+    } else {
+      runApp(MaterialApp(
+        home: EsdevenimentsRecomanats(),
+      ));
     }
   }
 }

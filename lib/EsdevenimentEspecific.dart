@@ -13,6 +13,7 @@ import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
+import 'package:safeevents/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
@@ -171,7 +172,6 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -215,7 +215,8 @@ class _MostraState extends State<Mostra> {
                                     height: 23,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color: !mi.faved ? Colors.white : Colors.red,
+                                      color:
+                                          !mi.faved ? Colors.white : Colors.red,
                                       onPressed: () => {
                                         setState(() {
                                           if (mi.faved) {
@@ -354,7 +355,6 @@ class _MostraState extends State<Mostra> {
                                                                     showDialog(
                                                                       context:
                                                                           context,
-
                                                                       builder:
                                                                           (_) =>
                                                                               new Container(
@@ -503,9 +503,10 @@ class _MostraState extends State<Mostra> {
                                                             ),
                                                           ),
                                                           onPressed: () => {
-                                                            _contacta(mi
-                                                                .organizers
-                                                                .toString())
+                                                            _contacta(
+                                                                mi.organizers
+                                                                    .toString(),
+                                                                context)
                                                           },
                                                         ),
                                                       ),
@@ -598,7 +599,6 @@ class _MostraState extends State<Mostra> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   children: <Widget>[
-
                                     Text(
                                       'SERVEIS\n',
                                       overflow: TextOverflow.ellipsis,
@@ -791,7 +791,7 @@ class _MostraState extends State<Mostra> {
 
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra per editar
-    if(mi.esorg)return true;
+    if (mi.esorg) return true;
     return false;
   }
 
@@ -823,6 +823,7 @@ class _MostraState extends State<Mostra> {
       home: Reserves(
         entradas: (mi.capacity - mi.taken),
         id: id,
+        eventName: mi.title,
       ),
     ));
 
@@ -852,7 +853,6 @@ class _MostraState extends State<Mostra> {
     _controller.complete(controller);
   }
 }
-
 _mesures() {
   runApp(MaterialApp(
     home: Template(id:ide
@@ -860,19 +860,17 @@ _mesures() {
     ),
   ));
 }
-
-_contacta() {
-  //saltar a la pestanya de Xat amb la empresa
-_contacta(String userName) async {
+_contacta(String userName, BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String myName = prefs.getString('email');
   String chatRoomId = database.getChatRoomId(userName, myName);
   List<String> users = [userName, myName];
   Map<String, dynamic> chatRoomMap = {"users": users, "chatroomid": chatRoomId};
   database.createChatRoom(chatRoomId, chatRoomMap);
-  runApp(MaterialApp(
-    home: ChatScreen(chatRoomId: chatRoomId),
-  ));
+  Navigator.push(
+      context,
+      new MaterialPageRoute(
+          builder: (context) => ChatScreen(chatRoomId: chatRoomId)));
 }
 
 class ReservaModel {

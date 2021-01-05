@@ -1,8 +1,8 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:share/share.dart';
+import 'package:safeevents/payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:numberpicker/numberpicker.dart';
-
 import 'EsdevenimentEspecific.dart';
 import 'Qr.dart';
 import 'Structure.dart';
@@ -12,19 +12,25 @@ import 'http_requests/http_entrades.dart';
 class Reserves extends StatefulWidget {
   final int entradas;
   final int id;
+  final String eventName;
 
-  const Reserves({Key key, @required this.entradas, @required this.id})
+  const Reserves(
+      {Key key,
+      @required this.entradas,
+      @required this.id,
+      @required this.eventName})
       : super(key: key);
   @override
-  _PantallaReserva createState() => _PantallaReserva(entradas, id);
+  _PantallaReserva createState() => _PantallaReserva(entradas, id, eventName);
 }
 
 class _PantallaReserva extends State<Reserves> {
   final int entradas;
   final int id;
+  final String eventName;
   int numero = 0;
 
-  _PantallaReserva(this.entradas, this.id);
+  _PantallaReserva(this.entradas, this.id, this.eventName);
   @override
   Widget build(BuildContext context) {
     final levelIndicator = Container(
@@ -319,7 +325,6 @@ class _PantallaReserva extends State<Reserves> {
   }
 
   _reserva() async {
-    print('reserva');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     final RespostaReservaModel session =
@@ -329,7 +334,6 @@ class _PantallaReserva extends State<Reserves> {
         prefs.setStringList(
             'entrades_' + id.toString(), session.tickets[i].controller.id);*/
       Navigator.of(context).pop();
-      print(session.tickets[0].controller.id);
       showConfirmationDialog(context);
     } else {
       Navigator.of(context).pop();
@@ -338,19 +342,13 @@ class _PantallaReserva extends State<Reserves> {
   }
 
   _compra() async {
-    sleep(const Duration(seconds: 2));
-    print('compra');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    final RespostaReservaModel session =
-        await http_compra(stringValue, id, numero);
-
+    final RespostaReservaModel session = await compra(id, numero);
     if (session != null) {
       //prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
       Navigator.of(context).pop();
-      showConfirmationDialogCompra(
-          context, session.tickets[0].controller.qrCode);
-      print(session.tickets[0].controller.qrCode);
+      showConfirmationDialogCompra(context, session.tickets);
     } else {
       Navigator.of(context).pop();
       showErrorDialog(context);
@@ -369,6 +367,7 @@ class _PantallaReserva extends State<Reserves> {
                 home: Reserves(
                   entradas: entradas,
                   id: id,
+                  eventName: eventName,
                 ),
               )),
             });
@@ -427,15 +426,29 @@ class _PantallaReserva extends State<Reserves> {
   showConfirmationDialogCompra(BuildContext context, qrCode) {
     // set up the button
 
+    void share(BuildContext context) {
+      String message =
+          "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents";
+      Share.share(message);
+    }
+
+    Widget shareButton = FlatButton(
+        child: Icon(Icons.share),
+        onPressed: () => {
+              share(context),
+              Navigator.of(context).pop(),
+              runApp(MaterialApp(
+                home: QR(qrCode: qrCode),
+              )),
+            });
+
     Widget okButton = FlatButton(
         child: Text("Continuar"),
         key: Key("confirmation_button_alert_compra"),
         onPressed: () => {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
-                home: QR(
-                  qrCode: qrCode,
-                ),
+                home: Structure(),
               )),
             });
 
@@ -446,6 +459,7 @@ class _PantallaReserva extends State<Reserves> {
           numero.toString() +
           " entrades"),
       actions: [
+        shareButton,
         okButton,
       ],
     );
