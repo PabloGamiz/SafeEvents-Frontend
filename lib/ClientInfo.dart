@@ -674,7 +674,7 @@ class _ClientInfoState extends State<ClientInfo> {
         await http_get_tickets(stringValue, eventid);
     print(session.first.qrCode);
     runApp(MaterialApp(
-      home: QR(qrCode: session.tickets),
+      home: QR(qrCode: session),
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
