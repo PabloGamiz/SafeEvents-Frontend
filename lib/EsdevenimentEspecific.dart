@@ -179,7 +179,6 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
-    
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -223,7 +222,8 @@ class _MostraState extends State<Mostra> {
                                     height: 23,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color: !mi.faved ? Colors.white : Colors.red,
+                                      color:
+                                          !mi.faved ? Colors.white : Colors.red,
                                       onPressed: () => {
                                         setState(() {
                                           if (mi.faved) {
@@ -363,7 +363,6 @@ class _MostraState extends State<Mostra> {
                                                                     showDialog(
                                                                       context:
                                                                           context,
-
                                                                       builder:
                                                                           (_) =>
                                                                               new Container(
@@ -603,7 +602,6 @@ class _MostraState extends State<Mostra> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   children: <Widget>[
-
                                     Text(
                                       'SERVEIS\n',
                                       overflow: TextOverflow.ellipsis,
@@ -795,7 +793,7 @@ class _MostraState extends State<Mostra> {
 
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra per editar
-    if(mi.esorg)return true;
+    if (mi.esorg) return true;
     return false;
   }
 
@@ -824,9 +822,7 @@ class _MostraState extends State<Mostra> {
   _contrata() async {
     runApp(MaterialApp(
       home: Reserves(
-        entradas: (mi.capacity - mi.taken),
-        id: id,
-      ),
+          entradas: (mi.capacity - mi.taken), id: id, eventName: mi.title),
     ));
 
     //saltar a la pestanya de Comprar / Reservar
