@@ -185,7 +185,7 @@ class _ClientInfoState extends State<ClientInfo> {
   List<Purchased> selected = new List();
   String result = "Hey there !";
   int eventid = 1;
-  Map<int, ListEsdevenimentsModel> generalEvents;
+  Map<int, ListEsdevenimentsModel> generalEvents = Map();
 
   @override
   void initState() {
@@ -267,7 +267,7 @@ class _ClientInfoState extends State<ClientInfo> {
     return FutureBuilder<ClientInfoMod>(
       future: futureClient,
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && generalEvents.isNotEmpty) {
           if (widget.id == 0)
             return buildProfileWidget(snapshot);
           else
@@ -475,7 +475,7 @@ class _ClientInfoState extends State<ClientInfo> {
                     Container(
                       height: 5,
                     ),
-                    Text(event.checkInDate.toString().split('.')[0],
+                    Text(event.checkInDate.toString().substring(0, 16),
                         style: TextStyle(color: Colors.white)),
                     Container(
                       height: 5,
@@ -534,7 +534,7 @@ class _ClientInfoState extends State<ClientInfo> {
                       generalEvents[purchase.eventId]
                           .checkInDate
                           .toString()
-                          .split('.')[0],
+                          .substring(0, 16),
                       style: TextStyle(fontSize: 17, color: Colors.white),
                       maxLines: 2,
                       overflow: TextOverflow.fade,
@@ -545,13 +545,22 @@ class _ClientInfoState extends State<ClientInfo> {
                 ],
                 mainAxisAlignment: MainAxisAlignment.start,
               ),
-              FlatButton(
-                onPressed: () => _mostrarqr(),
-                child: Icon(
-                  Icons.qr_code,
-                  color: Colors.white,
+              if (purchase.option == 1)
+                FlatButton(
+                  onPressed: () => _mostrarqr(),
+                  child: Icon(
+                    Icons.qr_code,
+                    color: Colors.white,
+                  ),
+                )
+              else
+                FlatButton(
+                  onPressed: () => null,
+                  child: Icon(
+                    Icons.payment,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
             ],
             mainAxisAlignment: MainAxisAlignment.end,
           ),
@@ -565,7 +574,8 @@ class _ClientInfoState extends State<ClientInfo> {
     if (type == "Reservas") {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
-          if (assistant.purchased[i].option == 0) {
+          if (assistant.purchased[i].option == 0 &&
+              generalEvents.containsKey(assistant.purchased[i].eventId)) {
             selected.add(assistant.purchased[i]);
           }
         }
@@ -573,7 +583,8 @@ class _ClientInfoState extends State<ClientInfo> {
     } else if (type == "Entradas" && assistant != null) {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
-          if (assistant.purchased[i].option == 1) {
+          if (assistant.purchased[i].option == 1 &&
+              generalEvents.containsKey(assistant.purchased[i].eventId)) {
             selected.add(assistant.purchased[i]);
           }
         }
