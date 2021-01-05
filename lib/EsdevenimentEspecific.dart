@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:http/http.dart';
 import 'package:permission/permission.dart';
 //import 'package:permission_handler/permission_handler.dart';
 
@@ -18,8 +19,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
 
+import 'MesuresCovidTemplate.dart';
 import 'Structure.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
+import 'http_models/FeedbackEsdeveniments.dart';
+import 'http_requests/http_editafeedback.dart';
 import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
@@ -30,6 +34,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
 
+import 'http_requests/http_getfeedback.dart';
 import 'services/database.dart';
 
 //Variables globals
@@ -90,11 +95,11 @@ class MyInfo {
     if (location != null) {
       var loc2;
       var loc1;
-      if(location.contains('--')){
+      if (location.contains('--')) {
         var loc = location.split('--');
         loc2 = loc[1];
         loc1 = loc[0];
-      }else{
+      } else {
         loc1 = location;
         loc2 = '0;0';
       }
@@ -106,11 +111,11 @@ class MyInfo {
     }
     this.organizers = organizers;
     String serv = '';
-    if(services != null) {
+    if (services != null) {
       var servi = services.split('\n');
       for (String s in servi) {
         if (s != null) {
-          serv = serv + '-' +s + '\n';
+          serv = serv + '-' + s + '\n';
           print('0SERV ins ' + serv);
         }
       }
@@ -119,7 +124,9 @@ class MyInfo {
 
     this.services = serv;
     this.preu = preu;
-    this.image = image != '' ? image : 'https://media.istockphoto.com/vectors/internet-error-page-not-found-in-vertical-orientation-for-mobile-a-vector-id1252582565?k=6&m=1252582565&s=170667a&w=0&h=bfQo5S20wuI5QCXoCMEe5Xc0OAVvQ7MKgQKy1EG1qU0=';
+    this.image = image != ''
+        ? image
+        : 'https://media.istockphoto.com/vectors/internet-error-page-not-found-in-vertical-orientation-for-mobile-a-vector-id1252582565?k=6&m=1252582565&s=170667a&w=0&h=bfQo5S20wuI5QCXoCMEe5Xc0OAVvQ7MKgQKy1EG1qU0=';
     this.tipus = tipus;
     this.faved = faved;
     this.taken = taken;
@@ -178,10 +185,10 @@ class _MostraState extends State<Mostra> {
         child: Container(
           child: _esperaCarrega
               ? Align(
-              alignment: Alignment.center,
-              child: CircularProgressIndicator())
-              :Scaffold(
-            body:  Container(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator())
+              : Scaffold(
+                  body: Container(
                     margin: EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
                     alignment: Alignment.topCenter,
                     child: Padding(
@@ -276,22 +283,22 @@ class _MostraState extends State<Mostra> {
                                                 Text(
                                                   mi.description,
                                                   overflow:
-                                                  TextOverflow.ellipsis,
+                                                      TextOverflow.ellipsis,
                                                   maxLines: 3,
                                                   style: TextStyle(
                                                       fontSize: 11,
-
                                                       color: Colors.white
                                                           .withOpacity(1)),
                                                 ),
                                                 Text(
-                                                  mi.address+ '\n',
+                                                  mi.address + '\n',
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 2,
                                                   style: TextStyle(
                                                       fontSize: 11,
-                                                      fontStyle: FontStyle.italic,
+                                                      fontStyle:
+                                                          FontStyle.italic,
                                                       color: Colors.white
                                                           .withOpacity(1)),
                                                 ),
@@ -300,7 +307,8 @@ class _MostraState extends State<Mostra> {
                                                   mi.checkInDate + '\n',
                                                   style: TextStyle(
                                                       fontSize: 11,
-                                                      fontStyle: FontStyle.italic,
+                                                      fontStyle:
+                                                          FontStyle.italic,
                                                       color: Colors.white
                                                           .withOpacity(1)),
                                                 ),
@@ -555,36 +563,31 @@ class _MostraState extends State<Mostra> {
                               ),
                             ),
                             Container(
-                            width: 500,
-                            margin: EdgeInsets.only(top: 20.0),
-                              child:
-                                RaisedButton(
-                                  color: Colors.green,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    new BorderRadius.circular(20.0),
-                                  ),
-                                  child: Row(
-                                    children : <Widget>[
+                              width: 500,
+                              margin: EdgeInsets.only(top: 20.0),
+                              child: RaisedButton(
+                                color: Colors.green,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(20.0),
+                                ),
+                                child: Row(
+                                  children: <Widget>[
                                     Image(
                                       image: NetworkImage(
-                                        'https://github.com/noobcoder17/covid-19/blob/master/assets/corona_virus.png?raw=true'),
+                                          'https://github.com/noobcoder17/covid-19/blob/master/assets/corona_virus.png?raw=true'),
                                       height: 30,
-
-
                                     ),
                                     Text(
-                                    'Consulta les mesures de prevenció del COVID',
-                                    maxLines: 3,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 12),
+                                      'Consulta les mesures de prevenció del COVID',
+                                      maxLines: 3,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
                                     ),
-                                  ],),
-                                  onPressed: () => {_mesures()},
+                                  ],
                                 ),
-
+                                onPressed: () => {_mesures()},
+                              ),
                             ),
-
                             Container(
                               width: 500,
                               margin: EdgeInsets.only(top: 20.0),
@@ -654,23 +657,23 @@ class _MostraState extends State<Mostra> {
                       ),
                     ),
                   ),
-            floatingActionButton: Visibility(
-              visible: esDeLaEmpresa(),
-              child: FloatingActionButton(
-                onPressed: () {
-                  runApp(MaterialApp(
-                    home: Modifica(idevent: id),
-                  ));
-                },
-                tooltip: 'Publish event',
-                child: Icon(
-                  Icons.edit,
+                  floatingActionButton: Visibility(
+                    visible: esDeLaEmpresa(),
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        runApp(MaterialApp(
+                          home: Modifica(idevent: id),
+                        ));
+                      },
+                      tooltip: 'Publish event',
+                      child: Icon(
+                        Icons.edit,
+                      ),
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
                 ),
-                backgroundColor: Colors.blue,
-                foregroundColor: Colors.white,
-              ),
-            ),
-          ),
         ),
       ),
     );
@@ -732,26 +735,26 @@ class _MostraState extends State<Mostra> {
       _esperaCarrega = false;*/
 //    });
       bool eso = false;
-      if(event.esorg!= null)eso = event.esorg;
+      if (event.esorg != null) eso = event.esorg;
 
       mi = MyInfo(
-        null,
-        event.title,
-        event.description,
-        event.capacity,
-        event.checkInDate,
-        event.location,
-        event.organizers,
-        event.mesures,/*["Servei de Begudes",
+          null,
+          event.title,
+          event.description,
+          event.capacity,
+          event.checkInDate,
+          event.location,
+          event.organizers,
+          event.mesures,
+          /*["Servei de Begudes",
           "Dispensador de gel hidroalcohòlic",
           "Aforament reduït al 60%"],*/
-        event.price,
-        event.image,
-        event.tipus,
-        event.faved,
-        event.taken,
-        eso
-      );
+          event.price,
+          event.image,
+          event.tipus,
+          event.faved,
+          event.taken,
+          eso);
       //_rate = fee.feedbackEsdeven.rating
       //print ('services '+event.services);
       final Marker marker = Marker(
@@ -761,25 +764,24 @@ class _MostraState extends State<Mostra> {
           infoWindow: InfoWindow(title: mi.address, snippet: mi.title));
       _markers.add(marker);
     });
-
   }
 
   Future getFeedbacks(int id) async {
     final List<FeedbackEsdeveniments> feedbackEsdeven =
-    await http_getfeedback(cookie,id);
+        await http_getfeedback(cookie, id);
     FeedbackEsdeveniments feedb = new FeedbackEsdeveniments();
     int rating = 0;
-    for(var i in feedbackEsdeven){
+    for (var i in feedbackEsdeven) {
       rating += i.rating;
-       if(i.isOwner){
-         feedb = i;
-       }
+      if (i.isOwner) {
+        feedb = i;
+      }
     }
     setState(() {
-      if(feedbackEsdeven.length != 0) {
+      if (feedbackEsdeven.length != 0) {
         _rate = rating / feedbackEsdeven.length;
         print('RATE: ' + _rate.toString());
-        if(feedb != null){
+        if (feedb != null) {
           controllerfeedback.text = feedb.message;
           _hafetFeedback = true;
           textButtonFeedback = 'Edita';
@@ -796,26 +798,25 @@ class _MostraState extends State<Mostra> {
   }
 
   _doFeedback() async {
-
     //Aqui comunicarem amb el backend per enviar les dades del feedback, estrelles(1-5), missatge, id esdeveniment, usuari
     print(controllerfeedback.text);
     print(_rate);
 
-    if(!_hafetFeedback){
-      Response fe = await http_afegeixfeedback(_rate.toInt(), controllerfeedback.text, cookie, id);
+    if (!_hafetFeedback) {
+      Response fe = await http_afegeixfeedback(
+          _rate.toInt(), controllerfeedback.text, cookie, id);
       Navigator.pop(context);
-      if(fe.statusCode == 200){
+      if (fe.statusCode == 200) {
         _hafetFeedback = true;
         setState(() {
           textButtonFeedback = 'Edita';
         });
       }
-    }
-    else{
-      http_editafeedback(feedbackid,_rate.toInt(), controllerfeedback.text, cookie, id);
+    } else {
+      http_editafeedback(
+          feedbackid, _rate.toInt(), controllerfeedback.text, cookie, id);
       Navigator.pop(context);
     }
-
   }
 
   _contrata() async {
@@ -853,13 +854,13 @@ class _MostraState extends State<Mostra> {
     _controller.complete(controller);
   }
 }
+
 _mesures() {
   runApp(MaterialApp(
-    home: Template(id:ide
-
-    ),
+    home: Template(id: ide),
   ));
 }
+
 _contacta(String userName, BuildContext context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String myName = prefs.getString('email');
