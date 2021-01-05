@@ -585,6 +585,24 @@ class _ClientInfoState extends State<ClientInfo> {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
                 home: Structure(),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 
@@ -623,6 +641,24 @@ class _ClientInfoState extends State<ClientInfo> {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
                 home: QR(qrCode: qrCode),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 
@@ -633,6 +669,24 @@ class _ClientInfoState extends State<ClientInfo> {
               Navigator.of(context).pop(),
               runApp(MaterialApp(
                 home: Structure(),
+                localizationsDelegates: [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: [
+                  const Locale('en', ''),
+                  const Locale('es', ''),
+                  const Locale('ca', ''),
+                ],
+                localeResolutionCallback: (locale, supportedLocales) {
+                  for (var supportedLocale in supportedLocales) {
+                    if (supportedLocale.languageCode == locale.languageCode)
+                      return supportedLocale;
+                  }
+                  return supportedLocales.first;
+                },
               )),
             });
 
