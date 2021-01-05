@@ -198,7 +198,7 @@ class _EsdevenimentsRecomanatsState extends State {
               ),
               Expanded(
                 child: ListView.builder(
-                  itemCount: 3, //filteredEvents.length,
+                  itemCount: filteredEvents == null ? 0: filteredEvents.length, //filteredEvents.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
