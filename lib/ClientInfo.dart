@@ -157,6 +157,7 @@ import 'package:safeevents/Structure.dart';
 import 'package:safeevents/http_models/resposta_reserva_model.dart';
 import 'package:safeevents/scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'bluetooth.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_requests/http_clientInfo.dart';
@@ -401,6 +402,20 @@ class _ClientInfoState extends State<ClientInfo> {
               if (widget.id == 0)
                 FlatButton(
                   onPressed: () => _tancarSessio(),
+                  child: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                  ),
+                ),
+              if (widget.id == 0)
+                FlatButton(
+                  onPressed: () {
+                    runApp(
+                      MaterialApp(
+                        home: Bluetooth(),
+                      ),
+                    );
+                  },
                   child: Icon(
                     Icons.location_on,
                     color: Colors.white,

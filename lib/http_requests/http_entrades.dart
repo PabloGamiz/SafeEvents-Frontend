@@ -92,14 +92,20 @@ Future<RespostaReservaModel> http_get_tickets(
   final String apitUrl = "http://10.4.41.148:8080/ticket";
   var queryParamaters = {'cookie': stringValue, 'event_id': id};
   String dades = json.encode(queryParamaters);
+  final uri = Uri.http('http://10.4.41.148:8080', '/ticket', queryParamaters);
+  http.Request rq = http.Request('GET', Uri.parse(apitUrl));
+  rq.body = dades;
+  print("comença");
+  final response = await http.Client().send(rq);
   //final request = Request('GET', 'http://10.4.41.148:8080/ticket');
   //request.body = dades;
   //final response = request.send().stream.first;
-  final response = await http.get(apitUrl);
+  //final response = await http.get(uri);
   print(response.statusCode);
+  print(response.reasonPhrase);
   if (response.statusCode == 201 || response.statusCode == 200) {
-    print(response.body);
-    return respostaReservaModelFromJson(response.body);
+    print(response.reasonPhrase);
+    return respostaReservaModelFromJson(response.reasonPhrase);
   } else if (response.statusCode == 400) {
     return null;
   } else {
