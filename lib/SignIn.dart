@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'Structure.dart';
 import 'http_models/SignIn_model.dart';
@@ -19,6 +20,20 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 final DatabaseMethods database = new DatabaseMethods();
 
 class _SignInState extends State<SignIn> {
+  FlutterLocalNotificationsPlugin fltNotification;
+
+  @override
+  void initState() {
+    super.initState();
+    var androidInitialize = new AndroidInitializationSettings('app_icon');
+    var iOSinitialize = new IOSInitializationSettings();
+    var initializationsSettings = new InitializationSettings(
+        android: androidInitialize, iOS: iOSinitialize);
+    fltNotification = new FlutterLocalNotificationsPlugin();
+    fltNotification.initialize(initializationsSettings,
+        onSelectNotification: notificationSelected);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
