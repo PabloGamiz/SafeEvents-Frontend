@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:http/http.dart';
 import 'package:permission/permission.dart';
 //import 'package:permission_handler/permission_handler.dart';
 
@@ -13,13 +14,16 @@ import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
 import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
-import 'package:safeevents/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:safeevents/ModificaEsdeveniment.dart';
 
+import 'MesuresCovidTemplate.dart';
 import 'Structure.dart';
+import 'chat_screen.dart';
 import 'http_models/EsdevenimentEspecificModel.dart';
+import 'http_models/FeedbackEsdeveniments.dart';
+import 'http_requests/http_editafeedback.dart';
 import 'http_requests/http_entrades.dart';
 import 'http_requests/http_esdevenimentespecific.dart';
 import 'package:safeevents/http_requests/http_esdevenimentespecific.dart';
@@ -30,6 +34,7 @@ import 'package:smooth_star_rating/smooth_star_rating.dart';
 import 'http_requests/http_addfavourite.dart';
 import 'http_requests/http_delfavourite.dart';
 
+import 'http_requests/http_getfeedback.dart';
 import 'services/database.dart';
 
 //Variables globals
@@ -172,6 +177,7 @@ class _MostraState extends State<Mostra> {
   final Set<Marker> _markers = Set();
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -215,8 +221,7 @@ class _MostraState extends State<Mostra> {
                                     height: 23,
                                     child: IconButton(
                                       icon: Icon(Icons.favorite),
-                                      color:
-                                          !mi.faved ? Colors.white : Colors.red,
+                                      color: !mi.faved ? Colors.white : Colors.red,
                                       onPressed: () => {
                                         setState(() {
                                           if (mi.faved) {
@@ -355,6 +360,7 @@ class _MostraState extends State<Mostra> {
                                                                     showDialog(
                                                                       context:
                                                                           context,
+
                                                                       builder:
                                                                           (_) =>
                                                                               new Container(
@@ -599,6 +605,7 @@ class _MostraState extends State<Mostra> {
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
                                   children: <Widget>[
+
                                     Text(
                                       'SERVEIS\n',
                                       overflow: TextOverflow.ellipsis,
@@ -791,7 +798,7 @@ class _MostraState extends State<Mostra> {
 
   bool esDeLaEmpresa() {
     //Si el esdeveniment és de l'empresa es mostra per editar
-    if (mi.esorg) return true;
+    if(mi.esorg)return true;
     return false;
   }
 
@@ -823,7 +830,6 @@ class _MostraState extends State<Mostra> {
       home: Reserves(
         entradas: (mi.capacity - mi.taken),
         id: id,
-        eventName: mi.title,
       ),
     ));
 
@@ -853,6 +859,7 @@ class _MostraState extends State<Mostra> {
     _controller.complete(controller);
   }
 }
+
 _mesures() {
   runApp(MaterialApp(
     home: Template(id:ide

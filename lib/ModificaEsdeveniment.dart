@@ -159,7 +159,7 @@ class _ModificaState extends State<Modifica> {
                       top: 70.0,
                       child: InkWell(
                         onTap: () {
-                          _goBack();
+                          _onBackPressed();
                         },
                         child: Icon(Icons.arrow_back,
                             color: Colors.blue),
@@ -688,6 +688,10 @@ class _ModificaState extends State<Modifica> {
 
   _goBack() {
     Navigator.pop(context, false);
+    _goBackDef();
+
+  }
+  _goBackDef() {
     runApp(MaterialApp(
       home: Mostra(idevent: id),
     ));
