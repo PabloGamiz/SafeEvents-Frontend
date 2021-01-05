@@ -209,7 +209,7 @@ class _EsdevenimentsRecomanatsState extends State {
                         color: Colors.lightBlue,
                         child: ListTile(
                           onTap: () {
-                            _esdevenimentEspecific();
+                            _esdevenimentEspecific(index);
                           },
                           title: Column(
                             children: [
@@ -385,7 +385,7 @@ class _EsdevenimentsRecomanatsState extends State {
                         color: Colors.lightBlue,
                         child: ListTile(
                           onTap: () {
-                            _esdevenimentEspecific();
+                            _esdevenimentEspecific(index);
                           },
                           title: Column(
                             children: [
@@ -532,9 +532,9 @@ class _EsdevenimentsRecomanatsState extends State {
     ));
   }
 
-  _esdevenimentEspecific() {
+  _esdevenimentEspecific(int index) {
     runApp(MaterialApp(
-      home: Mostra(idevent:20),
+      home: Mostra(idevent:filteredEvents[index].id),
     ));
   }
 }
