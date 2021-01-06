@@ -69,7 +69,7 @@ class _ChatScreenState extends State<ChatScreen> {
         "--------------------------dentro de enviar notificacion-------------------------------");
     final response = await Messaging.sendToTopic(
       title: 'SafeEvents',
-      body: "has rebut un missatge de $myName",
+      body: 'has rebut un missatge de $myName',
       topic: chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
     );
     print(response.body);

@@ -23,17 +23,14 @@ class Messaging {
       client.post('https://fcm.googleapis.com/fcm/send',
           body: json.encode(
             <String, dynamic>{
-              'notification': <String, dynamic>{
-                'body': '$body',
-                'title': '$title'
-              },
+              'notification': <String, dynamic>{'body': body, 'title': title},
               'priority': 'high',
               'data': <String, dynamic>{
                 'click_action': 'FLUTTER_NOTIFICATION_CLICK',
                 'id': '1',
                 'status': 'done'
               },
-              'to': '$token',
+              'to': token,
             },
           ),
           headers: {

@@ -96,13 +96,11 @@ class _SignInState extends State<SignIn> {
     prefs.setString('email', user.email);
     prefs.setString('user', user.displayName);
 
-    String email = user.email;
-
     _firebaseMessaging.onTokenRefresh.listen((event) {
       print(event);
     });
 
-    _firebaseMessaging.subscribeToTopic('$email');
+    _firebaseMessaging.subscribeToTopic(user.email);
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');
