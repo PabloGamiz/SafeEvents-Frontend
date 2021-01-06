@@ -14,5 +14,22 @@
     "entradesDisponibles": " tickets available",
     "@entradesDisponibles": {
         "description": "syhkgyhkklil"
+    },
+
+    "cercarciutat": "Search location",
+    "@cercarciutat": {
+      "description": "cercaciutat text"
+    },
+    "noesdeveniments": "No event matching with the location or category indicated",
+    "@noesdeveniments": {
+      "description": "noesdeveniments text"
+    },
+    "missatgechat": "Write a message",
+    "@missatgechat": {
+      "description": "missatgechat text"
+    },
+    "sharemessage": "I've bought tickets for the event $eventName throught the application SafeEvents",
+    "@sharemessage": {
+      "description": "sharemessage text"
     }
 }

@@ -482,8 +482,7 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
 
     void share(BuildContext context) {
-      String message =
-          "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents";
+      String message = AppLocalizations.of(context).sharemessage;
       Share.share(message);
     }
 

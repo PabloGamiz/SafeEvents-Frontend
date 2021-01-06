@@ -145,7 +145,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           controller: messageController,
                           style: TextStyle(color: Colors.black),
                           decoration: InputDecoration(
-                            hintText: "Message...",
+                            hintText: AppLocalizations.of(context).missatgechat,
                             hintStyle: TextStyle(color: Colors.black),
                             border: InputBorder.none,
                           ),

@@ -2,5 +2,9 @@
     "helloWorld": "Hola mundo!",
     "signIn": "Iniciar sessión",
     "signInButton": "Iniciar sessión con Google",
-    "entradesDisponibles": " entradas disponibles"
+    "entradesDisponibles": " entradas disponibles",
+    "cercarciutat": "Buscar localización",
+    "noesdeveniments": "Ningún evento coincide con la localización o categoría seleccionada",
+    "missatgechat": "Escribe un mensaje",
+    "sharemessage": "He comprado entradas para el evento $eventName a través de la aplicación SafeEvents"
 }
