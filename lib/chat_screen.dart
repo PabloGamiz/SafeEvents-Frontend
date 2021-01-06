@@ -65,12 +65,16 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void sendNotification() async {
+    print(
+        "--------------------------dentro de enviar notificacion-------------------------------");
     final response = await Messaging.sendToTopic(
       title: 'SafeEvents',
       body: "has rebut un missatge de $myName",
       topic: chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
     );
-
+    print(response.body);
+    if (response.statusCode == 200)
+      print("response es buena!!!!!!!!!!!!!!!!!!!!!!");
     if (response.statusCode != 200) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text(
@@ -201,7 +205,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   _sendMessage() {
     if (messageController.text.isNotEmpty) {
-      sendNotification();
       Map<String, dynamic> messageMap = {
         "message": messageController.text,
         "sendBy": myName,
@@ -214,6 +217,7 @@ class _ChatScreenState extends State<ChatScreen> {
           chatMessageStream = value;
         });
       });
+      sendNotification();
     }
   }
 

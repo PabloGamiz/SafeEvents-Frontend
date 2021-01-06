@@ -21,7 +21,7 @@ class Messaging {
     @required String token,
   }) =>
       client.post('https://fcm.googleapis.com/fcm/send',
-          body: jsonEncode(
+          body: json.encode(
             <String, dynamic>{
               'notification': <String, dynamic>{
                 'body': '$body',

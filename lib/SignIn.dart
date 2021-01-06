@@ -98,6 +98,10 @@ class _SignInState extends State<SignIn> {
 
     String email = user.email;
 
+    _firebaseMessaging.onTokenRefresh.listen((event) {
+      print(event);
+    });
+
     _firebaseMessaging.subscribeToTopic('$email');
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
@@ -112,6 +116,9 @@ class _SignInState extends State<SignIn> {
     );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
+
+    print(
+        "<<<<<<<<<<<<<<<<<<<<<<<-firebaseMessaging no muestra error->>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
     runApp(MaterialApp(
       home: Structure(),
