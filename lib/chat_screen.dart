@@ -1,4 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:safeevents/messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'EsdevenimentsRecomanats.dart';
 import 'services/database.dart';
@@ -19,6 +21,9 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final String chatRoomId;
+
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  final List<Message> messages = [];
 
   _ChatScreenState(this.chatRoomId);
 
@@ -61,6 +66,22 @@ class _ChatScreenState extends State<ChatScreen> {
     myName = prefs.getString('email');
   }
 
+  void sendNotification() async {
+    final response = await Messaging.sendToTopic(
+      title: 'SafeEvents',
+      body: "has rebut un missatge de $myName",
+      topic: chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
+    );
+
+    if (response.statusCode != 200) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(
+          '[${response.statusCode}] Error message: ${response.body}',
+        ),
+      ));
+    }
+  }
+
   // ignore: non_constant_identifier_names
   Widget ChatMessageList() {
     return StreamBuilder(
@@ -87,6 +108,24 @@ class _ChatScreenState extends State<ChatScreen> {
       });
     });
     super.initState();
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('onMessage: $message');
+        final notification = message['notification'];
+        setState(() {
+          messages.add(Message(
+              title: notification['title'], body: notification['body']));
+        });
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print('onLaunch: $message');
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print('onResume: $message');
+      },
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(sound: true, badge: true, alert: true));
   }
 
   @override
@@ -248,4 +287,11 @@ class MessageTile extends StatelessWidget {
       ),
     );
   }
+}
+
+class Message {
+  final String title;
+  final String body;
+
+  const Message({@required this.title, @required this.body});
 }
