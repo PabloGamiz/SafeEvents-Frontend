@@ -239,26 +239,30 @@ class _MostraState extends State<Mostra> {
                                   color: Colors.blue),
                               child: Column(
                                 children: [
-                                  Container(
-                                    height: 23,
-                                    child: IconButton(
-                                      icon: Icon(Icons.favorite),
-                                      color:
-                                          !mi.faved ? Colors.white : Colors.red,
-                                      onPressed: () => {
-                                        setState(() {
-                                          if (mi.faved) {
-                                            http_delfavourite(cookie,
-                                                id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
-                                            mi.faved = false;
-                                          } else {
-                                            http_addfavourite(cookie, id);
-                                            mi.faved = true;
-                                          }
-                                        }),
-                                      },
+                                  Visibility(
+                                    visible: mostrar,
+                                    child: Container(
+                                      height: 23,
+                                      child: IconButton(
+                                        icon: Icon(Icons.favorite),
+                                        color: !mi.faved
+                                            ? Colors.white
+                                            : Colors.red,
+                                        onPressed: () => {
+                                          setState(() {
+                                            if (mi.faved) {
+                                              http_delfavourite(cookie,
+                                                  id); //ID SE PASA POR PARAMETRO AL WIDGET ESDEVENIMENTESPECIFIC
+                                              mi.faved = false;
+                                            } else {
+                                              http_addfavourite(cookie, id);
+                                              mi.faved = true;
+                                            }
+                                          }),
+                                        },
+                                      ),
+                                      alignment: Alignment(1, 1),
                                     ),
-                                    alignment: Alignment(1, 1),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(
