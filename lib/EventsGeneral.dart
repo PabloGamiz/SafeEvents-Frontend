@@ -177,13 +177,9 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "Tots" ||
-                      newValue == "All" ||
-                      newValue == "Todos")
-                    tipus = "Tots";
-                  else if (newValue == "Música" ||
-                      newValue == "Music" ||
-                      newValue == "Música")
+                  if (newValue == "")
+                    tipus = "";
+                  else if (newValue == "Música" || newValue == "Music")
                     tipus = "Musica";
                   else if (newValue == "Teatre" ||
                       newValue == "Theatre" ||
@@ -192,7 +188,7 @@ class _GeneralEventsState extends State {
                   else if (newValue == "Esport" ||
                       newValue == "Sport" ||
                       newValue == "Deporte")
-                    tipus = "Espor";
+                    tipus = "Esport";
                   else if (newValue == "Art" ||
                       newValue == "Art" ||
                       newValue == "Arte")
@@ -200,7 +196,7 @@ class _GeneralEventsState extends State {
                   else if (newValue == "Altres" ||
                       newValue == "Others" ||
                       newValue == "Otros") tipus = "Altres";
-                  if (tipus == "tots") {
+                  if (tipus == "") {
                     filteredcategory = false;
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
@@ -430,13 +426,9 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "Tots" ||
-                      newValue == "All" ||
-                      newValue == "Todos")
-                    tipus = "Tots";
-                  else if (newValue == "Música" ||
-                      newValue == "Music" ||
-                      newValue == "Música")
+                  if (newValue == "")
+                    tipus = "";
+                  else if (newValue == "Música" || newValue == "Music")
                     tipus = "Musica";
                   else if (newValue == "Teatre" ||
                       newValue == "Theatre" ||
@@ -445,7 +437,7 @@ class _GeneralEventsState extends State {
                   else if (newValue == "Esport" ||
                       newValue == "Sport" ||
                       newValue == "Deporte")
-                    tipus = "Espor";
+                    tipus = "Esport";
                   else if (newValue == "Art" ||
                       newValue == "Art" ||
                       newValue == "Arte")
@@ -453,7 +445,7 @@ class _GeneralEventsState extends State {
                   else if (newValue == "Altres" ||
                       newValue == "Others" ||
                       newValue == "Otros") tipus = "Altres";
-                  if (tipus == "tots") {
+                  if (tipus == "") {
                     filteredcategory = false;
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
@@ -668,13 +660,9 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "Tots" ||
-                      newValue == "All" ||
-                      newValue == "Todos")
-                    tipus = "Tots";
-                  else if (newValue == "Música" ||
-                      newValue == "Music" ||
-                      newValue == "Música")
+                  if (newValue == "")
+                    tipus = "";
+                  else if (newValue == "Música" || newValue == "Music")
                     tipus = "Musica";
                   else if (newValue == "Teatre" ||
                       newValue == "Theatre" ||
@@ -683,7 +671,7 @@ class _GeneralEventsState extends State {
                   else if (newValue == "Esport" ||
                       newValue == "Sport" ||
                       newValue == "Deporte")
-                    tipus = "Espor";
+                    tipus = "Esport";
                   else if (newValue == "Art" ||
                       newValue == "Art" ||
                       newValue == "Arte")
@@ -691,7 +679,7 @@ class _GeneralEventsState extends State {
                   else if (newValue == "Altres" ||
                       newValue == "Others" ||
                       newValue == "Otros") tipus = "Altres";
-                  if (tipus == "tots") {
+                  if (tipus == "") {
                     filteredcategory = false;
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, ciutatCercada, 0);

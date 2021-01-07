@@ -354,7 +354,7 @@
     "@noResults": {
       "description": "Text for no results in maps search bar"
     },
-    "tots": "All",
+    "tots": "",
     "@tots": {
       "description": "Text for all categories"
     },
