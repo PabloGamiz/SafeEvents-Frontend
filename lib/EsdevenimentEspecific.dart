@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:safeevents/EsdevenimentsRecomanats.dart';
 import 'package:safeevents/EventsGeneral.dart';
 import 'package:safeevents/http_models/Reserva_model.dart';
+import 'package:safeevents/http_requests/esdevenimentanon.dart';
 import 'package:safeevents/http_requests/http_afegeixfeedback.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -752,8 +753,16 @@ class _MostraState extends State<Mostra> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     cookie = stringValue;
-    final EsdevenimentEspecificModel event =
-        await http_esdevenimentespecific(id, cookie);
+    EsdevenimentEspecificModel e = new EsdevenimentEspecificModel();
+    if(stringValue!=null){
+        e=
+          await http_esdevenimentespecific(id, cookie);
+    }
+    else{
+       e =
+      await http_esdevenimentanon(id);
+    }
+    final EsdevenimentEspecificModel event = e;
     await getFeedbacks(id);
     setState(() {
       if (stringValue != null)

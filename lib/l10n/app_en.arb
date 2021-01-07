@@ -361,5 +361,37 @@
     "scategory": "Select a category",
     "@scategory": {
       "description": "Text for selecting a category"
-    }
+    },
+    "prevencio" : "COVID 19 Prevention",
+    "@prevencio": {
+          "description": "Text for selecting a prevencio"
+        },
+    "prevenciosub" : "For your safety and everyone's, follow this recomendations",
+    "@prevenciosub": {
+              "description": "Text for selecting a prevencio"
+            },
+    "mans" : "Wash your hands",
+    "@mans": {
+              "description": "Text for selecting a prevencio"
+            },
+    "manssub" : "Wash your hands regularly during 20 seconds, with soap and/or hydroalcoholic gel",
+    "@manssub": {
+              "description": "Text for selecting a prevencio"
+            },
+    "masc" : "Use the face mask",
+    "@masc": {
+              "description": "Text for selecting a prevencio"
+            },
+    "mascsub" : "You must wear the face mask during all times, covering your mouth and nois. \nDo no take it off",
+    "@mascsub": {
+              "description": "Text for selecting a prevencio"
+            },
+    "aglo" : "Avoid crowds",
+    "@aglo": {
+              "description": "Text for selecting a prevencio"
+            },
+    "aglosub" : "Try to be at least 2 m away from people around, be safe in all time!",
+    "@aglosub": {
+              "description": "Text for selecting a prevencio"
+            }
 }

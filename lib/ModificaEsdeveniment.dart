@@ -799,15 +799,7 @@ class _ModificaState extends State<Modifica> {
     var mesura = mesurescontroller.text;
     List<String> mesuresCOVID = mesura.split('\n');
     String datahora = data + 'T' + hora + 'Z';
-    if(tipus.startsWith('M')) tipus = 'Música';
-    else if(tipus.startsWith('T'))tipus = 'Teatre';
-    else if(tipus.startsWith('E'))tipus = 'Esport';
-    else if(tipus.startsWith('D')) tipus = 'Esport';
-    else if(tipus.startsWith('A')){
-      if(tipus.contains('Al'))tipus = 'Altres';
-      else tipus = 'Art';
-    }
-    else if(tipus.startsWith('O'))tipus = 'Altres';
+    
     final ModificaEsdevenimentModel event = await http_modificaesdeveniment(
         cookie,
         id,

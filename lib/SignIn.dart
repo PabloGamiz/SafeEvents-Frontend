@@ -74,6 +74,8 @@ class _SignInState extends State<SignIn> {
 
     print(googleAuth.idToken);
     final SignInModel session = await http_SignIn(googleAuth.idToken);
+
+    print('1');
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setString('cookie', session.cookie);

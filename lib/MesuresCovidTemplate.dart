@@ -117,7 +117,7 @@ class _TemplateState extends State<Template> {
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.fromLTRB(20, 20, 0, 0),
                   child: Text(
-                    'Prevenció COVID 19',
+                    AppLocalizations.of(context).prevencio,
                     style: TextStyle(color: Colors.blue),
                   ),
                 ),
@@ -125,7 +125,7 @@ class _TemplateState extends State<Template> {
                   alignment: Alignment.centerLeft,
                   padding: EdgeInsets.fromLTRB(20, 10, 0, 10),
                   child: Text(
-                    'Per la teva seguretat i per la de tots, segueix aquestes recomanacions',
+                    AppLocalizations.of(context).prevenciosub,
                     style: TextStyle(color: Colors.blueGrey),
                   ),
                 ),
@@ -141,11 +141,11 @@ class _TemplateState extends State<Template> {
                   ListTile(
                     contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 20),
                     title: Text(
-                      'Renta\'t les mans\n',
+                      AppLocalizations.of(context).mans + '\n',
                       style: TextStyle(color: Colors.blue, fontSize: 20),
                     ),
                     subtitle: Text(
-                        'Renta\'t les mans regularment durant 20 segons, amb sabó i/o gel hidroalohòlic'),
+                        AppLocalizations.of(context).manssub),
                     leading: FadeInImage(
                       // En esta propiedad colocamos la imagen a descargar
                       image: NetworkImage(
@@ -177,11 +177,11 @@ class _TemplateState extends State<Template> {
                   ListTile(
                     contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 20),
                     title: Text(
-                      'Utilitza la mascareta\n',
+                      AppLocalizations.of(context).masc+'\n',
                       style: TextStyle(color: Colors.blue, fontSize: 20),
                     ),
                     subtitle: Text(
-                        'Has de dur posada la mascareta en tot moment, cobrint la boca i el nas.\nMai et treguis la mascareta!'),
+                        AppLocalizations.of(context).mascsub),
                     leading: FadeInImage(
                       // En esta propiedad colocamos la imagen a descargar
                       image: NetworkImage(
@@ -213,11 +213,11 @@ class _TemplateState extends State<Template> {
                   ListTile(
                     contentPadding: EdgeInsets.fromLTRB(15, 10, 25, 20),
                     title: Text(
-                      'Evita les aglomeracions\n',
+                      AppLocalizations.of(context).aglo + '\n',
                       style: TextStyle(color: Colors.blue, fontSize: 20),
                     ),
                     subtitle: Text(
-                        'Procura estar a mínim 2 m de la gent del teu voltant, estigues segur/a en tot moment!'),
+                        AppLocalizations.of(context).aglosub),
                     leading: FadeInImage(
                       // En esta propiedad colocamos la imagen a descargar
                       image: NetworkImage(
