@@ -100,7 +100,7 @@ class _SignInState extends State<SignIn> {
       print(event);
     });
 
-    _firebaseMessaging.subscribeToTopic(user.email);
+    _firebaseMessaging.subscribeToTopic(user.email.replaceAll("@", "2"));
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) async {
         print('onMessage: $message');

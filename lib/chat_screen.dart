@@ -70,7 +70,10 @@ class _ChatScreenState extends State<ChatScreen> {
     final response = await Messaging.sendToTopic(
       title: 'SafeEvents',
       body: 'has rebut un missatge de $myName',
-      topic: chatRoomId.replaceAll("_", "").replaceAll(myName, ""),
+      topic: chatRoomId
+          .replaceAll("_", "")
+          .replaceAll(myName, "")
+          .replaceAll("@", "2"),
     );
     print(response.body);
     if (response.statusCode == 200)
