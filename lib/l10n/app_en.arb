@@ -374,7 +374,7 @@
     "@prevencio": {
           "description": "Text for selecting a prevencio"
         },
-    "prevenciosub" : "For your safety and everyone's, follow this recomendations",
+    "prevenciosub" : "For your safety and everyone's, follow these recomendations",
     "@prevenciosub": {
               "description": "Text for selecting a prevencio"
             },
@@ -386,11 +386,11 @@
     "@manssub": {
               "description": "Text for selecting a prevencio"
             },
-    "masc" : "Use the face mask",
+    "masc" : "Use face mask",
     "@masc": {
               "description": "Text for selecting a prevencio"
             },
-    "mascsub" : "You must wear the face mask during all times, covering your mouth and nois. \nDo no take it off",
+    "mascsub" : "You must wear face mask all the time, covering your mouth and nose. \nDo no take it off",
     "@mascsub": {
               "description": "Text for selecting a prevencio"
             },
@@ -398,7 +398,7 @@
     "@aglo": {
               "description": "Text for selecting a prevencio"
             },
-    "aglosub" : "Try to be at least 2 m away from people around, be safe in all time!",
+    "aglosub" : "Try to be at least 2 m away from people around, be safe all the time!",
     "@aglosub": {
               "description": "Text for selecting a prevencio"
             }
