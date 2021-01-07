@@ -171,5 +171,17 @@
     "negative": "NEGATIVE",
     "@negative": {
       "description": "NEGATIVE message"
+    },
+    "bookingsClientInfo": "Bookings",
+    "@bookingsClientInfo": {
+        "description": "Text for dropdownValue"
+    },
+    "ticketsClientInfo": "Tickets",
+    "@ticketsClientInfo": {
+        "description": "Text for dropdownValue"
+    },
+    "organizedClientInfo": "Organized events",
+    "@organizedClientInfo": {
+        "description": "Text for dropdownValue"
     }
 }

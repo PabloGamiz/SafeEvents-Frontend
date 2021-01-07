@@ -40,6 +40,9 @@
     "unknown": "DESCONOCIDO",
     "positive": "POSITIVO",
     "negative": "NEGATIVO",
-    "favsErrorMessage": "Ha habido un error al obtener los favoritos.\n Por favor vuelve a intentarlo mas tarde."
+    "favsErrorMessage": "Ha habido un error al obtener los favoritos.\n Por favor vuelve a intentarlo mas tarde.",
+    "bookingsClientInfo": "Reservas",
+    "ticketsClientInfo": "Entradas",
+    "organizedClientInfo": "Eventos organizados"
     
 }

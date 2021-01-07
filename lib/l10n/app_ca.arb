@@ -41,5 +41,8 @@
     "unknown": "DESCONEGUT",
     "positive": "POSITIU",
     "negative": "NEGATIU",
-    "favsErrorMessage": "Ha succeït un error.\n Si us plau, torna a intentar-ho més tard."
+    "favsErrorMessage": "Ha succeït un error.\n Si us plau, torna a intentar-ho més tard.",
+    "bookingsClientInfo": "Reserves",
+    "ticketsClientInfo": "Entrades",
+    "organizedClientInfo": "Esdeveniments organitzats"
 }

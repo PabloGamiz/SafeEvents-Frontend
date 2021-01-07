@@ -39,7 +39,7 @@ class ClientInfo extends StatefulWidget {
 
 class _ClientInfoState extends State<ClientInfo> {
   Future<ClientInfoMod> futureClient;
-  var dropdownValue = "Reservas";
+  String dropdownValue;
   List<Purchased> selected = new List();
   String result = "Hey there !";
   int eventid = 1;
@@ -140,6 +140,8 @@ class _ClientInfoState extends State<ClientInfo> {
 
   @override
   Widget build(BuildContext context) {
+    if (dropdownValue == null)
+      dropdownValue = AppLocalizations.of(context).bookingsClientInfo;
     return FutureBuilder<ClientInfoMod>(
       future: futureClient,
       builder: (context, snapshot) {
@@ -168,8 +170,11 @@ class _ClientInfoState extends State<ClientInfo> {
         DropdownButton(
           value: dropdownValue,
           elevation: 16,
-          items: ["Reservas", "Entradas", "Eventos organizados"]
-              .map((String value) {
+          items: [
+            AppLocalizations.of(context).bookingsClientInfo,
+            AppLocalizations.of(context).ticketsClientInfo,
+            AppLocalizations.of(context).organizedClientInfo
+          ].map((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -183,12 +188,13 @@ class _ClientInfoState extends State<ClientInfo> {
           onChanged: (String newValue) {
             setState(() {
               dropdownValue = newValue;
-              if (dropdownValue != "Eventos organizados")
+              if (dropdownValue !=
+                  AppLocalizations.of(context).organizedClientInfo)
                 selected = _selectTicket(dropdownValue, assistant);
             });
           },
         ),
-        if (dropdownValue != "Eventos organizados")
+        if (dropdownValue != AppLocalizations.of(context).organizedClientInfo)
           _ticketsList()
         else
           _eventsList(organizer)
@@ -230,7 +236,7 @@ class _ClientInfoState extends State<ClientInfo> {
         generalInfo(client),
         Container(
           child: Text(
-            "Eventos organizados",
+            AppLocalizations.of(context).organizedClientInfo,
             style: TextStyle(
                 color: Colors.black,
                 decoration: TextDecoration.underline,
@@ -541,7 +547,7 @@ class _ClientInfoState extends State<ClientInfo> {
 
   List<Purchased> _selectTicket(String type, Assists assistant) {
     selected.clear();
-    if (type == "Reservas") {
+    if (type == AppLocalizations.of(context).bookingsClientInfo) {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
           if (assistant.purchased[i].option == 0 &&
@@ -550,7 +556,8 @@ class _ClientInfoState extends State<ClientInfo> {
           }
         }
       }
-    } else if (type == "Entradas" && assistant != null) {
+    } else if (type == AppLocalizations.of(context).ticketsClientInfo &&
+        assistant != null) {
       if (assistant != null && assistant.purchased.length != 0) {
         for (int i = 0; i < assistant.purchased.length; ++i) {
           if (assistant.purchased[i].option == 1 &&
