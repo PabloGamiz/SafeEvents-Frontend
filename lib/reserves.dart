@@ -482,7 +482,9 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
 
     void share(BuildContext context) {
-      String message = AppLocalizations.of(context).sharemessage;
+      String message = AppLocalizations.of(context).sharemessage1 +
+          '$eventName' +
+          AppLocalizations.of(context).sharemessage2;
       Share.share(message);
     }
 

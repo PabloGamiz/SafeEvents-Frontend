@@ -277,7 +277,8 @@ class _GeneralEventsState extends State {
                                       filteredEvents[index].location
                                       /*"ácéntó"*/, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
                                       style: TextStyle(color: Colors.white),
-                                      maxLines: 2,
+                                      //maxLines: 2,
+                                      textAlign: TextAlign.center,
                                       //overflow: TextOverflow.fade,
                                     ),
                                   ),
@@ -484,8 +485,9 @@ class _GeneralEventsState extends State {
                                       /*'Palau Sant Jordi',*/
                                       filteredEvents[index].location,
                                       style: TextStyle(color: Colors.white),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
+                                      textAlign: TextAlign.center,
+                                      // maxLines: 2,
+                                      // overflow: TextOverflow.fade,
                                     ),
                                   ),
                                 ),
@@ -568,11 +570,25 @@ class _GeneralEventsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, string, 0);
-                  /* filteredEvents = generalEvents
-                    .where((e) => (e.location.contains(string)))
-                    .toList();*/
+                  ciutatCercada = string;
+                  if (string == "") {
+                    filteredcity = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                  } else {
+                    filteredcity = true;
+                  }
+                  if (filteredcategory) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, string, 0);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, string, 0);
+                  }
+                  /*generalEvents
+                      .where(
+                          (e) => (e.controller.location.name.contains(string)))
+                      .toList();*/
                 });
               });
             },
@@ -593,11 +609,23 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  filteredEvents =
-                      filtrarEsdeveniments(generalEvents, newValue, 1);
-                  /*filteredEvents = generalEvents
-                          .where((e) => e.category.contains(newValue))
-                          .toList();*/
+                  if (newValue == "") {
+                    filteredcategory = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                  } else {
+                    filteredcategory = true;
+                  }
+                  if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                  }
+                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
                 });
               });
             },
@@ -606,12 +634,14 @@ class _GeneralEventsState extends State {
             height: 180,
           ),
           Expanded(
-            child: Center(
+            child: Align(
+              alignment: Alignment.topCenter,
               child: Text(
                 AppLocalizations.of(context).noesdeveniments,
                 style: TextStyle(
                   color: Colors.grey,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
           )

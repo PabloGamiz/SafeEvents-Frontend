@@ -6,5 +6,6 @@
     "cercarciutat": "Cercar localització",
     "noesdeveniments": "Cap esdeveniment coincideix amb la localització o categoria seleccionada",
     "missatgechat": "Escriu un missatge",
-    "sharemessage": "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents"
+    "sharemessage1": "He comprat entrades per a l'event ",
+    "sharemessage2": " amb l'aplicació SafeEvents"
 }

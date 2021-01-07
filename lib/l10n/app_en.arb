@@ -28,8 +28,12 @@
     "@missatgechat": {
       "description": "missatgechat text"
     },
-    "sharemessage": "I've bought tickets for the event $eventName throught the application SafeEvents",
-    "@sharemessage": {
-      "description": "sharemessage text"
+    "sharemessage1": "I've bought tickets for the event ",
+    "@sharemessage1": {
+      "description": "sharemessage1 text"
+    },
+    "sharemessage2": " throught the application SafeEvents",
+    "@sharemessage2": {
+      "description": "sharemessage2 text"
     }
 }
