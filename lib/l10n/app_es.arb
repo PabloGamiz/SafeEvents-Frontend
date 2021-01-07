@@ -29,6 +29,7 @@
     "seleccionaelnombredentrades": "La cantidad de entradas que intenta reservar o comprar es mayor que la cantidad de entradas disponibles",
     "noFavsMessage": "No tienes favoritos.\n Selecciona el ❤️ para añadir uno.",
     "startscanning": "Inicio del escáner",
+    "avisscanning": "Se está realizando el escaneo, para cancelar pulsar el botón de abajo",
     "stopscanning": "Pulsar para detener el escáner",
     "scanning": "Escaneando",
     "errorcamara1": "Se denegó el permiso de la cámara",

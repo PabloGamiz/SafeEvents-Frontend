@@ -54,7 +54,7 @@ class _BluetoothState extends State<Bluetooth> {
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
-            onPressed: () => exit = true,
+            onPressed: () => {stop()},
             color: Colors.grey,
           ),
         ],
@@ -64,6 +64,7 @@ class _BluetoothState extends State<Bluetooth> {
 
   stop() {
     exit = true;
+    print(start);
     if (!start) {
       runApp(
         MaterialApp(
@@ -95,7 +96,7 @@ class _BluetoothState extends State<Bluetooth> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(AppLocalizations.of(context).avis),
-      content: Text(AppLocalizations.of(context).error_accio),
+      content: Text(AppLocalizations.of(context).avisscanning),
       actions: [],
     );
 
@@ -113,6 +114,7 @@ class _BluetoothState extends State<Bluetooth> {
     start = true;
     print("scanning");
     showAlertDialog(context);
+    await new Future.delayed(const Duration(seconds: 2));
     String deviceName;
     String deviceVersion;
     String identifier;
@@ -147,7 +149,6 @@ class _BluetoothState extends State<Bluetooth> {
   }
 
   scan_device() async {
-    Timer timer;
     print("exit: " + exit.toString());
     while (!exit) {
       if (scan) {
@@ -155,13 +156,17 @@ class _BluetoothState extends State<Bluetooth> {
 
         final List<String> nameDevice = new List();
         FlutterBlue flutterBlue = FlutterBlue.instance;
-        flutterBlue.startScan(timeout: Duration(seconds: 20));
+        flutterBlue.startScan(timeout: Duration(seconds: 10));
         // Listen to scan results
         var subscription = flutterBlue.scanResults.listen((results) {
           // do something with scan results
           for (ScanResult r in results) {
             nameDevice.add(r.device.name);
-            print(r.device.name);
+            print("---------");
+            print("---------");
+            print("name: " + r.device.name);
+            print("---------");
+            print("---------");
             //r.device.connect();
           }
         });
@@ -171,7 +176,7 @@ class _BluetoothState extends State<Bluetooth> {
         print("interaction");
         final interaction = await http_radar_interaction(nameDevice);
         print("sleep");
-        await new Future.delayed(const Duration(seconds: 15));
+        await new Future.delayed(const Duration(seconds: 5));
         //sleep(const Duration(seconds: 15));
       }
       if (exit) {

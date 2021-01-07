@@ -128,6 +128,10 @@
     "@stopscanning": {
       "description": "stopscanning message"
     },
+    "avisscanning": "Scanning is being performed, to cancel press the button below",
+    "@avisscanning": {
+      "description": "avisscanning message"
+    },
     "scanning": "Scanning",
     "@scanning": {
       "description": "scanning message"
