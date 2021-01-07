@@ -22,6 +22,7 @@ TextEditingController mesurescontroller = new TextEditingController();
 var idfake = 4;
 bool _esperaCarrega = true;
 
+
 void main() => runApp(MaterialApp(
       title: "ModificaEvents",
       home: Modifica(idevent: idfake),
@@ -98,6 +99,7 @@ class _ModificaState extends State<Modifica> {
   DateTime selectedDate = DateTime.now();
   var coordenades;
 
+  String tipus ;
   final format = DateFormat("yyyy-MM-dd");
   final formath = DateFormat("HH:mm");
   String errorNom = '';
@@ -115,7 +117,7 @@ class _ModificaState extends State<Modifica> {
   var showerrorDataHora = false;
   var showerrorCap = false;
 
-  String tipus = 'Escull el tipus d\'esdeveniment';
+
 
   var _data;
   var _hora;
@@ -140,7 +142,7 @@ class _ModificaState extends State<Modifica> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-            'Si tornes enrere no es modificarà l\'Esdeveniment \n\n N\'estàs segur/a?'),
+            AppLocalizations.of(context).warnbackmodif),
         actions: <Widget>[
           FlatButton(
             onPressed: () => Navigator.pop(context, false),
@@ -148,15 +150,19 @@ class _ModificaState extends State<Modifica> {
           ),
           FlatButton(
             onPressed: () => _goBack(),
-            child: Text('Sí'),
+            child: Text(  AppLocalizations.of(context).si),
           ),
         ],
       ),
     );
   }
-
+  int i = 0;
   @override
   Widget build(BuildContext context) {
+    if(i ==0){
+      tipus = AppLocalizations.of(context).esculltipusesd;
+      ++i;
+    }
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -190,7 +196,7 @@ class _ModificaState extends State<Modifica> {
                           TextField(
                               controller: nomcontroller,
                               decoration: InputDecoration(
-                                  labelText: "Nom Esdeveniment",
+                                  labelText: AppLocalizations.of(context).nomesdev,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
@@ -216,7 +222,7 @@ class _ModificaState extends State<Modifica> {
                             child: TextFormField(
                               controller: descrcontroller,
                               decoration: InputDecoration(
-                                  labelText: "Descripció de l'Esdeveniment",
+                                  labelText: AppLocalizations.of(context).descr,
                                   fillColor: Colors.white,
                                   contentPadding: new EdgeInsets.symmetric(
                                       vertical: 30.0, horizontal: 20.0),
@@ -233,7 +239,7 @@ class _ModificaState extends State<Modifica> {
                                 controller: mesurescontroller,
                                 decoration: InputDecoration(
                                     labelText:
-                                        "Afegeix els serveis que s'ofereixen",
+                                    AppLocalizations.of(context).addserv,
                                     fillColor: Colors.white,
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(25.0),
@@ -243,7 +249,7 @@ class _ModificaState extends State<Modifica> {
                           ),
                           Container(
                             child: Text(
-                              'Afegeix un servei per línia',
+                              AppLocalizations.of(context).addservwarn,
                               style: TextStyle(fontSize: 10),
                             ),
                           ),
@@ -264,16 +270,16 @@ class _ModificaState extends State<Modifica> {
                                 AddressSearchTextField(
                                   country: "Spain", //TODO passar pais
                                   controller: dircontroller,
-                                  hintText: 'Introdueix la direcció',
+                                  hintText: AppLocalizations.of(context).introdueixdir,
                                   decoration: InputDecoration(
-                                      labelText: "Direcció de l\'Esdeveniment",
+                                      labelText: AppLocalizations.of(context).introdueixdir,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.circular(25.0),
                                         borderSide: BorderSide(),
                                       )),
-                                  noResultsText: "No hi han resultats",
+                                  noResultsText: AppLocalizations.of(context).noresults,
                                   onDone: (AddressPoint point) {
                                     print(point.latitude);
                                     print(point.longitude);
@@ -310,7 +316,7 @@ class _ModificaState extends State<Modifica> {
                                 TextFormField(
                                   controller: preucontroller,
                                   decoration: InputDecoration(
-                                      labelText: "Preu (en €)",
+                                      labelText: AppLocalizations.of(context).preueneu,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -346,7 +352,7 @@ class _ModificaState extends State<Modifica> {
                                 TextFormField(
                                   controller: capcontroller,
                                   decoration: InputDecoration(
-                                      labelText: "Capacitat de l'esdeveniment",
+                                      labelText: AppLocalizations.of(context).capacitatesd,
                                       fillColor: Colors.white,
                                       border: OutlineInputBorder(
                                         borderRadius:
@@ -382,7 +388,7 @@ class _ModificaState extends State<Modifica> {
                                 TextField(
                                     controller: imgcontroller,
                                     decoration: InputDecoration(
-                                        labelText: "Afegeix un enllaç d'imatge",
+                                        labelText: AppLocalizations.of(context).enllimg,
                                         fillColor: Colors.white,
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -391,7 +397,7 @@ class _ModificaState extends State<Modifica> {
                                         )),
                                     maxLines: 1),
                                 Text(
-                                  'Per afegir una imatge és obligatori que estigui pujada a internet',
+                                  AppLocalizations.of(context).enllimgwarn,
                                   style: TextStyle(fontSize: 10),
                                 )
                               ],
@@ -435,12 +441,12 @@ class _ModificaState extends State<Modifica> {
                                     });
                                   },
                                   items: <String>[
-                                    'Escull el tipus d\'esdeveniment',
-                                    'Musica',
-                                    'Teatre',
-                                    'Esports',
-                                    'Art',
-                                    'Altres'
+                                    AppLocalizations.of(context).esculltipusesd,
+                                    AppLocalizations.of(context).musica,
+                                    AppLocalizations.of(context).teatre,
+                                    AppLocalizations.of(context).esport,
+                                    AppLocalizations.of(context).art,
+                                    AppLocalizations.of(context).altres
                                   ].map<DropdownMenuItem<String>>(
                                       (String value) {
                                     return DropdownMenuItem<String>(
@@ -470,7 +476,7 @@ class _ModificaState extends State<Modifica> {
                             margin: EdgeInsets.only(top: 20.0, left: 10.0),
                             child: Column(
                               children: <Widget>[
-                                Text('Introdueix la Data de l\'Esdeveniment'),
+                                Text(AppLocalizations.of(context).intrdata),
                                 Container(
                                   margin:
                                       EdgeInsets.only(left: 60.0, right: 70.0),
@@ -497,7 +503,7 @@ class _ModificaState extends State<Modifica> {
                             margin: EdgeInsets.only(top: 10.0, left: 10.0),
                             child: Column(
                               children: <Widget>[
-                                Text('Introdueix l\'hora de l\'Esdeveniment'),
+                                Text(AppLocalizations.of(context).intrhora),
                                 Container(
                                   margin:
                                       EdgeInsets.only(left: 70.0, right: 94.0),
@@ -544,7 +550,7 @@ class _ModificaState extends State<Modifica> {
                                           new BorderRadius.circular(18.0),
                                     ),
                                     child: Text(
-                                      'Actualitza',
+                                      AppLocalizations.of(context).actualitza,
                                       style: TextStyle(
                                         color: Colors.white,
                                       ),
@@ -603,11 +609,16 @@ class _ModificaState extends State<Modifica> {
       cookie = stringValue;
 
       /*if (event.controller.title != null) _esperaCarrega = false;*/
-      print('PRINTPRINT : ' + event.checkInDate.toString().split('.')[0]);
-      print('PRINTPRINT : ' + event.title.toString());
-      print('PRINTPRINT : ' + _esperaCarrega.toString());
+
+
+      String aux = '';
+      if(event.tipus == 'Teatre') aux = AppLocalizations.of(context).teatre;
+      else if(event.tipus == 'Música') aux = AppLocalizations.of(context).musica;
+      else if(event.tipus == 'Esport') aux = AppLocalizations.of(context).esport;
+      else if(event.tipus == 'Art') aux = AppLocalizations.of(context).art;
+      else if(event.tipus == 'Altres') aux = AppLocalizations.of(context).altres;
+      tipus = aux;
       if (event.title != null) _esperaCarrega = false;
-      print('PRINTPRINT : ' + _esperaCarrega.toString());
 
       mi = MyInfo(
         null,
@@ -617,7 +628,7 @@ class _ModificaState extends State<Modifica> {
         event.checkInDate,
         event.location,
         'org',
-        event.tipus,
+        aux,
         event.price,
         event.image,
         event.mesures,
@@ -671,22 +682,24 @@ class _ModificaState extends State<Modifica> {
       hora = 'null';
 
     var someError = false;
+    String tipusback;
+
 
     setState(() {
       if (nom == '') {
-        errorNom = 'El Nom de l\'esdeveniment ha d\'estar informat';
+        errorNom = AppLocalizations.of(context).errornom;
         showerrorNom = true;
       } else
         showerrorNom = false;
 
       if (dir == '') {
-        errorDir = 'La direcció de l\'esdeveniment ha d\'estar informada';
+        errorDir = AppLocalizations.of(context).errordir;
         showerrorDir = true;
       } else
         showerrorDir = false;
 
       if (preu == '') {
-        errorPreu = 'El Preu de l\'esdeveniment ha d\'estar informat';
+        errorPreu = AppLocalizations.of(context).errorpreu;
         showerrorPreu = true;
       } else if (int.parse(preu) < 0) {
         errorPreu = 'El Preu de l\'esdeveniment ha de ser positiu';
@@ -694,21 +707,27 @@ class _ModificaState extends State<Modifica> {
       } else
         showerrorPreu = false;
 
-      if (tipus == 'Escull el tipus d\'esdeveniment') {
-        errorPicklist = 'No és un tipus d\'esdeveniment vàlid';
+      if (tipus == AppLocalizations.of(context).esculltipusesd) {
+        errorPicklist = AppLocalizations.of(context).errortipus;
         showerrorPicklist = true;
-      } else
+      } else {
         showerrorPicklist = false;
+        if(tipus == AppLocalizations.of(context).teatre) tipusback = 'Teatre';
+        else if(tipus == AppLocalizations.of(context).musica) tipusback = 'Música';
+        else if(tipus == AppLocalizations.of(context).esport) tipusback = 'Esport';
+        else if(tipus == AppLocalizations.of(context).art) tipusback = 'Art';
+        else if(tipus == AppLocalizations.of(context).altres) tipusback = 'Altres';
+      }
 
       if (data == 'null' || hora == 'null') {
-        errorDataHora =
-            'La data i l\'hora de l\'esdeveniment han d\'estar informades';
+        errorDataHora =AppLocalizations.of(context).errordatahora
+        ;
         showerrorDataHora = true;
       } else
         showerrorDataHora = false;
 
       if (capacity == '') {
-        errorCap = 'La capacitat ha d\'estar informada';
+        errorCap = AppLocalizations.of(context).errorcap;
         showerrorCap = true;
       } else
         showerrorCap = false;
@@ -780,6 +799,15 @@ class _ModificaState extends State<Modifica> {
     var mesura = mesurescontroller.text;
     List<String> mesuresCOVID = mesura.split('\n');
     String datahora = data + 'T' + hora + 'Z';
+    if(tipus.startsWith('M')) tipus = 'Música';
+    else if(tipus.startsWith('T'))tipus = 'Teatre';
+    else if(tipus.startsWith('E'))tipus = 'Esport';
+    else if(tipus.startsWith('D')) tipus = 'Esport';
+    else if(tipus.startsWith('A')){
+      if(tipus.contains('Al'))tipus = 'Altres';
+      else tipus = 'Art';
+    }
+    else if(tipus.startsWith('O'))tipus = 'Altres';
     final ModificaEsdevenimentModel event = await http_modificaesdeveniment(
         cookie,
         id,

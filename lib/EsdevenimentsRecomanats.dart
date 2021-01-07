@@ -16,6 +16,21 @@ import 'http_requests/http_delfavourite.dart';
 import 'http_requests/http_favs.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+List<ListEsdevenimentsModel> filtrarEsdeveniments(
+    List<ListEsdevenimentsModel> esdev, String paraula, int tipus) {
+  List<ListEsdevenimentsModel> filtered = List();
+  if (tipus == 0) {
+    //filtrar per ciutat
+    filtered = esdev
+        .where((e) => (e.location.contains(paraula))) //MIRAR SI ESTO ESTA BIEN
+        .toList();
+  } else {
+    //filtrar per categoria
+    filtered = esdev.where((e) => (e.tipus.contains(paraula))).toList();
+  }
+  return filtered;
+}
+
 void main() => runApp(MaterialApp(
       title: "EsdevenimentsRecomanats",
       home: EsdevenimentsRecomanats(),
@@ -62,6 +77,9 @@ class EsdevenimentsRecomanats extends StatefulWidget {
 }
 
 class _EsdevenimentsRecomanatsState extends State {
+  bool filteredcity = false;
+  bool filteredcategory = false;
+  String ciutatCercada;
   bool _esperaCarrega = true;
   /*OBTENER LISTA DE EVENTOS*/
   final _debouncer = Debouncer(milliseconds: 500);
@@ -154,6 +172,15 @@ class _EsdevenimentsRecomanatsState extends State {
           favs = List();
         else
           favs = favourites;
+
+        categories=[
+          ' ',
+          AppLocalizations.of(context).musica,
+          AppLocalizations.of(context).teatre,
+          AppLocalizations.of(context).esport,
+          AppLocalizations.of(context).art,
+          AppLocalizations.of(context).altres
+        ];
       });
     });
     if (registered /*&& filteredEvents.length > 0*/) {
@@ -169,7 +196,7 @@ class _EsdevenimentsRecomanatsState extends State {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Cercar ciutat",
+                      labelText: AppLocalizations.of(context).cercarciutat,
                       fillColor: Colors.white,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25.0),
@@ -179,9 +206,21 @@ class _EsdevenimentsRecomanatsState extends State {
                     onChanged: (string) {
                       _debouncer.run(() {
                         setState(() {
-                          filteredEvents = generalEvents
-                              .where((e) => (e.location.contains(string)))
-                              .toList();
+                          ciutatCercada = string;
+                          if (string == "") {
+                            filteredcity = false;
+                            filteredEvents =
+                                filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                          } else {
+                            filteredcity = true;
+                          }
+                          if (filteredcategory) {
+                            filteredEvents =
+                                filtrarEsdeveniments(filteredEvents, string, 0);
+                          } else {
+                            filteredEvents =
+                                filtrarEsdeveniments(generalEvents, string, 0);
+                          }
                         });
                       });
                     },
@@ -190,7 +229,7 @@ class _EsdevenimentsRecomanatsState extends State {
                     height: 10,
                   ),
                   DropdownButton<String>(
-                    hint: Text('Select category'),
+                    hint: Text(AppLocalizations.of(context).selectcategory),
                     value: _defaultValue,
                     items: categories.map((newValue) {
                       return DropdownMenuItem<String>(
@@ -202,6 +241,20 @@ class _EsdevenimentsRecomanatsState extends State {
                       _debouncer.run(() {
                         setState(() {
                           _defaultValue = newValue;
+                          if (newValue == "") {
+                            filteredcategory = false;
+                            filteredEvents =
+                                filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                          } else {
+                            filteredcategory = true;
+                          }
+                          if (filteredcity) {
+                            filteredEvents =
+                                filtrarEsdeveniments(filteredEvents, newValue, 1);
+                          } else {
+                            filteredEvents =
+                                filtrarEsdeveniments(generalEvents, newValue, 1);
+                          }
                           /*filteredEvents = generalEvents
                             .where((e) => e.category.contains(newValue))
                             .toList();*/
@@ -371,7 +424,7 @@ class _EsdevenimentsRecomanatsState extends State {
             ),
             TextFormField(
               decoration: InputDecoration(
-                labelText: "Cercar ciutat",
+                labelText: AppLocalizations.of(context).cercarciutat,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
@@ -381,9 +434,21 @@ class _EsdevenimentsRecomanatsState extends State {
               onChanged: (string) {
                 _debouncer.run(() {
                   setState(() {
-                    filteredEvents = generalEvents
-                        .where((e) => (e.location.contains(string)))
-                        .toList();
+                    ciutatCercada = string;
+                    if (string == "") {
+                      filteredcity = false;
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                    } else {
+                      filteredcity = true;
+                    }
+                    if (filteredcategory) {
+                      filteredEvents =
+                          filtrarEsdeveniments(filteredEvents, string, 0);
+                    } else {
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, string, 0);
+                    }
                   });
                 });
               },
@@ -392,7 +457,7 @@ class _EsdevenimentsRecomanatsState extends State {
               height: 10,
             ),
             DropdownButton<String>(
-              hint: Text('Select category'),
+              hint: Text(AppLocalizations.of(context).selectcategory),
               value: _defaultValue,
               items: categories.map((newValue) {
                 return DropdownMenuItem<String>(
@@ -404,6 +469,20 @@ class _EsdevenimentsRecomanatsState extends State {
                 _debouncer.run(() {
                   setState(() {
                     _defaultValue = newValue;
+                    if (newValue == "") {
+                      filteredcategory = false;
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                    } else {
+                      filteredcategory = true;
+                    }
+                    if (filteredcity) {
+                      filteredEvents =
+                          filtrarEsdeveniments(filteredEvents, newValue, 1);
+                    } else {
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, newValue, 1);
+                    }
                     /*filteredEvents = generalEvents
                           .where((e) => e.category.contains(newValue))
                           .toList();*/
@@ -532,7 +611,7 @@ class _EsdevenimentsRecomanatsState extends State {
           ),
           TextFormField(
             decoration: InputDecoration(
-              labelText: "Cercar ciutat",
+              labelText: AppLocalizations.of(context).cercarciutat,
               fillColor: Colors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25.0),
@@ -542,9 +621,21 @@ class _EsdevenimentsRecomanatsState extends State {
             onChanged: (string) {
               _debouncer.run(() {
                 setState(() {
-                  filteredEvents = generalEvents
-                      .where((e) => (e.location.contains(string)))
-                      .toList();
+                  ciutatCercada = string;
+                  if (string == "") {
+                    filteredcity = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                  } else {
+                    filteredcity = true;
+                  }
+                  if (filteredcategory) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, string, 0);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, string, 0);
+                  }
                 });
               });
             },
@@ -553,7 +644,7 @@ class _EsdevenimentsRecomanatsState extends State {
             height: 10,
           ),
           DropdownButton<String>(
-            hint: Text('Select category'),
+            hint: Text(AppLocalizations.of(context).selectcategory),
             value: _defaultValue,
             items: categories.map((newValue) {
               return DropdownMenuItem<String>(
@@ -565,6 +656,20 @@ class _EsdevenimentsRecomanatsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
+                  if (newValue == "") {
+                    filteredcategory = false;
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                  } else {
+                    filteredcategory = true;
+                  }
+                  if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                  }
                 });
               });
             },

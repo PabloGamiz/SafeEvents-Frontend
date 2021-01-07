@@ -21,7 +21,7 @@ TextEditingController preucontroller = new TextEditingController();
 TextEditingController imgcontroller = new TextEditingController();
 TextEditingController capcontroller = new TextEditingController();
 TextEditingController mesurescontroller = new TextEditingController();
-
+String tipus ;
 void main() => runApp(MaterialApp(
       title: "PublicaEvents",
       home: Publish(),
@@ -54,6 +54,8 @@ class Publish extends StatefulWidget {
 class _PublishState extends State<Publish> {
   DateTime selectedDate = DateTime.now();
 
+
+
   final format = DateFormat("yyyy-MM-dd");
   final formath = DateFormat("HH:mm");
   String errorNom = '';
@@ -71,7 +73,7 @@ class _PublishState extends State<Publish> {
   var showerrorDataHora = false;
   var showerrorCap = false;
 
-  String tipus = 'Escull el tipus d\'esdeveniment';
+
 
   var _data;
   var _hora;
@@ -81,7 +83,7 @@ class _PublishState extends State<Publish> {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(
-            'Si tornes enrere no es publicarà l\'Esdeveniment \n\n N\'estàs segur/a?'),
+            AppLocalizations.of(context).warnbackpublish),
         actions: <Widget>[
           FlatButton(
             onPressed: () => Navigator.pop(context, false),
@@ -89,15 +91,20 @@ class _PublishState extends State<Publish> {
           ),
           FlatButton(
             onPressed: () => _goBack(),
-            child: Text('Sí'),
+            child: Text(AppLocalizations.of(context).si),
           ),
         ],
       ),
     );
   }
-
+  int i = 0;
   @override
   Widget build(BuildContext context) {
+    if(i ==0){
+    tipus = AppLocalizations.of(context).esculltipusesd;
+    ++i;
+    }
+
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
@@ -127,7 +134,7 @@ class _PublishState extends State<Publish> {
                         key: Key('nomesdeveniment'),
                         controller: nomcontroller,
                         decoration: InputDecoration(
-                            labelText: "Nom Esdeveniment",
+                            labelText: AppLocalizations.of(context).nomesdev,
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(25.0),
@@ -154,7 +161,7 @@ class _PublishState extends State<Publish> {
                       child: TextFormField(
                         controller: descrcontroller,
                         decoration: InputDecoration(
-                            labelText: "Descripció de l'Esdeveniment",
+                            labelText: AppLocalizations.of(context).descr,
                             fillColor: Colors.white,
                             contentPadding: new EdgeInsets.symmetric(
                                 vertical: 30.0, horizontal: 20.0),
@@ -170,7 +177,7 @@ class _PublishState extends State<Publish> {
                       child: TextFormField(
                           controller: mesurescontroller,
                           decoration: InputDecoration(
-                              labelText: "Afegeix els serveis que s'ofereixen",
+                              labelText: AppLocalizations.of(context).addserv,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(25.0),
@@ -180,7 +187,7 @@ class _PublishState extends State<Publish> {
                     ),
                     Container(
                       child: Text(
-                        'Afegeix un servei per línia',
+                        AppLocalizations.of(context).addservwarn,
                         style: TextStyle(fontSize: 10),
                       ),
                     ),
@@ -191,15 +198,15 @@ class _PublishState extends State<Publish> {
                           AddressSearchTextField(
                             country: "Spain", //TODO passar pais
                             controller: dircontroller,
-                            hintText: 'Introdueix la direcció',
+                            hintText: AppLocalizations.of(context).introdueixdir,
                             decoration: InputDecoration(
-                                labelText: "Direcció de l\'Esdeveniment",
+                                labelText: AppLocalizations.of(context).introdueixdir,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(25.0),
                                   borderSide: BorderSide(),
                                 )),
-                            noResultsText: "No hi han resultats",
+                            noResultsText: AppLocalizations.of(context).noresults,
                             onDone: (AddressPoint point) {
                               print(point.latitude);
                               print(point.longitude);
@@ -237,7 +244,7 @@ class _PublishState extends State<Publish> {
                           TextFormField(
                             controller: preucontroller,
                             decoration: InputDecoration(
-                                labelText: "Preu (en €)",
+                                labelText: AppLocalizations.of(context).preueneu,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(25.0),
@@ -272,7 +279,7 @@ class _PublishState extends State<Publish> {
                           TextFormField(
                             controller: capcontroller,
                             decoration: InputDecoration(
-                                labelText: "Capacitat de l'esdeveniment",
+                                labelText: AppLocalizations.of(context).capacitatesd,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(25.0),
@@ -307,7 +314,7 @@ class _PublishState extends State<Publish> {
                           TextField(
                               controller: imgcontroller,
                               decoration: InputDecoration(
-                                  labelText: "Afegeix un enllaç d'imatge",
+                                  labelText: AppLocalizations.of(context).enllimg,
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(25.0),
@@ -315,7 +322,7 @@ class _PublishState extends State<Publish> {
                                   )),
                               maxLines: 1),
                           Text(
-                            'Per afegir una imatge és obligatori que estigui pujada a internet',
+                            AppLocalizations.of(context).enllimgwarn,
                             style: TextStyle(fontSize: 10),
                           )
                         ],
@@ -356,15 +363,17 @@ class _PublishState extends State<Publish> {
                             onChanged: (String newValue) {
                               setState(() {
                                 tipus = newValue;
+                                print('value: '+newValue);
+                                print('tipus: '+tipus);
                               });
                             },
                             items: <String>[
-                              'Escull el tipus d\'esdeveniment',
-                              'Musica',
-                              'Teatre',
-                              'Esports',
-                              'Art',
-                              'Altres'
+                              AppLocalizations.of(context).esculltipusesd,
+                              AppLocalizations.of(context).musica,
+                              AppLocalizations.of(context).teatre,
+                              AppLocalizations.of(context).esport,
+                              AppLocalizations.of(context).art,
+                              AppLocalizations.of(context).altres
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -393,7 +402,7 @@ class _PublishState extends State<Publish> {
                       margin: EdgeInsets.only(top: 20.0, left: 10.0),
                       child: Column(
                         children: <Widget>[
-                          Text('Introdueix la Data de l\'Esdeveniment'),
+                          Text(AppLocalizations.of(context).intrdata),
                           Container(
                             margin: EdgeInsets.only(left: 60.0, right: 70.0),
                             child: DateTimeField(
@@ -416,7 +425,7 @@ class _PublishState extends State<Publish> {
                       margin: EdgeInsets.only(top: 10.0, left: 10.0),
                       child: Column(
                         children: <Widget>[
-                          Text('Introdueix l\'hora de l\'Esdeveniment'),
+                          Text(AppLocalizations.of(context).intrhora),
                           Container(
                             margin: EdgeInsets.only(left: 70.0, right: 94.0),
                             child: DateTimeField(
@@ -460,7 +469,7 @@ class _PublishState extends State<Publish> {
                                 borderRadius: new BorderRadius.circular(18.0),
                               ),
                               child: Text(
-                                'Publica',
+                                AppLocalizations.of(context).publica,
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
@@ -495,6 +504,7 @@ class _PublishState extends State<Publish> {
         return supportedLocales.first;
       },
     );
+
   }
 
   publicaEsdeveniment() {
@@ -518,44 +528,50 @@ class _PublishState extends State<Publish> {
       hora = 'null';
 
     var someError = false;
+    String tipusback;
 
     setState(() {
       if (nom == '') {
-        errorNom = 'El Nom de l\'esdeveniment ha d\'estar informat';
+        errorNom = AppLocalizations.of(context).errornom;
         showerrorNom = true;
       } else
         showerrorNom = false;
 
       if (dir == '') {
-        errorDir = 'La direcció de l\'esdeveniment ha d\'estar informada';
+        errorDir = AppLocalizations.of(context).errordir;
         showerrorDir = true;
       } else
         showerrorDir = false;
 
       if (preu == '') {
-        errorPreu = 'El Preu de l\'esdeveniment ha d\'estar informat';
+        errorPreu = AppLocalizations.of(context).errorpreu;
         showerrorPreu = true;
       } else if (int.parse(preu) < 0) {
         errorPreu = 'El Preu de l\'esdeveniment ha de ser positiu';
         showerrorPreu = true;
       } else
         showerrorPreu = false;
-
-      if (tipus == 'Escull el tipus d\'esdeveniment') {
-        errorPicklist = 'No és un tipus d\'esdeveniment vàlid';
+      print('AAAAA tipus: '+tipus + ' escull: '+AppLocalizations.of(context).esculltipusesd);
+      if (tipus == AppLocalizations.of(context).esculltipusesd) {
+        errorPicklist = AppLocalizations.of(context).errortipus;
         showerrorPicklist = true;
-      } else
+      } else{
         showerrorPicklist = false;
-
+        if(tipus == AppLocalizations.of(context).teatre) tipusback = 'Teatre';
+        else if(tipus == AppLocalizations.of(context).musica) tipusback = 'Música';
+        else if(tipus == AppLocalizations.of(context).esport) tipusback = 'Esport';
+        else if(tipus == AppLocalizations.of(context).art) tipusback = 'Art';
+        else if(tipus == AppLocalizations.of(context).altres) tipusback = 'Altres';
+      }
       if (data == 'null' || hora == 'null') {
-        errorDataHora =
-            'La data i l\'hora de l\'esdeveniment han d\'estar informades';
+        errorDataHora =AppLocalizations.of(context).errordatahora
+            ;
         showerrorDataHora = true;
       } else
         showerrorDataHora = false;
 
       if (capacity == '') {
-        errorCap = 'La capacitat ha d\'estar informada';
+        errorCap = AppLocalizations.of(context).errorcap;
         showerrorCap = true;
       } else
         showerrorCap = false;
@@ -575,7 +591,7 @@ class _PublishState extends State<Publish> {
       //Envia data al backend i redirecciona
 
       _cridabackend(
-          nom, descripcio, capacity, dir, preu, data, hora, img, tipus);
+          nom, descripcio, capacity, dir, preu, data, hora, img, tipusback);
       //SI LA CAPACITAT ESTA TOTA OCUPADA PUES SHA DE DESACTIVAR
 
     }
@@ -593,10 +609,10 @@ class _PublishState extends State<Publish> {
 
     }*/
     String datahora = data + 'T' + hora + 'Z';
-    print('Mesures contr ' + mesurescontroller.text);
     print(coordenades);
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String cookie = prefs.getString('cookie');
+
 
     final ModificaEsdevenimentModel event = await http_publishevents(
         nom,
@@ -673,4 +689,6 @@ class _PublishState extends State<Publish> {
       },
     ));
   }
+
+
 }

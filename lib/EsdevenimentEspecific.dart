@@ -45,7 +45,6 @@ int idfake = 20;
 var _colorFav = Colors.white;
 //TO DO: quan connectem amb back, aquest valor serà el que ens dona per darrere
 
-TextEditingController controllerfeedback = new TextEditingController();
 
 int ide;
 bool liked;
@@ -137,10 +136,8 @@ class MyInfo {
       for (String s in servi) {
         if (s != null) {
           serv = serv + '-' + s + '\n';
-          print('0SERV ins ' + serv);
         }
       }
-      print('0SERV FORA ' + serv);
     }
 
     this.services = serv;
@@ -166,6 +163,8 @@ class Mostra extends StatefulWidget {
 }
 
 class _MostraState extends State<Mostra> {
+  TextEditingController controllerfeedback = new TextEditingController();
+
   var feedbackid;
   var _rate = 0.0;
   bool _esperaCarrega = true;
@@ -413,7 +412,7 @@ class _MostraState extends State<Mostra> {
                                                                               Column(
                                                                             children: <Widget>[
                                                                               Text(
-                                                                                'PUNTUA L\'ESDEVENIMENT',
+                                                                                AppLocalizations.of(context).puntua,
                                                                                 style: TextStyle(
                                                                                   decoration: TextDecoration.none,
                                                                                   color: Colors.white,
@@ -437,7 +436,7 @@ class _MostraState extends State<Mostra> {
                                                                                 child: Container(
                                                                                   margin: EdgeInsets.only(top: 30),
                                                                                   child: Text(
-                                                                                    'DONA\'NS FEEDBACK DE L\'ESDEVENIMENT',
+                                                                                    AppLocalizations.of(context).feedback,
                                                                                     style: TextStyle(
                                                                                       decoration: TextDecoration.none,
                                                                                       color: Colors.white,
@@ -528,7 +527,7 @@ class _MostraState extends State<Mostra> {
                                                                     18.0),
                                                           ),
                                                           child: Text(
-                                                            'CONTACTA',
+                                                            AppLocalizations.of(context).contact,
                                                             style: TextStyle(
                                                               fontSize: 9,
                                                               color:
@@ -603,7 +602,7 @@ class _MostraState extends State<Mostra> {
                                       height: 30,
                                     ),
                                     Text(
-                                      'Consulta les mesures de prevenció del COVID',
+                                      AppLocalizations.of(context).covid,
                                       maxLines: 3,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 12),
@@ -628,7 +627,7 @@ class _MostraState extends State<Mostra> {
                                 child: Column(
                                   children: <Widget>[
                                     Text(
-                                      'SERVEIS\n',
+                                      AppLocalizations.of(context).serveis +'\n',
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 3,
                                       style: TextStyle(
@@ -670,7 +669,7 @@ class _MostraState extends State<Mostra> {
                                           new BorderRadius.circular(20.0),
                                     ),
                                     child: Text(
-                                      'RESERVA / COMPRA',
+                                      AppLocalizations.of(context).reservacompra,
                                       style: TextStyle(
                                           color: Colors.blue, fontSize: 20),
                                     ),
@@ -753,7 +752,6 @@ class _MostraState extends State<Mostra> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     cookie = stringValue;
-    //cookie = 'u-FJatuvJt4kg5XUYlmBXLCcI6tV35-xPY38eCIlLr0=';
     final EsdevenimentEspecificModel event =
         await http_esdevenimentespecific(id, cookie);
     await getFeedbacks(id);
@@ -764,9 +762,6 @@ class _MostraState extends State<Mostra> {
         mostrar = false;
 
       if (event.title != null) _esperaCarrega = false;
-      //test
-
-      print(_esperaCarrega);
       /*test */
       /*mi = MyInfo(
           id,
@@ -841,7 +836,6 @@ class _MostraState extends State<Mostra> {
     setState(() {
       if (feedbackEsdeven.length != 0) {
         _rate = rating / feedbackEsdeven.length;
-        print('RATE: ' + _rate.toString());
         if (feedb != null) {
           controllerfeedback.text = feedb.message;
           _hafetFeedback = true;
@@ -860,9 +854,6 @@ class _MostraState extends State<Mostra> {
 
   _doFeedback() async {
     //Aqui comunicarem amb el backend per enviar les dades del feedback, estrelles(1-5), missatge, id esdeveniment, usuari
-    print(controllerfeedback.text);
-    print(_rate);
-
     if (!_hafetFeedback) {
       Response fe = await http_afegeixfeedback(
           _rate.toInt(), controllerfeedback.text, cookie, id);

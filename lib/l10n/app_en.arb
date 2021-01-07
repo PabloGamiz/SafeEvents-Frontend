@@ -328,8 +328,8 @@
         "actualitza" : "Modify",
         "@actualitza":{
             "description": "Text from button modify"
-        }
-    },
+        },
+
     "errorClientInfo": "There was an error while retrieving your data.",
     "@errorClientInfo": {
       "description": "Error for client info fetching"
