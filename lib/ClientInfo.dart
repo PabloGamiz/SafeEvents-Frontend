@@ -116,10 +116,10 @@ class _ClientInfoState extends State<ClientInfo> {
   Future _scanQr(int event_id) async {
     try {
       String qrResult = await BarcodeScanner.scan();
-      setState(() {
+      setState(() async {
         result = qrResult;
 
-        Future<int> ok = http_pasarQr(result, event_id);
+        int ok = await http_pasarQr(result, event_id);
         if (ok == 200 || ok == 201) {
           showAlertOkey(context);
         } else {
