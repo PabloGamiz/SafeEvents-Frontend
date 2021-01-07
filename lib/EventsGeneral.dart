@@ -74,17 +74,9 @@ class _GeneralEventsState extends State {
 
   String _defaultValue;
   String ciutatCercada;
+  String tipus;
 
   int counter = 0;
-
-  List categories = [
-    '',
-    'Musica',
-    'Teatre',
-    'Esports',
-    'Art',
-    'Altres'
-  ]; //nombre de las categorias
 
   bool liked(int id) {
     if (favs != null) {
@@ -143,7 +135,7 @@ class _GeneralEventsState extends State {
                   if (string == "") {
                     filteredcity = false;
                     filteredEvents =
-                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
                   } else {
                     filteredcity = true;
                   }
@@ -166,9 +158,16 @@ class _GeneralEventsState extends State {
             height: 10,
           ),
           DropdownButton<String>(
-            hint: Text('Select category'),
+            hint: Text(AppLocalizations.of(context).scategory),
             value: _defaultValue,
-            items: categories.map((newValue) {
+            items: [
+              AppLocalizations.of(context).tots,
+              AppLocalizations.of(context).musica,
+              AppLocalizations.of(context).teatre,
+              AppLocalizations.of(context).esport,
+              AppLocalizations.of(context).art,
+              AppLocalizations.of(context).altres
+            ].map((newValue) {
               return DropdownMenuItem<String>(
                 value: newValue,
                 child: Text(newValue),
@@ -178,7 +177,30 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "") {
+                  if (newValue == "Tots" ||
+                      newValue == "All" ||
+                      newValue == "Todos")
+                    tipus = "Tots";
+                  else if (newValue == "Música" ||
+                      newValue == "Music" ||
+                      newValue == "Música")
+                    tipus = "Musica";
+                  else if (newValue == "Teatre" ||
+                      newValue == "Theatre" ||
+                      newValue == "Teatro")
+                    tipus = "Teatre";
+                  else if (newValue == "Esport" ||
+                      newValue == "Sport" ||
+                      newValue == "Deporte")
+                    tipus = "Espor";
+                  else if (newValue == "Art" ||
+                      newValue == "Art" ||
+                      newValue == "Arte")
+                    tipus = "Art";
+                  else if (newValue == "Altres" ||
+                      newValue == "Others" ||
+                      newValue == "Otros") tipus = "Altres";
+                  if (tipus == "tots") {
                     filteredcategory = false;
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
@@ -187,10 +209,10 @@ class _GeneralEventsState extends State {
                   }
                   if (filteredcity) {
                     filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                        filtrarEsdeveniments(filteredEvents, tipus, 1);
                   } else {
                     filteredEvents =
-                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
                   }
                   /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))
@@ -366,7 +388,7 @@ class _GeneralEventsState extends State {
                   if (string == "") {
                     filteredcity = false;
                     filteredEvents =
-                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
                   } else {
                     filteredcity = true;
                   }
@@ -389,9 +411,16 @@ class _GeneralEventsState extends State {
             height: 10,
           ),
           DropdownButton<String>(
-            hint: Text('Select category'),
+            hint: Text(AppLocalizations.of(context).scategory),
             value: _defaultValue,
-            items: categories.map((newValue) {
+            items: [
+              AppLocalizations.of(context).tots,
+              AppLocalizations.of(context).musica,
+              AppLocalizations.of(context).teatre,
+              AppLocalizations.of(context).esport,
+              AppLocalizations.of(context).art,
+              AppLocalizations.of(context).altres
+            ].map((newValue) {
               return DropdownMenuItem<String>(
                 value: newValue,
                 child: Text(newValue),
@@ -401,7 +430,30 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "") {
+                  if (newValue == "Tots" ||
+                      newValue == "All" ||
+                      newValue == "Todos")
+                    tipus = "Tots";
+                  else if (newValue == "Música" ||
+                      newValue == "Music" ||
+                      newValue == "Música")
+                    tipus = "Musica";
+                  else if (newValue == "Teatre" ||
+                      newValue == "Theatre" ||
+                      newValue == "Teatro")
+                    tipus = "Teatre";
+                  else if (newValue == "Esport" ||
+                      newValue == "Sport" ||
+                      newValue == "Deporte")
+                    tipus = "Espor";
+                  else if (newValue == "Art" ||
+                      newValue == "Art" ||
+                      newValue == "Arte")
+                    tipus = "Art";
+                  else if (newValue == "Altres" ||
+                      newValue == "Others" ||
+                      newValue == "Otros") tipus = "Altres";
+                  if (tipus == "tots") {
                     filteredcategory = false;
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
@@ -410,10 +462,10 @@ class _GeneralEventsState extends State {
                   }
                   if (filteredcity) {
                     filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                        filtrarEsdeveniments(filteredEvents, tipus, 1);
                   } else {
                     filteredEvents =
-                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
                   }
                   /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))
@@ -574,7 +626,7 @@ class _GeneralEventsState extends State {
                   if (string == "") {
                     filteredcity = false;
                     filteredEvents =
-                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
                   } else {
                     filteredcity = true;
                   }
@@ -597,9 +649,16 @@ class _GeneralEventsState extends State {
             height: 10,
           ),
           DropdownButton<String>(
-            hint: Text('Select category'),
+            hint: Text(AppLocalizations.of(context).scategory),
             value: _defaultValue,
-            items: categories.map((newValue) {
+            items: [
+              AppLocalizations.of(context).tots,
+              AppLocalizations.of(context).musica,
+              AppLocalizations.of(context).teatre,
+              AppLocalizations.of(context).esport,
+              AppLocalizations.of(context).art,
+              AppLocalizations.of(context).altres
+            ].map((newValue) {
               return DropdownMenuItem<String>(
                 value: newValue,
                 child: Text(newValue),
@@ -609,7 +668,30 @@ class _GeneralEventsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "") {
+                  if (newValue == "Tots" ||
+                      newValue == "All" ||
+                      newValue == "Todos")
+                    tipus = "Tots";
+                  else if (newValue == "Música" ||
+                      newValue == "Music" ||
+                      newValue == "Música")
+                    tipus = "Musica";
+                  else if (newValue == "Teatre" ||
+                      newValue == "Theatre" ||
+                      newValue == "Teatro")
+                    tipus = "Teatre";
+                  else if (newValue == "Esport" ||
+                      newValue == "Sport" ||
+                      newValue == "Deporte")
+                    tipus = "Espor";
+                  else if (newValue == "Art" ||
+                      newValue == "Art" ||
+                      newValue == "Arte")
+                    tipus = "Art";
+                  else if (newValue == "Altres" ||
+                      newValue == "Others" ||
+                      newValue == "Otros") tipus = "Altres";
+                  if (tipus == "tots") {
                     filteredcategory = false;
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
@@ -618,10 +700,10 @@ class _GeneralEventsState extends State {
                   }
                   if (filteredcity) {
                     filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                        filtrarEsdeveniments(filteredEvents, tipus, 1);
                   } else {
                     filteredEvents =
-                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
                   }
                   /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
                             .where((e) => e.category.contains(newValue))

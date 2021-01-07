@@ -319,8 +319,8 @@
                                         },
         "publica" : "Publish",
         "@publica": {
-                                                 "description": "Text of publica"
-                                                },
+          "description": "Text of publica"
+        },
         "warnbackmodif": "If you go back, event will be not modified\n\n Are you sure??",
         "@warnbackmodif": {
                                                           "description": "Text of warnbackmodif"
@@ -349,5 +349,13 @@
     "noResults": "No results",
     "@noResults": {
       "description": "Text for no results in maps search bar"
+    },
+    "tots": "All",
+    "@tots": {
+      "description": "Text for all categories"
+    },
+    "scategory": "Select a category",
+    "@scategory": {
+      "description": "Text for selecting a category"
     }
 }

@@ -86,6 +86,8 @@
     "intrhora" : "Introdueix l'hora de l'Esdeveniment",
     "publica" : "Publica",
     "warnbackmodif": "Si tornes enrere no es modificarà l'Esdeveniment \n\n N'estàs segur/a?",
-    "actualitza" : "Modifica"
+    "actualitza" : "Modifica",
+    "tots": "Tots",
+    "scategory": "Selecciona una categoria"
 
 }

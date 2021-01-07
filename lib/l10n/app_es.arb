@@ -86,7 +86,9 @@
     "intrhora" : "Introduce la hora del Evento",
     "publica" : "Publica",
     "warnbackmodif": "Si vuelves atrás no se modificará el evento \n\n ¿Estas seguro?",
-    "actualitza" : "Modifica"
+    "actualitza" : "Modifica",
+    "tots": "Todos",
+    "scategory": "Selecciona una categoria"
 
 
 }

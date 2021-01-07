@@ -493,7 +493,7 @@ class _PantallaReserva extends State<Reserves> {
               share(context),
               Navigator.of(context).pop(),
               runApp(MaterialApp(
-                home: QR(qrCode: qrCode),
+                home: Structure(),
                 localizationsDelegates: [
                   AppLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
