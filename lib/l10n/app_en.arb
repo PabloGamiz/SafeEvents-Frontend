@@ -329,4 +329,25 @@
         "@actualitza":{
             "description": "Text from button modify"
         }
+    },
+    "errorClientInfo": "There was an error while retrieving your data.",
+    "@errorClientInfo": {
+      "description": "Error for client info fetching"
+    },
+    "noTickets": "You don't have ",
+    "@noTickets": {
+      "description": "Text when client doesn't have tickets or bookings"
+    },
+    "noOrgEvents": "You don't organize any event.",
+    "@noOrgEvents": {
+      "description": "Text when client doesn't have organized events"
+    },
+    "mapsHintText": "Direcció de l'Esdeveniment",
+    "@mapsHintText": {
+      "description": "Text for maps search bar"
+    },
+    "noResults": "No results",
+    "@noResults": {
+      "description": "Text for no results in maps search bar"
+    }
 }

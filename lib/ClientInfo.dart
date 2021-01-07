@@ -151,7 +151,7 @@ class _ClientInfoState extends State<ClientInfo> {
           else
             return buildClientInfoWidget(snapshot);
         } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
+          return Text(AppLocalizations.of(context).errorClientInfo);
         }
         // By default, show a loading spinner.
         return CircularProgressIndicator();
@@ -211,7 +211,7 @@ class _ClientInfoState extends State<ClientInfo> {
         ),
       );
     else
-      return Text("No tienes " + dropdownValue);
+      return Text(AppLocalizations.of(context).noTickets + dropdownValue);
   }
 
   Widget _eventsList(Organize organizer) {
@@ -224,7 +224,7 @@ class _ClientInfoState extends State<ClientInfo> {
       );
     else
       return Expanded(
-        child: Text("No organiza ningun evento"),
+        child: Text(AppLocalizations.of(context).noOrgEvents),
       );
   }
 
@@ -254,7 +254,7 @@ class _ClientInfoState extends State<ClientInfo> {
           )
         else
           Expanded(
-            child: Text("No organiza ningun evento"),
+            child: Text(AppLocalizations.of(context).noOrgEvents),
           ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,

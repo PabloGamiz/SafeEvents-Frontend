@@ -11,6 +11,7 @@
     "missatgechat": "Escribe un mensaje",
     "sharemessage1": "He comprado entradas para el evento ",
     "sharemessage2": " a través de la aplicación SafeEvents",
+    "sharemessage": "He comprado entradas para el evento $eventName con la aplicacion SafeEvents",
     "courseentrades": "Número de entradas seleccionadas: ",
     "reservaButton": "Reservar entradas",
     "compraButton": "Comprar entradas",
@@ -43,6 +44,12 @@
     "favsErrorMessage": "Ha habido un error al obtener los favoritos.\n Por favor vuelve a intentarlo mas tarde.",
     "bookingsClientInfo": "Reservas",
     "ticketsClientInfo": "Entradas",
+    "organizedClientInfo": "Eventos organizados",
+    "errorClientInfo": "Ha habido un error al obtener tu informacion.",
+    "noTickets": "No tienes ",
+    "noOrgEvents": "No organizas ningun evento",
+    "mapsHintText": "Direccion del evento",
+    "noResults": "No hay resultados"
     "organizedClientInfo": "Eventos organizados",
     "contact": "CONTACTA",
     "feedback" : "DANOS FEEDBACK DEL EVENTO",
@@ -81,5 +88,5 @@
     "warnbackmodif": "Si vuelves atrás no se modificará el evento \n\n ¿Estas seguro?",
     "actualitza" : "Modifica"
 
-    
+
 }
