@@ -103,6 +103,7 @@
     "confirmacio_compra2": " tickets have been successfully purchased",
     "@confirmacio_compra2": {
       "description": "confirmacio_compra2 text"
+    },
     "sharemessage1": "I've bought tickets for the event ",
     "@sharemessage1": {
       "description": "sharemessage1 text"
