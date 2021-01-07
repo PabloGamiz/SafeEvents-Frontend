@@ -9,9 +9,9 @@
     "cercarciutat": "Cercar localització",
     "noesdeveniments": "Cap esdeveniment coincideix amb la localització o categoria seleccionada",
     "missatgechat": "Escriu un missatge",
-    "sharemessage1": "He comprat entrades per a l'event ",
+    "sharemessage1": "He comprat entrades per a l'esdeveniment ",
     "sharemessage2": " amb l'aplicació SafeEvents",
-    "sharemessage": "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents",
+    "sharemessage": "He comprat entrades per a l'esdeveniment $eventName amb l'aplicació SafeEvents",
     "courseentrades": "Nombre d'entrades seleccionades: ",
     "reservaButton": "Reserva d’entrades",
     "compraButton": "Comprar tiquets",
@@ -44,5 +44,10 @@
     "favsErrorMessage": "Ha succeït un error.\n Si us plau, torna a intentar-ho més tard.",
     "bookingsClientInfo": "Reserves",
     "ticketsClientInfo": "Entrades",
-    "organizedClientInfo": "Esdeveniments organitzats"
+    "organizedClientInfo": "Esdeveniments organitzats",
+    "errorClientInfo": "Ha succeït un error en obtenir les teves dades.",
+    "noTickets": "No tens ",
+    "noOrgEvents": "No organitzes cap esdeveniment",
+    "mapsHintText": "Direcció de l'Esdeveniment",
+    "noResults": "No hi ha resultats"
 }

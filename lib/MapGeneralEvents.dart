@@ -33,9 +33,9 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
         child: AddressSearchTextField(
           country: "Spain",
           controller: dircontroller,
-          hintText: 'Introdueix una direcció',
+          hintText: AppLocalizations.of(context).cercarciutat,
           decoration: InputDecoration(
-            hintText: "Direcció de l\'Esdeveniment",
+            hintText: AppLocalizations.of(context).mapsHintText,
             fillColor: Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(25.0),
@@ -43,7 +43,7 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
             ),
             filled: true,
           ),
-          noResultsText: "No hi han resultats",
+          noResultsText: AppLocalizations.of(context).noResults,
           onDone: (AddressPoint point) {
             setState(() {
               _goToPosition(point);
@@ -191,15 +191,3 @@ class MapGeneralEventsState extends State<MapGeneralEvents> {
     position = Location();
   }
 }
-/*
-GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: CameraPosition(
-          target: LatLng(
-              position.latitude ?? 41.390205, position.longitude ?? 2.154007),
-          zoom: 9,
-        ),
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ), */
