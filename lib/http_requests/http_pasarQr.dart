@@ -17,7 +17,7 @@ Future<int> http_pasarQr(String result, int event_id) async {
   print(json.decode(response.body));
   if (response.statusCode == 201 || response.statusCode == 200) {
     final String responseString = response.body;
-    return json.decode(responseString);
+    return response.statusCode;
   } else if (response.statusCode == 400) {
     return null;
   } else {

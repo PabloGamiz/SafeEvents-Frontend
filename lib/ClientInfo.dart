@@ -57,13 +57,74 @@ class _ClientInfoState extends State<ClientInfo> {
     });
   }
 
+  showAlertError(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text(AppLocalizations.of(context).okey_button),
+        key: Key("showAlertDialog"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).error_entardes),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showAlertOkey(BuildContext context) {
+    // set up the button
+
+    Widget okButton = FlatButton(
+        child: Text(AppLocalizations.of(context).okey_button),
+        key: Key("showAlertDialog"),
+        onPressed: () => {
+              Navigator.of(context).pop(),
+            });
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text(AppLocalizations.of(context).okey_entrades),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Future _scanQr(int event_id) async {
     try {
       String qrResult = await BarcodeScanner.scan();
-      setState(() {
+      setState(() async {
         result = qrResult;
 
-        Future<int> ok = http_pasarQr(result, event_id);
+        int ok = await http_pasarQr(result, event_id);
+        if (ok == 200 || ok == 201) {
+          showAlertOkey(context);
+        } else {
+          showAlertError(context);
+        }
       });
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
