@@ -26,5 +26,7 @@
     "confirmacio_reserva2": " entrades",
     "confirmacio_compra1": "S'ha fet la compra correctament de les ",
     "confirmacio_compra2": " entrades",
-    "seleccionaelnombredentrades": "Seleccioneu el nombre d’entrades desitjattice"
+    "seleccionaelnombredentrades": "Seleccioneu el nombre d’entrades desitjattice",
+    "noFavsMessage": "No tens cap favorit.\n Selecciona el ❤️ per afegir un.",
+    "favsErrorMessage": "Ha succeït un error.\n Si us plau, torna a intentar-ho més tard."
 }

@@ -43,15 +43,29 @@ class _ConsultaFavoritsState extends State<ConsultaFavortis> {
     );
   }
 
+  Widget createNoFavsWidget() {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          AppLocalizations.of(context).noFavsMessage,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<FavsModel>>(
       future: favs,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return createListEventWidget(snapshot);
+          if (snapshot.data.length != 0)
+            return createListEventWidget(snapshot);
+          else
+            return createNoFavsWidget();
         } else if (snapshot.hasError) {
-          return Text("${snapshot.error}");
+          return Text(AppLocalizations.of(context).favsErrorMessage);
         }
 
         // By default, show a loading spinner.

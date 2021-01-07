@@ -7,13 +7,13 @@
     "@signIn": {
       "description": "signin text"
     },
-    "signInButton": "Sign-In with Googlesdf",
+    "signInButton": "Sign-In with Google",
     "@signInButton": {
       "description": "signin text button"
     },
     "entradesDisponibles": " tickets available",
     "@entradesDisponibles": {
-        "description": "syhkgyhkklil"
+        "description": "reserves available tickets text"
     },
 
     "cercarciutat": "Search location",
@@ -111,6 +111,13 @@
     "sharemessage2": " throught the application SafeEvents",
     "@sharemessage2": {
       "description": "sharemessage2 text"
+    },
+    "noFavsMessage": "You have no favourites.\n Hit the ❤️ to add one.",
+    "@noFavsMessage": {
+      "description": "No favourites message"
+    },
+    "favsErrorMessage": "There was an error while retrieving your favourites.\n Please try again later.",
+    "@favsErrorMessage": {
+      "description": "Favourites message"
     }
-    
 }

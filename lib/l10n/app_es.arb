@@ -25,6 +25,8 @@
     "confirmacio_reserva2": " entradas",
     "confirmacio_compra1": "Se ha hecho la compra correctamente de las ",
     "confirmacio_compra2": " entradas",
-    "seleccionaelnombredentrades": "La cantidad de entradas que intenta reservar o comprar es mayor que la cantidad de entradas disponibles"
+    "seleccionaelnombredentrades": "La cantidad de entradas que intenta reservar o comprar es mayor que la cantidad de entradas disponibles",
+    "noFavsMessage": "No tienes favoritos.\n Selecciona el ❤️ para añadir uno.",
+    "favsErrorMessage": "Ha habido un error al obtener los favoritos.\n Por favor vuelve a intentarlo mas tarde."
     
 }
