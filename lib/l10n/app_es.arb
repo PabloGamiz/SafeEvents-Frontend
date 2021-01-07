@@ -30,6 +30,8 @@
     "noFavsMessage": "No tienes favoritos.\n Selecciona el ❤️ para añadir uno.",
     "startscanning": "Inicio del escáner",
     "avisscanning": "Se está realizando el escaneo, para cancelar pulsar el botón de abajo",
+    "error_entardes": "La entrada no es correcta o se ha producido un error",
+    "okey_entrades": "La entrada ingresada es correcta",
     "stopscanning": "Pulsar para detener el escáner",
     "scanning": "Escaneando",
     "errorcamara1": "Se denegó el permiso de la cámara",

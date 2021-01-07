@@ -132,6 +132,14 @@
     "@avisscanning": {
       "description": "avisscanning message"
     },
+    "error_entardes": "The entry is not correct or an error has occurred",
+    "@error_entardes": {
+      "description": "error_entardes message"
+    },
+    "okey_entrades": "The ticket is correct",
+    "@okey_entrades": {
+      "description": "okey_entrades message"
+    },
     "scanning": "Scanning",
     "@scanning": {
       "description": "scanning message"

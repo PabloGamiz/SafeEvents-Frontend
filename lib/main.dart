@@ -37,7 +37,7 @@ void main() async {
     ));
   } else {
     runApp(MaterialApp(
-      home: Structure(),
+      home: SignIn(),
       localizationsDelegates: [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
