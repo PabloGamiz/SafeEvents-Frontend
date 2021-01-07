@@ -26,8 +26,14 @@ class _BluetoothState extends State<Bluetooth> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(AppLocalizations.of(context).scanning),
+        title: Container(
+          height: 55,
+          child: Center(
+            child: Image(
+              image: AssetImage('assets/SafeEventsBlack.png'),
+            ),
+          ),
+        ),
       ),
       body: Center(
           child: Column(

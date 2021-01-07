@@ -14,11 +14,12 @@ class _NotificarState extends State<Notificar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(
-          AppLocalizations.of(context).select_state,
-          style: TextStyle(
-            color: Colors.grey,
+        title: Container(
+          height: 55,
+          child: Center(
+            child: Image(
+              image: AssetImage('assets/SafeEventsBlack.png'),
+            ),
           ),
         ),
       ),
