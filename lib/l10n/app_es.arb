@@ -1,4 +1,7 @@
 {
+    "seleccionaelnombredentradeserror": "Select the desired number of entries",
+    "avis_reserva": "Si seleccionas reservar debes tener en cuenta que las entradas sólo se reservarán por 24 horas.",
+    "proces_compra": "Se está procesando la compra, por favor espere.",
     "helloWorld": "Hola mundo!",
     "signIn": "Iniciar sessión",
     "signInButton": "Iniciar sessión con Google",
@@ -8,4 +11,20 @@
     "missatgechat": "Escribe un mensaje",
     "sharemessage1": "He comprado entradas para el evento ",
     "sharemessage2": " a través de la aplicación SafeEvents"
+    "courseentrades": "Número de entradas seleccionadas: ",
+    "reservaButton": "Reservar entradas",
+    "compraButton": "Comprar entradas",
+    "entrades": "Entradas",
+    "entrades_disponibles": "Entradas disponibles",
+    "seleccionar_entrades": "Seleccionar entradas",
+    "okey_button": "De acuerdo",
+    "avis": "Aviso",
+    "continuar_button": "Continuar",
+    "error_accio": "No s'ha pogut dur a terme l'acció, torneu-ho a provar",
+    "confirmacio_reserva1": "Se ha hecho la reserva correctamente de las ",
+    "confirmacio_reserva2": " entradas",
+    "confirmacio_compra1": "Se ha hecho la compra correctamente de las ",
+    "confirmacio_compra2": " entradas",
+    "seleccionaelnombredentrades": "La cantidad de entradas que intenta reservar o comprar es mayor que la cantidad de entradas disponibles"
+    
 }

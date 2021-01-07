@@ -64,7 +64,7 @@ class _PantallaReserva extends State<Reserves> {
           border: new Border.all(color: Colors.white),
           borderRadius: BorderRadius.circular(5.0)),
       child: new Text(
-        "Nombre d'entrades seleccionades: " + numero.toString(),
+        AppLocalizations.of(context).courseentrades + numero.toString(),
         textAlign: TextAlign.center,
         style: TextStyle(color: Colors.white),
       ),
@@ -85,8 +85,8 @@ class _PantallaReserva extends State<Reserves> {
             _comprovacionsreserva(),
           },
           color: Colors.blue,
-          child:
-              Text("Reservar entrades", style: TextStyle(color: Colors.white)),
+          child: Text(AppLocalizations.of(context).reservaButton,
+              style: TextStyle(color: Colors.white)),
         ));
     _comprovacionscompra() {
       if (numero > entradas)
@@ -104,8 +104,8 @@ class _PantallaReserva extends State<Reserves> {
             _comprovacionscompra(),
           },
           color: Colors.blue,
-          child:
-              Text("Comprar entrades", style: TextStyle(color: Colors.white)),
+          child: Text(AppLocalizations.of(context).compraButton,
+              style: TextStyle(color: Colors.white)),
         ));
 
     final topContentText = Column(
@@ -117,7 +117,7 @@ class _PantallaReserva extends State<Reserves> {
         ),
         SizedBox(height: 10.0),
         Text(
-          "Entrades",
+          AppLocalizations.of(context).entrades,
           style: TextStyle(color: Colors.white, fontSize: 45.0),
         ),
         SizedBox(height: 30.0),
@@ -130,7 +130,7 @@ class _PantallaReserva extends State<Reserves> {
                 child: Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text(
-                      "Entrades disponibles",
+                      AppLocalizations.of(context).entrades_disponibles,
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ))),
@@ -148,7 +148,7 @@ class _PantallaReserva extends State<Reserves> {
                 showselectnumber(context),
               },
               color: Colors.blue,
-              child: Text("Seleccionar entrades",
+              child: Text(AppLocalizations.of(context).seleccionar_entrades,
                   style: TextStyle(color: Colors.white)),
             ))),
         SizedBox(height: 10.0),
@@ -232,7 +232,7 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
     Widget okButton = FlatButton(
       key: Key("Okey_selector"),
-      child: Text("OK"),
+      child: Text(AppLocalizations.of(context).okey_button),
       onPressed: () => Navigator.of(context).pop(),
     );
 
@@ -248,8 +248,8 @@ class _PantallaReserva extends State<Reserves> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("Selecciona el nombre d'entrades desitjades"),
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).seleccionaelnombredentrades),
       actions: [
         selector,
         okButton,
@@ -269,15 +269,15 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
     Widget okButton = FlatButton(
       key: Key("Okey_button_alert_compra_1"),
-      child: Text("OK"),
+      child: Text(AppLocalizations.of(context).okey_button),
       onPressed: () => Navigator.of(context).pop(),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text(
-          "El nombre d'entrades que intentes reservar o comprar és superior al nombre d'entrades que queden disponibles"),
+      title: Text(AppLocalizations.of(context).avis),
+      content:
+          Text(AppLocalizations.of(context).seleccionaelnombredentradeserror),
       actions: [
         okButton,
       ],
@@ -295,16 +295,15 @@ class _PantallaReserva extends State<Reserves> {
   showAlertDialog(BuildContext context) {
     // set up the button
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text(AppLocalizations.of(context).okey_button),
       key: Key("Okey_button_alert_reserva"),
       onPressed: () => _reserva(),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text(
-          "Si selecciones reservar has de tenir en compte que les entrades només es reservaran per 24 hores."),
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).avis_reserva),
       actions: [
         okButton,
       ],
@@ -321,14 +320,14 @@ class _PantallaReserva extends State<Reserves> {
 
   showAlertDialogcompra(BuildContext context) {
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text(AppLocalizations.of(context).okey_button),
       key: Key("Okey_button_alert_compra_2"),
       onPressed: () => _compra(),
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("S'està processant la compra, si us plau esperi."),
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).proces_compra),
       actions: [
         okButton,
       ],
@@ -378,7 +377,7 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
 
     Widget okButton = FlatButton(
-        child: Text("Continuar"),
+        child: Text(AppLocalizations.of(context).continuar_button),
         key: Key("error_button_alert"),
         onPressed: () => {
               Navigator.of(context).pop(),
@@ -411,8 +410,8 @@ class _PantallaReserva extends State<Reserves> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("No s'ha pogut fer l'acció si us plau torna a intentar-ho"),
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).error_accio),
       actions: [
         okButton,
       ],
@@ -431,7 +430,7 @@ class _PantallaReserva extends State<Reserves> {
     // set up the button
 
     Widget okButton = FlatButton(
-        child: Text("Continuar"),
+        child: Text(AppLocalizations.of(context).continuar_button),
         key: Key("confirmation_button_alert_reserva"),
         onPressed: () => {
               Navigator.of(context).pop(),
@@ -460,10 +459,10 @@ class _PantallaReserva extends State<Reserves> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("S'ha fer la reserva correctament de les " +
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).confirmacio_reserva1 +
           numero.toString() +
-          " entrades"),
+          AppLocalizations.of(context).confirmacio_reserva2),
       actions: [
         okButton,
       ],
@@ -517,7 +516,7 @@ class _PantallaReserva extends State<Reserves> {
             });
 
     Widget okButton = FlatButton(
-        child: Text("Continuar"),
+        child: Text(AppLocalizations.of(context).continuar_button),
         key: Key("confirmation_button_alert_compra"),
         onPressed: () => {
               Navigator.of(context).pop(),
@@ -546,10 +545,10 @@ class _PantallaReserva extends State<Reserves> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("S'ha fer la compra correctament de les " +
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).confirmacio_compra1 +
           numero.toString() +
-          " entrades"),
+          AppLocalizations.of(context).confirmacio_compra2),
       actions: [
         shareButton,
         okButton,
@@ -565,42 +564,3 @@ class _PantallaReserva extends State<Reserves> {
     );
   }
 }
-
-/*
-_compra_reserva() async {
-  sleep(const Duration(seconds: 2));
-  print('compra');
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String stringValue = prefs.getString('cookie');
-  final RespostaReservaModel session =
-      await http_compra_reserva(stringValue, id, numero);
-
-  if (session != null)
-    prefs.setStringList('entrades_' + id.toString(), session.ticketsId);
-  Navigator.of(context).pop();
-  showConfirmationDialogCompra(context);
-}
-*/
-
-/*
-  
-// Request
-{
-	"client_id": "",
-	"event_id": "",
-	"option": 0,
-	"how_many": 0,
-	"description": "hello world"
-}
-  post url 
-        /purchase tener en cuenta la option
-  get   /entradas pass event_id
-
-// response
-{
-	"tickets_id": []
-}
-Tu18:23
-option = 0 reserva, 1 = compra
-
-*/

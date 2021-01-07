@@ -1,5 +1,8 @@
 {
     "helloWorld": "Hola món!",
+    "seleccionaelnombredentradeserror": "El nombre d’entrades que intenteu reservar o comprar és superior al nombre d’entrades disponibles",
+    "avis_reserva": "Si selecciones reservar has de tenir en compte que les entrades només es reservaran per 24 hores.",
+    "proces_compra": "S'està processant la compra, si us plau esperi.",
     "signIn": "Iniciar sessió",
     "signInButton": "Iniciar sessió amb Google",
     "entradesDisponibles": " entrades disponibles",
@@ -8,4 +11,20 @@
     "missatgechat": "Escriu un missatge",
     "sharemessage1": "He comprat entrades per a l'event ",
     "sharemessage2": " amb l'aplicació SafeEvents"
+    "sharemessage": "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents",
+    "courseentrades": "Nombre d'entrades seleccionades: ",
+    "reservaButton": "Reserva d’entrades",
+    "compraButton": "Comprar tiquets",
+    "entrades": "Tiquets",
+    "entrades_disponibles": "Tiquets disponibles",
+    "seleccionar_entrades": "Seleccionar entrades",
+    "okey_button": "D'acord",
+    "avis": "Avís",
+    "continuar_button": "Continuar",
+    "error_accio": "No se pudo realizar la acción, intente nuevamente",
+    "confirmacio_reserva1": "S'ha fet la reserva correctament de les ",
+    "confirmacio_reserva2": " entrades",
+    "confirmacio_compra1": "S'ha fet la compra correctament de les ",
+    "confirmacio_compra2": " entrades",
+    "seleccionaelnombredentrades": "Seleccioneu el nombre d’entrades desitjattice"
 }

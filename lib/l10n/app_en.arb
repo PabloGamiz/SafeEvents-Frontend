@@ -28,6 +28,81 @@
     "@missatgechat": {
       "description": "missatgechat text"
     },
+    "sharemessage": "I've bought tickets for the event $eventName throught the application SafeEvents",
+    "@sharemessage": {
+      "description": "sharemessage text"
+    },
+    "courseentrades": "Number of selected entries: ",
+    "@courseentrades": {
+      "description": "courseentrades text"
+    },
+    "reservaButton": "Book tickets",
+    "@reservaButton": {
+      "description": "reservaButton text"
+    },
+    "compraButton": "Buy tickets",
+    "@compraButton": {
+      "description": "compraButton text"
+    },
+    "entrades": "Tickets",
+    "@entrades": {
+      "description": "Entrades text"
+    },
+    "entrades_disponibles": "Tickets available",
+    "@entrades_disponibles": {
+      "description": "entrades_disponibles text"
+    },
+    "seleccionar_entrades": "Select tickets",
+    "@seleccionar_entrades": {
+      "description": "seleccionar_entrades text"
+    },
+    "okey_button": "Okey",
+    "@okey_button": {
+      "description": "okey_button text"
+    },
+    "avis": "Notice",
+    "@avis": {
+      "description": "avis text"
+    },
+    "seleccionaelnombredentrades": "Select the desired number of entries",
+    "@seleccionaelnombredentrades": {
+      "description": "Select the desired number of entries text"
+    },
+    "seleccionaelnombredentradeserror": "The number of tickets you try to book or buy is greater than the number of tickets available",
+    "@seleccionaelnombredentradeserror": {
+      "description": "seleccionaelnombredentradeserror text"
+    },
+    "avis_reserva": "If you choose to book you must keep in mind that tickets will only be booked for 24 hours.",
+    "@avis_reserva": {
+      "description": "avis_reserva text"
+    },
+    "proces_compra": "Processing purchase, please wait.",
+    "@proces_compra": {
+      "description": "proces_compra text"
+    },
+    "continuar_button": "Continue",
+    "@continuar_button": {
+      "description": "continuar_button text"
+    },
+    "error_accio": "The action could not be performed, please try again",
+    "@error_accio": {
+      "description": "error_accio text"
+    },
+    "confirmacio_reserva1": "The ",
+    "@confirmacio_reserva1": {
+      "description": "confirmacio_reserva text"
+    },
+    "confirmacio_reserva2": " tickets have been booked correctly",
+    "@confirmacio_reserva2": {
+      "description": "confirmacio_reserva2 text"
+    },
+    "confirmacio_compra1": "The ",
+    "@confirmacio_compra1": {
+      "description": "confirmacio_compra1 text"
+    },
+    "confirmacio_compra2": " tickets have been successfully purchased",
+    "@confirmacio_compra2": {
+      "description": "confirmacio_compra2 text"
     "sharemessage1": "I've bought tickets for the event ",
     "@sharemessage1": {
       "description": "sharemessage1 text"
@@ -36,4 +111,5 @@
     "@sharemessage2": {
       "description": "sharemessage2 text"
     }
+    
 }
