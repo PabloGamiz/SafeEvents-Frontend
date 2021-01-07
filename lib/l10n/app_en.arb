@@ -183,5 +183,150 @@
     "organizedClientInfo": "Organized events",
     "@organizedClientInfo": {
         "description": "Text for dropdownValue"
-    }
+    },
+    "contact": "CONTACT",
+      "@contact": {
+          "description": "Text to contact"
+      },
+    "feedback": "GIVE US SOME FEEDBACK",
+          "@feedback": {
+              "description": "Text to make feedback"
+          },
+    "covid": "Check the COVID prevention measures",
+            "@covid": {
+                "description": "Text in covid button"
+            },
+    "serveis" : "SERVICES",
+    "@serveis": {
+                  "description": "Text OF SERVICES"
+              },
+    "reservacompra" : "BOOK NOW",
+    "@reservacompra": {
+                      "description": "Text of reserva compra button"
+                  },
+    "puntua": "RATE THIS EVENT",
+    "@puntua": {
+                          "description": "Text of FEEDBACK rate"
+                      },
+    "selectcategory" : "Select category",
+    "@selectcategory": {
+                              "description": "Text of selectcategory"
+                          },
+    "musica": "Music",
+    "@musica": {
+                                  "description": "Text of music"
+                              },
+    "teatre":"Theatre",
+    "@teatre": {
+                                  "description": "Text of teatre"
+                              },
+    "esport":"Sport",
+    "@esport": {
+                                  "description": "Text of sport"
+                              },
+    "art": "Art",
+    "@art": {
+                                  "description": "Text of art"
+                              },
+    "altres":"Others",
+    "@altres": {
+                                  "description": "Text of Others"
+                              },
+    "warnbackpublish": "If you go back, event will be not published\n\n Are you sure?",
+    "@warnbackpublish": {
+             "description": "Text of warn back"
+            },
+    "si" : "Yes",
+    "@si": {
+                 "description": "Text of si"
+                },
+    "nomesdev" : "Name of the Event",
+    "@nomesdev": {
+                     "description": "Text of Name"
+                    },
+        "errornom" : "Event's name should be reported",
+        "@errornom": {
+                         "description": "Text of Event"
+                        },
+        "errordir" : "Event's adress should be reported",
+        "@errordir": {
+                         "description": "Text of errordir"
+                        },
+        "errorpreu" : "Event's price should be reported",
+        "@errorpreu": {
+                         "description": "Text of errorpreu"
+                        },
+        "errortipus" : "This is not a valid event type",
+        "@errortipus": {
+                         "description": "Text of errortipus"
+                        },
+        "errordatahora" : "Event's date and hour should be reported",
+        "@errordatahora": {
+                         "description": "Text of errordatahora"
+                        },
+        "errorcap" : "Event's capacity should be reported",
+        "@errorcap": {
+                         "description": "Text of errorcap"
+                        },
+        "descr" : "Event's description",
+        "@descr": {
+                         "description": "Text of descr"
+                        },
+        "addserv" : "Add all offered services",
+        "@addserv": {
+                         "description": "Text of addserv"
+                        },
+        "addservwarn" : "Add one service per line",
+        "@addservwarn": {
+                         "description": "Text of addservwarn"
+                        },
+        "introdueixdir" : "Introduce the adress",
+        "@introdueixdir": {
+                         "description": "Text of introdueixdir"
+                        },
+        "noresults" : "There is no results",
+        "@noresults": {
+                         "description": "Text of noresults"
+                        },
+        "preueneu" : "Price (in €)",
+        "@preueneu": {
+                         "description": "Text of preueneu"
+                        },
+        "capacitatesd" : " Event's capacity",
+        "@capacitatesd": {
+                         "description": "Text of capacitatesd"
+                        },
+        "enllimg" : "Add an image link",
+        "@enllimg": {
+                         "description": "Text of enllimg"
+                        },
+        "enllimgwarn" : "The image must be upload on the internet",
+        "@enllimgwarn": {
+                         "description": "Text of enllimgwarn"
+                        },
+        "esculltipusesd" : "Choose an event type",
+        "@esculltipusesd": {
+                         "description": "Text of esculltipusesd"
+                        },
+        "intrdata": "Introduce the event's date",
+        "@intrdata": {
+                                 "description": "Text of intrdata"
+                                },
+
+        "intrhora" : "Introduce the event's hour",
+        "@intrhora": {
+                                         "description": "Text of intrhora"
+                                        },
+        "publica" : "Publish",
+        "@publica": {
+                                                 "description": "Text of publica"
+                                                },
+        "warnbackmodif": "If you go back, event will be not modified\n\n Are you sure??",
+        "@warnbackmodif": {
+                                                          "description": "Text of warnbackmodif"
+                                                         },
+        "actualitza" : "Modify",
+        "@actualitza":{
+            "description": "Text from button modify"
+        }
 }
