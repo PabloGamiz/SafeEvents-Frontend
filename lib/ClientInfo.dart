@@ -763,7 +763,7 @@ class _ClientInfoState extends State<ClientInfo> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
     List<GetTicketsModel> session =
-        await http_get_tickets(stringValue, eventid);
+        await http_get_tickets(stringValue, eventId);
     print(session.length);
     runApp(MaterialApp(
       home: QR(qrCode: session),
