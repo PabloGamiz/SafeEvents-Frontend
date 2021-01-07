@@ -37,5 +37,9 @@
     "funcionalitat_no_disponible": "Funcionalitat no disponible",
     "bottomContentText": "Si vols accedir a aquesta funcionalitat si us plau inicia sessió amb Google",
     "sign_in": "Iniciar sessio",
+    "select_state": "Seleccioneu l'estat",
+    "unknown": "DESCONEGUT",
+    "positive": "POSITIU",
+    "negative": "NEGATIU",
     "favsErrorMessage": "Ha succeït un error.\n Si us plau, torna a intentar-ho més tard."
 }

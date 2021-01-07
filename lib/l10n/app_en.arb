@@ -155,5 +155,21 @@
     "sign_in": "Sign in",
     "@sign_in": {
       "description": "sign_in message"
+    },
+    "select_state": "Select state",
+    "@select_state": {
+      "description": "select_estate message"
+    },
+    "unknown": "UNKNOWN",
+    "@unknown": {
+      "description": "UNKNOWN message"
+    },
+    "positive": "POSITIVE",
+    "@positive": {
+      "description": "POSITIVE message"
+    },
+    "negative": "NEGATIVE",
+    "@negative": {
+      "description": "NEGATIVE message"
     }
 }

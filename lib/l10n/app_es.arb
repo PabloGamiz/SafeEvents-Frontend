@@ -36,6 +36,10 @@
     "funcionalitat_no_disponible": "Funcionalidad no disponible",
     "bottomContentText": "Si quieres acceder a esta funcionalidad por favor inicia sesión con Google",
     "sign_in": "Iniciar sesión",
+    "select_state": "Seleccione estado",
+    "unknown": "DESCONOCIDO",
+    "positive": "POSITIVO",
+    "negative": "NEGATIVO",
     "favsErrorMessage": "Ha habido un error al obtener los favoritos.\n Por favor vuelve a intentarlo mas tarde."
     
 }

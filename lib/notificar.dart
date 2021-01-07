@@ -1,14 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'Structure.dart';
-import 'http_models/SignIn_model.dart';
 import 'http_requests/http_bluetooth.dart';
-import 'http_requests/http_signin.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'services/database.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Notificar extends StatefulWidget {
@@ -23,7 +16,7 @@ class _NotificarState extends State<Notificar> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(
-          'Select estate',
+          AppLocalizations.of(context).select_state,
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -38,7 +31,7 @@ class _NotificarState extends State<Notificar> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'NEGATIVE',
+                AppLocalizations.of(context).negative,
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
@@ -75,7 +68,7 @@ class _NotificarState extends State<Notificar> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'UNKNOWN',
+                AppLocalizations.of(context).unknown,
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
@@ -112,7 +105,7 @@ class _NotificarState extends State<Notificar> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'POSITIVE',
+                AppLocalizations.of(context).positive,
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
