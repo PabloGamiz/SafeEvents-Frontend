@@ -31,6 +31,13 @@ class _SignInState extends State<SignIn> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          Container(
+            width: 500.0,
+            child: Align(
+              alignment: Alignment.center,
+              child: Image(image: AssetImage('assets/SafeEventsBlack.png')),
+            ),
+          ),
           FlatButton(
             key: Key("login_button"),
             child: Padding(
