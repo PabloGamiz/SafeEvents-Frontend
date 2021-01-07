@@ -68,22 +68,22 @@ class _ClientInfoState extends State<ClientInfo> {
     } on PlatformException catch (ex) {
       if (ex.code == BarcodeScanner.CameraAccessDenied) {
         setState(() {
-          result = "Camera permission was denied";
+          result = AppLocalizations.of(context).errorcamara1;
         });
       } else {
         setState(() {
-          result = "Unknown Error $ex";
+          result = AppLocalizations.of(context).errorcamara2 + "$ex";
         });
       }
       showAlertDialog(context);
     } on FormatException {
       setState(() {
-        result = "You pressed the back button before scanning anything";
+        result = AppLocalizations.of(context).errorcamara3;
       });
       showAlertDialog(context);
     } catch (ex) {
       setState(() {
-        result = "Unknown Error $ex";
+        result = AppLocalizations.of(context).errorcamara2 + "$ex";
       });
       showAlertDialog(context);
     }
@@ -93,7 +93,7 @@ class _ClientInfoState extends State<ClientInfo> {
     // set up the button
 
     Widget okButton = FlatButton(
-        child: Text("Okey"),
+        child: Text(AppLocalizations.of(context).okey_button),
         key: Key("showAlertDialog"),
         onPressed: () => {
               Navigator.of(context).pop(),
@@ -565,14 +565,14 @@ class _ClientInfoState extends State<ClientInfo> {
 
   showAlertDialogcompra(BuildContext context, int id, String name) {
     Widget okButton = FlatButton(
-      child: Text("OK"),
+      child: Text(AppLocalizations.of(context).okey_button),
       key: Key("Okey_button_alert_compra_2"),
       onPressed: () => _compra(id, name),
     );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("S'està processant la compra, si us plau esperi."),
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).proces_compra),
       actions: [
         okButton,
       ],
@@ -617,7 +617,7 @@ class _ClientInfoState extends State<ClientInfo> {
     // set up the button
 
     Widget okButton = FlatButton(
-        child: Text("Continuar"),
+        child: Text(AppLocalizations.of(context).continuar_button),
         key: Key("error_button_alert"),
         onPressed: () => {
               Navigator.of(context).pop(),
@@ -646,8 +646,8 @@ class _ClientInfoState extends State<ClientInfo> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("No s'ha pogut fer l'acció si us plau torna a intentar-ho"),
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).error_accio),
       actions: [
         okButton,
       ],
@@ -667,8 +667,9 @@ class _ClientInfoState extends State<ClientInfo> {
     // set up the button
 
     void share(BuildContext context) {
-      String message =
-          "He comprat entrades per a l'event $eventName amb l'aplicació SafeEvents";
+      String message = AppLocalizations.of(context).sharemessage1 +
+          eventName +
+          AppLocalizations.of(context).sharemessage2;
       Share.share(message);
     }
 
@@ -701,7 +702,7 @@ class _ClientInfoState extends State<ClientInfo> {
             });
 
     Widget okButton = FlatButton(
-        child: Text("Continuar"),
+        child: Text(AppLocalizations.of(context).continuar_button),
         key: Key("confirmation_button_alert_compra"),
         onPressed: () => {
               Navigator.of(context).pop(),
@@ -730,10 +731,10 @@ class _ClientInfoState extends State<ClientInfo> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("S'ha fer la compra correctament de les " +
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).confirmacio_reserva1 +
           1.toString() +
-          " entrades"),
+          AppLocalizations.of(context).confirmacio_reserva2),
       actions: [
         shareButton,
         okButton,
@@ -752,10 +753,6 @@ class _ClientInfoState extends State<ClientInfo> {
   _compra_reserva(int id, String name) async {
     print('compra reserva');
     showAlertDialogcompra(context, id, name);
-
-    /*runApp(MaterialApp(
-      home: QR(qrCode: session.tickets),
-    ));*/
   }
 
   _mostrarqr(int eventId) async {

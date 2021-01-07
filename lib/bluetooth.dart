@@ -8,7 +8,6 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:safeevents/Structure.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'http_requests/http_bluetooth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -28,7 +27,7 @@ class _BluetoothState extends State<Bluetooth> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text('Scanning'),
+        title: Text(AppLocalizations.of(context).scanning),
       ),
       body: Center(
           child: Column(
@@ -39,7 +38,7 @@ class _BluetoothState extends State<Bluetooth> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Començament de l'escanner",
+                AppLocalizations.of(context).startscanning,
                 style: TextStyle(color: Colors.white, fontSize: 24),
               ),
             ),
@@ -51,29 +50,13 @@ class _BluetoothState extends State<Bluetooth> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                "Pulsar per detenir l'escanner",
+                AppLocalizations.of(context).stopscanning,
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
             onPressed: () => exit = true,
             color: Colors.grey,
-          ), /*
-          Container(
-            key: Key("scanning"),
-            width: 250.0,
-            child: Align(
-              alignment: Alignment.center,
-              child: FlatButton(
-                onPressed: () => stop(),
-                child: Text(
-                  "Pulsar per detenir l'escanner",
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
-                ),
-              ),
-            ),
-          ),*/
+          ),
         ],
       )),
     );
@@ -109,17 +92,10 @@ class _BluetoothState extends State<Bluetooth> {
   }
 
   showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = FlatButton(
-      key: Key("Avis_scan"),
-      child: Text("OK"),
-      onPressed: () {},
-    );
-
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Avis"),
-      content: Text("Scanning"),
+      title: Text(AppLocalizations.of(context).avis),
+      content: Text(AppLocalizations.of(context).error_accio),
       actions: [],
     );
 
@@ -227,44 +203,3 @@ class _BluetoothState extends State<Bluetooth> {
     }
   }
 }
-
-/*
-print("scanning");
-    String deviceName;
-    String deviceVersion;
-    String identifier;
-    final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
-    try {
-      if (Platform.isAndroid) {
-        var build = await deviceInfoPlugin.androidInfo;
-        deviceName = build.model;
-        deviceVersion = build.version.toString();
-        identifier = build.androidId; //UUID for Android
-      } else if (Platform.isIOS) {
-        var data = await deviceInfoPlugin.iosInfo;
-        deviceName = data.name;
-        deviceVersion = data.systemVersion;
-        identifier = data.identifierForVendor; //UUID for iOS
-      }
-    } on PlatformException {
-      print('Failed to get platform version');
-    }
-    print(deviceName);
-    print(deviceVersion);
-    print(identifier);
-
-    FlutterBlue flutterBlue = FlutterBlue.instance;
-    flutterBlue.startScan(timeout: Duration(seconds: 4));
-
-// Listen to scan results
-    var subscription = flutterBlue.scanResults.listen((results) {
-      // do something with scan results
-      for (ScanResult r in results) {
-        print('${r.device.name} found! rssi: ${r.rssi}');
-        print('r.device.id= ${r.device.id}');
-        //r.device.connect();
-      }
-    });
-
-    // Stop scanning
-    flutterBlue.stopScan();*/

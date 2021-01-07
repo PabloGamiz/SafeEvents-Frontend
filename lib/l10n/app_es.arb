@@ -20,13 +20,19 @@
     "okey_button": "De acuerdo",
     "avis": "Aviso",
     "continuar_button": "Continuar",
-    "error_accio": "No s'ha pogut dur a terme l'acció, torneu-ho a provar",
+    "error_accio": "No se pudo realizar la acción, intente nuevamente",
     "confirmacio_reserva1": "Se ha hecho la reserva correctamente de las ",
     "confirmacio_reserva2": " entradas",
     "confirmacio_compra1": "Se ha hecho la compra correctamente de las ",
     "confirmacio_compra2": " entradas",
     "seleccionaelnombredentrades": "La cantidad de entradas que intenta reservar o comprar es mayor que la cantidad de entradas disponibles",
     "noFavsMessage": "No tienes favoritos.\n Selecciona el ❤️ para añadir uno.",
+    "startscanning": "Inicio del escáner",
+    "stopscanning": "Pulsar para detener el escáner",
+    "scanning": "Escaneando",
+    "errorcamara1": "Se denegó el permiso de la cámara",
+    "errorcamara2": "Error desconocido",
+    "errorcamara3": "Presionó el botón de retroceso antes de escanear cualquier cosa",
     "favsErrorMessage": "Ha habido un error al obtener los favoritos.\n Por favor vuelve a intentarlo mas tarde."
     
 }

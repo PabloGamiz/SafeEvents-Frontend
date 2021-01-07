@@ -119,5 +119,29 @@
     "favsErrorMessage": "There was an error while retrieving your favourites.\n Please try again later.",
     "@favsErrorMessage": {
       "description": "Favourites message"
+    },
+    "startscanning": "Inicio del escáner",
+    "@startscanning": {
+      "description": "startscanning message"
+    },
+    "stopscanning": "Press to stop the scanner",
+    "@stopscanning": {
+      "description": "stopscanning message"
+    },
+    "scanning": "Scanning",
+    "@scanning": {
+      "description": "scanning message"
+    },
+    "errorcamara1": "Camera permission was denied",
+    "@errorcamara1": {
+      "description": "errorcamara1 message"
+    },
+    "errorcamara2": "Unknown Error ",
+    "@errorcamara2": {
+      "description": "errorcamara2 message"
+    },
+    "errorcamara3": "You pressed the back button before scanning anything",
+    "@errorcamara3": {
+      "description": "errorcamara3 message"
     }
 }
