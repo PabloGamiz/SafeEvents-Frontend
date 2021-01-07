@@ -27,5 +27,7 @@ http_preu(int id) async {
 http_sendpayinfo(String jsonCliend) async {
   final String apitUrl = "http://10.4.41.148:8080/ticket/paypal";
   final response = await http.put(apitUrl, body: jsonCliend);
+  print(response.statusCode);
+  print(response.body);
   return response.statusCode;
 }

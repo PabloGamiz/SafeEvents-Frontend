@@ -18,6 +18,7 @@ import 'bluetooth.dart';
 import 'http_models/GeneralEventsModel.dart';
 import 'http_models/SignIn_model.dart';
 import 'http_models/get_tickets_model.dart';
+import 'http_models/resposta_compra_reserva_model.dart';
 import 'http_requests/http_clientInfo.dart';
 import 'http_models/ClientInfoModel.dart';
 import 'http_requests/http_entrades.dart';
@@ -587,11 +588,14 @@ class _ClientInfoState extends State<ClientInfo> {
   }
 
   compra(int id) async {
+    await new Future.delayed(const Duration(seconds: 2));
     //sleep(const Duration(seconds: 2));
     print('compra');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringValue = prefs.getString('cookie');
-    RespostaReservaModel session = await http_compra_reserva(stringValue, id);
+    RespostaCompraReservaModel session =
+        await http_compra_reserva(stringValue, id);
+    print("okey");
     for (int i = 0; i < session.tickets.length; ++i) {
       var resposta = paypal(session.tickets[i].id);
     }
@@ -600,7 +604,7 @@ class _ClientInfoState extends State<ClientInfo> {
   }
 
   _compra(int id, String name) async {
-    final RespostaReservaModel session = await compra(id);
+    final RespostaCompraReservaModel session = await compra(id);
     Navigator.of(context).pop();
     if (session != null) {
       showConfirmationDialogCompra(context, session.tickets, id, name);

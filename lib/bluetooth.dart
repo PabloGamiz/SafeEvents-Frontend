@@ -55,7 +55,7 @@ class _BluetoothState extends State<Bluetooth> {
                 style: TextStyle(color: Colors.white, fontSize: 15),
               ),
             ),
-            onPressed: (bluetooth),
+            onPressed: () => exit = true,
             color: Colors.grey,
           ), /*
           Container(

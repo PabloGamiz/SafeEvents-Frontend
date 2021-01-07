@@ -43,7 +43,7 @@ Future<int> http_radar_deactivate(String name) async {
   }
 }
 
-Future<int> http_radar_interaction(List<String> nameDevice) async {
+http_radar_interaction(List<String> nameDevice) async {
   final String apitUrl = "http://10.4.41.148:8080/radar/interaction";
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String stringValue = prefs.getString('cookie');
@@ -51,7 +51,7 @@ Future<int> http_radar_interaction(List<String> nameDevice) async {
   var queryParamaters = {
     'cookie': stringValue,
     'close_to': nameDevice,
-    'instant': DateTime.now().toUtc().millisecondsSinceEpoch
+    'instant': DateTime.now().toUtc().millisecondsSinceEpoch.toInt(),
   };
 
   final jsonCliend = json.encode(queryParamaters);
@@ -66,7 +66,7 @@ Future<int> http_radar_interaction(List<String> nameDevice) async {
   }
 }
 
-Future<int> http_status(int status) async {
+http_status(int status) async {
   final String apitUrl = "http://10.4.41.148:8080/status";
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String stringValue = prefs.getString('cookie');
@@ -74,7 +74,7 @@ Future<int> http_status(int status) async {
   var queryParamaters = {
     'cookie': stringValue,
     'status': status,
-    'date': DateTime.now().toUtc().millisecondsSinceEpoch,
+    'date': DateTime.now().toUtc().millisecondsSinceEpoch.toInt(),
   };
 
   final jsonCliend = json.encode(queryParamaters);

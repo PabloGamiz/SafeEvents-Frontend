@@ -1,20 +1,20 @@
 import 'dart:convert';
 
-RespostaReservaModel respostaReservaModelFromJson(String str) =>
-    RespostaReservaModel.fromJson(json.decode(str));
+RespostaCompraReservaModel respostaCompraReservaModelFromJson(String str) =>
+    RespostaCompraReservaModel.fromJson(json.decode(str));
 
-String respostaReservaModelToJson(RespostaReservaModel data) =>
+String respostaCompraReservaModelToJson(RespostaCompraReservaModel data) =>
     json.encode(data.toJson());
 
-class RespostaReservaModel {
-  RespostaReservaModel({
+class RespostaCompraReservaModel {
+  RespostaCompraReservaModel({
     this.tickets,
   });
 
   List<Ticket> tickets;
 
-  factory RespostaReservaModel.fromJson(Map<String, dynamic> json) =>
-      RespostaReservaModel(
+  factory RespostaCompraReservaModel.fromJson(Map<String, dynamic> json) =>
+      RespostaCompraReservaModel(
         tickets:
             List<Ticket>.from(json["tickets"].map((x) => Ticket.fromJson(x))),
       );
@@ -26,22 +26,6 @@ class RespostaReservaModel {
 
 class Ticket {
   Ticket({
-    this.controller,
-  });
-
-  Controller controller;
-
-  factory Ticket.fromJson(Map<String, dynamic> json) => Ticket(
-        controller: Controller.fromJson(json["Controller"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "Controller": controller.toJson(),
-      };
-}
-
-class Controller {
-  Controller({
     this.id,
     this.description,
     this.eventId,
@@ -63,7 +47,7 @@ class Controller {
   dynamic checkIn;
   int clientId;
 
-  factory Controller.fromJson(Map<String, dynamic> json) => Controller(
+  factory Ticket.fromJson(Map<String, dynamic> json) => Ticket(
         id: json["id"],
         description: json["description"],
         eventId: json["event_id"],

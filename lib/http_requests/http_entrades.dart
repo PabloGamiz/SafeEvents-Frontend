@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:safeevents/http_models/get_tickets_model.dart';
+import 'package:safeevents/http_models/resposta_compra_reserva_model.dart';
 import 'package:safeevents/http_models/resposta_reserva_model.dart';
 
 Future<int> http_entradas(int id) async {
@@ -55,6 +56,7 @@ Future<RespostaReservaModel> http_compra(
   };
   String reservaModel = json.encode(queryParamaters);
   final response = await http.post(apitUrl, body: reservaModel);
+  print("compra");
   print(response.statusCode);
   print(response.body);
   if (response.statusCode == 201 || response.statusCode == 200) {
@@ -66,7 +68,7 @@ Future<RespostaReservaModel> http_compra(
   }
 }
 
-Future<RespostaReservaModel> http_compra_reserva(
+Future<RespostaCompraReservaModel> http_compra_reserva(
     String stringValue, int id) async {
   final String apitUrl = "http://10.4.41.148:8080/ticket/activate";
   var queryParamaters = {
@@ -79,7 +81,7 @@ Future<RespostaReservaModel> http_compra_reserva(
   print(response.statusCode);
   if (response.statusCode == 201 || response.statusCode == 200) {
     print(response.body);
-    return respostaReservaModelFromJson(response.body);
+    return respostaCompraReservaModelFromJson(response.body);
   } else if (response.statusCode == 400) {
     return null;
   } else {

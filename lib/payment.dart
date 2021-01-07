@@ -11,13 +11,15 @@ import 'http_requests/http_payment.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 compra(int id, int numero) async {
-  sleep(const Duration(seconds: 2));
+  await new Future.delayed(const Duration(seconds: 2));
+  //sleep(const Duration(seconds: 2));
   print('compra');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String stringValue = prefs.getString('cookie');
+  print("payment");
   RespostaReservaModel session = await http_compra(stringValue, id, numero);
   for (int i = 0; i < session.tickets.length; ++i) {
-    var resposta = paypal(session.tickets[i].id);
+    var resposta = paypal(session.tickets[i].controller.id);
   }
 
   return session;
