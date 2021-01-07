@@ -34,5 +34,8 @@
     "errorcamara1": "S'ha denegat el permís de la càmera",
     "errorcamara2": "Error desconegut",
     "errorcamara3": "Heu premut el botó enrere abans d’escanejar res",
+    "funcionalitat_no_disponible": "Funcionalitat no disponible",
+    "bottomContentText": "Si vols accedir a aquesta funcionalitat si us plau inicia sessió amb Google",
+    "sign_in": "Iniciar sessio",
     "favsErrorMessage": "Ha succeït un error.\n Si us plau, torna a intentar-ho més tard."
 }

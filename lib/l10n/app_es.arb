@@ -33,6 +33,9 @@
     "errorcamara1": "Se denegó el permiso de la cámara",
     "errorcamara2": "Error desconocido",
     "errorcamara3": "Presionó el botón de retroceso antes de escanear cualquier cosa",
+    "funcionalitat_no_disponible": "Funcionalidad no disponible",
+    "bottomContentText": "Si quieres acceder a esta funcionalidad por favor inicia sesión con Google",
+    "sign_in": "Iniciar sesión",
     "favsErrorMessage": "Ha habido un error al obtener los favoritos.\n Por favor vuelve a intentarlo mas tarde."
     
 }

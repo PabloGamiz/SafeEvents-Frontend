@@ -143,5 +143,17 @@
     "errorcamara3": "You pressed the back button before scanning anything",
     "@errorcamara3": {
       "description": "errorcamara3 message"
+    },
+    "funcionalitat_no_disponible": "Functionality not available",
+    "@funcionalitat_no_disponible": {
+      "description": "funcionalitat_no_disponible message"
+    },
+    "bottomContentText": "If you would like to access this feature please sign in with Google",
+    "@bottomContentText": {
+      "description": "bottomContentText message"
+    },
+    "sign_in": "Sign in",
+    "@sign_in": {
+      "description": "sign_in message"
     }
 }
