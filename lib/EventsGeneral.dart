@@ -558,17 +558,6 @@ class _GeneralEventsState extends State {
             ),
           ),
         ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _publishEsdeveniment();
-          },
-          tooltip: 'Publish event',
-          child: Icon(
-            Icons.add,
-          ),
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
-        ),
       );
       /*localizationsDelegates: [
           AppLocalizations.delegate,
