@@ -103,14 +103,14 @@ class _GeneralEventsState extends State {
   }
 
   Widget build(BuildContext context) {
-    /* http_Favs().then((favourites) {
+    http_Favs().then((favourites) {
       setState(() {
         if (favourites == null)
           favs = List();
         else
           favs = favourites;
       });
-    });*/
+    });
     if (registered && filteredEvents.length > 0) {
       return Scaffold(
         resizeToAvoidBottomInset: false,

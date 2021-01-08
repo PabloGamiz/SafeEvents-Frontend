@@ -492,8 +492,7 @@ class _ClientInfoState extends State<ClientInfo> {
                           event.location.split("--")[0],
                           /*filteredEvents[index].location.name,*/
                           style: TextStyle(color: Colors.white),
-                          maxLines: 2,
-                          overflow: TextOverflow.fade,
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
