@@ -49,6 +49,7 @@ var _colorFav = Colors.white;
 
 int ide;
 bool liked;
+String textButtonFeedback;
 final DatabaseMethods database = DatabaseMethods();
 
 void main() => runApp(MaterialApp(
@@ -172,7 +173,6 @@ class _MostraState extends State<Mostra> {
   MyInfo mi;
   bool liked;
   bool _hafetFeedback = false;
-  String textButtonFeedback = '';
   EsdevenimentEspecificModel event;
   //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
