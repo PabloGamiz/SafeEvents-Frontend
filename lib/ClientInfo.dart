@@ -97,7 +97,7 @@ class _ClientInfoState extends State<ClientInfo> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Error"),
+      title: Text(AppLocalizations.of(context).avis),
       content: Text(AppLocalizations.of(context).okey_entrades),
       actions: [
         okButton,
@@ -131,20 +131,11 @@ class _ClientInfoState extends State<ClientInfo> {
         setState(() {
           result = AppLocalizations.of(context).errorcamara1;
         });
-      } else {
-        setState(() {
-          result = AppLocalizations.of(context).errorcamara2 + "$ex";
-        });
       }
       showAlertDialog(context);
     } on FormatException {
       setState(() {
         result = AppLocalizations.of(context).errorcamara3;
-      });
-      showAlertDialog(context);
-    } catch (ex) {
-      setState(() {
-        result = AppLocalizations.of(context).errorcamara2 + "$ex";
       });
       showAlertDialog(context);
     }
