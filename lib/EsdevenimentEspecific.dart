@@ -172,7 +172,7 @@ class _MostraState extends State<Mostra> {
   MyInfo mi;
   bool liked;
   bool _hafetFeedback = false;
-  String textButtonFeedback = AppLocalizations.of(context).publica;
+  String textButtonFeedback = '';
   EsdevenimentEspecificModel event;
   //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
@@ -198,8 +198,15 @@ class _MostraState extends State<Mostra> {
   }
 
   final Set<Marker> _markers = Set();
+  int i =0;
   @override
   Widget build(BuildContext context) {
+    if(i==0){
+      setState(() {
+        textButtonFeedback = AppLocalizations.of(context).publica;
+      });
+      ++i;
+    }
     return MaterialApp(
       home: WillPopScope(
         onWillPop: _onBackPressed,
