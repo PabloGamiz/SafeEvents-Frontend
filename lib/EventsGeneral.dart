@@ -277,7 +277,8 @@ class _GeneralEventsState extends State {
                             width: 25,
                           ),
                           Expanded(
-                            child: Text(filteredEvents[index].price.toString(),
+                            child: Text(
+                                filteredEvents[index].price.toString() + "€",
                                 style: TextStyle(
                                     fontSize: 40, color: Colors.white)),
                           ),
@@ -503,7 +504,7 @@ class _GeneralEventsState extends State {
                             child: Align(
                               alignment: Alignment.center,
                               child: Text(
-                                  filteredEvents[index].price.toString(),
+                                  filteredEvents[index].price.toString() + "€",
                                   /*sumadelpreu(filteredEvents[index]).toString(),*/
                                   style: TextStyle(
                                       fontSize: 40, color: Colors.white)),
@@ -557,17 +558,6 @@ class _GeneralEventsState extends State {
             ),
           ),
         ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _publishEsdeveniment();
-          },
-          tooltip: 'Publish event',
-          child: Icon(
-            Icons.add,
-          ),
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
-        ),
       );
       /*localizationsDelegates: [
           AppLocalizations.delegate,

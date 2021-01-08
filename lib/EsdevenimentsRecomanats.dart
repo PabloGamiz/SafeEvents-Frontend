@@ -172,440 +172,12 @@ class _EsdevenimentsRecomanatsState extends State {
           favs = List();
         else
           favs = favourites;
-
-        categories=[
-          ' ',
-          AppLocalizations.of(context).musica,
-          AppLocalizations.of(context).teatre,
-          AppLocalizations.of(context).esport,
-          AppLocalizations.of(context).art,
-          AppLocalizations.of(context).altres
-        ];
       });
     });
-    if (registered /*&& filteredEvents.length > 0*/) {
-      return MaterialApp(
-        home: Scaffold(
-          body: _esperaCarrega
-              ? Align(
-                  alignment: Alignment.center,
-                  child: CircularProgressIndicator())
-              : Column(children: <Widget>[
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context).cercarciutat,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(25.0),
-                        borderSide: BorderSide(),
-                      ),
-                    ),
-                    onChanged: (string) {
-                      _debouncer.run(() {
-                        setState(() {
-                          ciutatCercada = string;
-                          if (string == "") {
-                            filteredcity = false;
-                            filteredEvents =
-                                filtrarEsdeveniments(generalEvents, _defaultValue, 1);
-                          } else {
-                            filteredcity = true;
-                          }
-                          if (filteredcategory) {
-                            filteredEvents =
-                                filtrarEsdeveniments(filteredEvents, string, 0);
-                          } else {
-                            filteredEvents =
-                                filtrarEsdeveniments(generalEvents, string, 0);
-                          }
-                        });
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  DropdownButton<String>(
-                    hint: Text(AppLocalizations.of(context).selectcategory),
-                    value: _defaultValue,
-                    items: categories.map((newValue) {
-                      return DropdownMenuItem<String>(
-                        value: newValue,
-                        child: Text(newValue),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      _debouncer.run(() {
-                        setState(() {
-                          _defaultValue = newValue;
-                          if (newValue == "") {
-                            filteredcategory = false;
-                            filteredEvents =
-                                filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
-                          } else {
-                            filteredcategory = true;
-                          }
-                          if (filteredcity) {
-                            filteredEvents =
-                                filtrarEsdeveniments(filteredEvents, newValue, 1);
-                          } else {
-                            filteredEvents =
-                                filtrarEsdeveniments(generalEvents, newValue, 1);
-                          }
-                          /*filteredEvents = generalEvents
-                            .where((e) => e.category.contains(newValue))
-                            .toList();*/
-                        });
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: filteredEvents == null
-                          ? 0
-                          : filteredEvents.length, //filteredEvents.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 1.0,
-                            horizontal: 4.0,
-                          ),
-                          child: Card(
-                            color: Colors.lightBlue,
-                            child: ListTile(
-                              onTap: () {
-                                _esdevenimentEspecific(index);
-                              },
-                              title: Column(
-                                children: [
-                                  Container(
-                                    height: 30,
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: IconButton(
-                                        icon: Icon(
-                                          Icons.favorite,
-                                          color: liked(filteredEvents[index].id)
-                                              ? Colors.red
-                                              : Colors.white,
-                                        ),
-                                        onPressed: () => setState(() {
-                                          if (liked(filteredEvents[index].id)) {
-                                            http_delfavourite(cookie,
-                                                filteredEvents[index].id);
-                                          } else {
-                                            http_addfavourite(cookie,
-                                                filteredEvents[index].id);
-                                          }
-                                        }),
-                                      ),
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      /*'KIKO RIVERA ON CONCERT',*/
-                                      filteredEvents[index].title,
-                                      style: TextStyle(
-                                          fontSize: 24, color: Colors.white),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.fade,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                ],
-                              ),
-                              subtitle: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 25,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                        filteredEvents[index].price.toString(),
-                                        style: TextStyle(
-                                            fontSize: 40, color: Colors.white)),
-                                  ),
-                                  Expanded(
-                                    //color: Colors.red,
-                                    //height: 80,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Center(
-                                          child: Container(
-                                            child: Text(
-                                              /*'Palau Sant Jordi',*/
-                                              filteredEvents[index].location,
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                              maxLines: 2,
-                                              overflow: TextOverflow.fade,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                            /*'25/10/2020, 19:50',*/
-                                            filteredEvents[index]
-                                                .closureDate
-                                                .toString(),
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                        Container(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                            'Música', //filteredEvents[index].category,
-                                            style:
-                                                TextStyle(color: Colors.white)),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      shrinkWrap: true,
-                    ),
-                  ),
-                ]),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              _publishEsdeveniment();
-            },
-            tooltip: 'Publish event',
-            child: Icon(
-              Icons.add,
-            ),
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-          ),
-        ),
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('en', ''),
-          const Locale('es', ''),
-          const Locale('ca', ''),
-        ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode)
-              return supportedLocale;
-          }
-          return supportedLocales.first;
-        },
-      );
-    } else if (!registered &&
-        (filteredEvents != null && filteredEvents.length > 0)) {
-      return MaterialApp(
-        home: Scaffold(
-          body: Column(children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context).cercarciutat,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25.0),
-                  borderSide: BorderSide(),
-                ),
-              ),
-              onChanged: (string) {
-                _debouncer.run(() {
-                  setState(() {
-                    ciutatCercada = string;
-                    if (string == "") {
-                      filteredcity = false;
-                      filteredEvents =
-                          filtrarEsdeveniments(generalEvents, _defaultValue, 1);
-                    } else {
-                      filteredcity = true;
-                    }
-                    if (filteredcategory) {
-                      filteredEvents =
-                          filtrarEsdeveniments(filteredEvents, string, 0);
-                    } else {
-                      filteredEvents =
-                          filtrarEsdeveniments(generalEvents, string, 0);
-                    }
-                  });
-                });
-              },
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            DropdownButton<String>(
-              hint: Text(AppLocalizations.of(context).selectcategory),
-              value: _defaultValue,
-              items: categories.map((newValue) {
-                return DropdownMenuItem<String>(
-                  value: newValue,
-                  child: Text(newValue),
-                );
-              }).toList(),
-              onChanged: (newValue) {
-                _debouncer.run(() {
-                  setState(() {
-                    _defaultValue = newValue;
-                    if (newValue == "") {
-                      filteredcategory = false;
-                      filteredEvents =
-                          filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
-                    } else {
-                      filteredcategory = true;
-                    }
-                    if (filteredcity) {
-                      filteredEvents =
-                          filtrarEsdeveniments(filteredEvents, newValue, 1);
-                    } else {
-                      filteredEvents =
-                          filtrarEsdeveniments(generalEvents, newValue, 1);
-                    }
-                    /*filteredEvents = generalEvents
-                          .where((e) => e.category.contains(newValue))
-                          .toList();*/
-                  });
-                });
-              },
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredEvents == null ? 0 : filteredEvents.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 1.0,
-                      horizontal: 4.0,
-                    ),
-                    child: Card(
-                      color: Colors.lightBlue,
-                      child: ListTile(
-                        onTap: () {
-                          _esdevenimentEspecific(index);
-                        },
-                        title: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                /*'KIKO RIVERA ON CONCERT',*/
-                                filteredEvents[index].title,
-                                style: TextStyle(
-                                    fontSize: 24, color: Colors.white),
-                                maxLines: 2,
-                                overflow: TextOverflow.fade,
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
-                        subtitle: Row(
-                          children: [
-                            SizedBox(
-                              width: 25,
-                            ),
-                            Expanded(
-                              child: Text(
-                                  filteredEvents[index].price.toString(),
-                                  style: TextStyle(
-                                      fontSize: 40, color: Colors.white)),
-                            ),
-                            Expanded(
-                              //color: Colors.red,
-                              //height: 80,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Center(
-                                    child: Container(
-                                      child: Text(
-                                        /*'Palau Sant Jordi',*/
-                                        filteredEvents[index].location,
-                                        style: TextStyle(color: Colors.white),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.fade,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                      /*'25/10/2020, 19:50',*/
-                                      filteredEvents[index]
-                                          .closureDate
-                                          .toString(),
-                                      style: TextStyle(color: Colors.white)),
-                                  Container(
-                                    height: 5,
-                                  ),
-                                  Text(
-                                      'Música', //filteredEvents[index].category,
-                                      style: TextStyle(color: Colors.white)),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                shrinkWrap: true,
-              ),
-            ),
-          ]),
-        ),
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          const Locale('en', ''),
-          const Locale('es', ''),
-          const Locale('ca', ''),
-        ],
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocale in supportedLocales) {
-            if (supportedLocale.languageCode == locale.languageCode)
-              return supportedLocale;
-          }
-          return supportedLocales.first;
-        },
-      );
-    } else {
-      return MaterialApp(
-        home: Scaffold(
-            body: Column(children: <Widget>[
+    if (registered && filteredEvents.length > 0) {
+      return Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Column(children: <Widget>[
           SizedBox(
             height: 10,
           ),
@@ -624,8 +196,9 @@ class _EsdevenimentsRecomanatsState extends State {
                   ciutatCercada = string;
                   if (string == "") {
                     filteredcity = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, _defaultValue, 1);
+                    if (filteredcategory)
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, tipus, 1);
                   } else {
                     filteredcity = true;
                   }
@@ -644,9 +217,16 @@ class _EsdevenimentsRecomanatsState extends State {
             height: 10,
           ),
           DropdownButton<String>(
-            hint: Text(AppLocalizations.of(context).selectcategory),
+            hint: Text(AppLocalizations.of(context).scategory),
             value: _defaultValue,
-            items: categories.map((newValue) {
+            items: [
+              AppLocalizations.of(context).tots,
+              AppLocalizations.of(context).musica,
+              AppLocalizations.of(context).teatre,
+              AppLocalizations.of(context).esport,
+              AppLocalizations.of(context).art,
+              AppLocalizations.of(context).altres
+            ].map((newValue) {
               return DropdownMenuItem<String>(
                 value: newValue,
                 child: Text(newValue),
@@ -656,37 +236,171 @@ class _EsdevenimentsRecomanatsState extends State {
               _debouncer.run(() {
                 setState(() {
                   _defaultValue = newValue;
-                  if (newValue == "") {
+                  if (newValue == "")
+                    tipus = "";
+                  else if (newValue == "Música" || newValue == "Music")
+                    tipus = "Musica";
+                  else if (newValue == "Teatre" ||
+                      newValue == "Theatre" ||
+                      newValue == "Teatro")
+                    tipus = "Teatre";
+                  else if (newValue == "Esport" ||
+                      newValue == "Sport" ||
+                      newValue == "Deporte")
+                    tipus = "Esport";
+                  else if (newValue == "Art" ||
+                      newValue == "Art" ||
+                      newValue == "Arte")
+                    tipus = "Art";
+                  else if (newValue == "Altres" ||
+                      newValue == "Others" ||
+                      newValue == "Otros") tipus = "Altres";
+                  if (tipus == "") {
                     filteredcategory = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
                   } else {
                     filteredcategory = true;
                   }
                   if (filteredcity) {
                     filteredEvents =
-                        filtrarEsdeveniments(filteredEvents, newValue, 1);
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, tipus, 1);
                   } else {
                     filteredEvents =
-                        filtrarEsdeveniments(generalEvents, newValue, 1);
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
                   }
+                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
                 });
               });
             },
           ),
           SizedBox(
-            height: 180,
+            height: 5,
           ),
           Expanded(
-            child: Text(
-              'No event matching with the location or category indicated',
-              style: TextStyle(
-                color: Colors.grey,
-              ),
+            child: ListView.builder(
+              itemCount: filteredEvents.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 1.0,
+                    horizontal: 4.0,
+                  ),
+                  child: Card(
+                    color: Colors.lightBlue,
+                    child: ListTile(
+                      onTap: () {
+                        _esdevenimentEspecific(index);
+                      },
+                      title: Column(
+                        children: [
+                          Container(
+                            height: 30,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.favorite,
+                                  color: liked(filteredEvents[index].id)
+                                      ? Colors.red
+                                      : Colors.white,
+                                ),
+                                onPressed: () => setState(() {
+                                  if (liked(filteredEvents[index].id)) {
+                                    http_delfavourite(
+                                        cookie, filteredEvents[index].id);
+                                  } else {
+                                    http_addfavourite(
+                                        cookie, filteredEvents[index].id);
+                                  }
+                                }),
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              filteredEvents[index].title,
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.white),
+                              maxLines: 2,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                      subtitle: Row(
+                        children: [
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Expanded(
+                            child: Text(
+                                filteredEvents[index].price.toString() + "€",
+                                style: TextStyle(
+                                    fontSize: 40, color: Colors.white)),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    child: Text(
+                                      filteredEvents[index]
+                                          .location
+                                          .split('--')[0],
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text(
+                                    /*'25/10/2020, 19:50',*/
+                                    filteredEvents[index]
+                                        .closureDate
+                                        .toString()
+                                        .substring(0, 16),
+                                    style: TextStyle(color: Colors.white)),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text(filteredEvents[index].tipus,
+                                    style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+              shrinkWrap: true,
             ),
-          )
-        ])),
-        localizationsDelegates: [
+          ),
+        ]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _publishEsdeveniment();
+          },
+          tooltip: 'Publish event',
+          child: Icon(
+            Icons.add,
+          ),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+        ),
+      );
+      /*localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -704,7 +418,379 @@ class _EsdevenimentsRecomanatsState extends State {
           }
           return supportedLocales.first;
         },
+      );*/
+    } else if (!registered && filteredEvents.length > 0) {
+      return /*MaterialApp(
+        home: */
+          Scaffold(
+        body: Column(children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).cercarciutat,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(),
+              ),
+            ),
+            onChanged: (string) {
+              _debouncer.run(() {
+                setState(() {
+                  ciutatCercada = string;
+                  if (string == "") {
+                    filteredcity = false;
+                    if (filteredcategory)
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, tipus, 1);
+                  } else {
+                    filteredcity = true;
+                  }
+                  if (filteredcategory) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, string, 0);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, string, 0);
+                  }
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          DropdownButton<String>(
+            hint: Text(AppLocalizations.of(context).scategory),
+            value: _defaultValue,
+            items: [
+              AppLocalizations.of(context).tots,
+              AppLocalizations.of(context).musica,
+              AppLocalizations.of(context).teatre,
+              AppLocalizations.of(context).esport,
+              AppLocalizations.of(context).art,
+              AppLocalizations.of(context).altres
+            ].map((newValue) {
+              return DropdownMenuItem<String>(
+                value: newValue,
+                child: Text(newValue),
+              );
+            }).toList(),
+            onChanged: (newValue) {
+              _debouncer.run(() {
+                setState(() {
+                  _defaultValue = newValue;
+                  if (newValue == "")
+                    tipus = "";
+                  else if (newValue == "Música" || newValue == "Music")
+                    tipus = "Musica";
+                  else if (newValue == "Teatre" ||
+                      newValue == "Theatre" ||
+                      newValue == "Teatro")
+                    tipus = "Teatre";
+                  else if (newValue == "Esport" ||
+                      newValue == "Sport" ||
+                      newValue == "Deporte")
+                    tipus = "Esport";
+                  else if (newValue == "Art" ||
+                      newValue == "Art" ||
+                      newValue == "Arte")
+                    tipus = "Art";
+                  else if (newValue == "Altres" ||
+                      newValue == "Others" ||
+                      newValue == "Otros") tipus = "Altres";
+                  if (tipus == "") {
+                    filteredcategory = false;
+                  } else {
+                    filteredcategory = true;
+                  }
+                  if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, tipus, 1);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
+                  }
+                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredEvents.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 1.0,
+                    horizontal: 4.0,
+                  ),
+                  child: Card(
+                    color: Colors.lightBlue,
+                    child: ListTile(
+                      onTap: () {
+                        _esdevenimentEspecific(index);
+                      },
+                      title: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              /*'KIKO RIVERA ON CONCERT',*/
+                              filteredEvents[index].title,
+                              style:
+                                  TextStyle(fontSize: 24, color: Colors.white),
+                              maxLines: 2,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                        ],
+                      ),
+                      subtitle: Row(
+                        children: [
+                          SizedBox(
+                            width: 25,
+                          ),
+                          Container(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                  filteredEvents[index].price.toString() + "€",
+                                  /*sumadelpreu(filteredEvents[index]).toString(),*/
+                                  style: TextStyle(
+                                      fontSize: 40, color: Colors.white)),
+                            ),
+                          ),
+                          Expanded(
+                            //color: Colors.red,
+                            //height: 80,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    child: Text(
+                                      /*'Palau Sant Jordi',*/
+                                      filteredEvents[index]
+                                          .location
+                                          .split('--')[0],
+                                      style: TextStyle(color: Colors.white),
+                                      textAlign: TextAlign.center,
+                                      // maxLines: 2,
+                                      // overflow: TextOverflow.fade,
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text(
+                                    /*'25/10/2020, 19:50',*/
+                                    filteredEvents[index]
+                                        .closureDate
+                                        .toString()
+                                        .substring(0, 16),
+                                    style: TextStyle(color: Colors.white)),
+                                Container(
+                                  height: 5,
+                                ),
+                                Text(filteredEvents[index].tipus,
+                                    style: TextStyle(color: Colors.white)),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+              shrinkWrap: true,
+            ),
+          ),
+        ]),
       );
+      /*localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('es', ''),
+          const Locale('ca', ''),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode)
+              return supportedLocale;
+          }
+          return supportedLocales.first;
+        },
+      );*/
+    } else {
+      return /*MaterialApp(
+        home: */
+          Scaffold(
+        body: Column(children: <Widget>[
+          SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: AppLocalizations.of(context).cercarciutat,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25.0),
+                borderSide: BorderSide(),
+              ),
+            ),
+            onChanged: (string) {
+              _debouncer.run(() {
+                setState(() {
+                  ciutatCercada = string;
+                  if (string == "") {
+                    filteredcity = false;
+                    if (filteredcategory)
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, tipus, 1);
+                  } else {
+                    filteredcity = true;
+                  }
+                  if (filteredcategory) {
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, string, 0);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, string, 0);
+                  }
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          DropdownButton<String>(
+            hint: Text(AppLocalizations.of(context).scategory),
+            value: _defaultValue,
+            items: [
+              AppLocalizations.of(context).tots,
+              AppLocalizations.of(context).musica,
+              AppLocalizations.of(context).teatre,
+              AppLocalizations.of(context).esport,
+              AppLocalizations.of(context).art,
+              AppLocalizations.of(context).altres
+            ].map((newValue) {
+              return DropdownMenuItem<String>(
+                value: newValue,
+                child: Text(newValue),
+              );
+            }).toList(),
+            onChanged: (newValue) {
+              _debouncer.run(() {
+                setState(() {
+                  _defaultValue = newValue;
+                  if (newValue == "")
+                    tipus = "";
+                  else if (newValue == "Música" || newValue == "Music")
+                    tipus = "Musica";
+                  else if (newValue == "Teatre" ||
+                      newValue == "Theatre" ||
+                      newValue == "Teatro")
+                    tipus = "Teatre";
+                  else if (newValue == "Esport" ||
+                      newValue == "Sport" ||
+                      newValue == "Deporte")
+                    tipus = "Esport";
+                  else if (newValue == "Art" ||
+                      newValue == "Art" ||
+                      newValue == "Arte")
+                    tipus = "Art";
+                  else if (newValue == "Altres" ||
+                      newValue == "Others" ||
+                      newValue == "Otros") tipus = "Altres";
+                  if (tipus == "") {
+                    filteredcategory = false;
+                  } else {
+                    filteredcategory = true;
+                  }
+                  if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
+                    filteredEvents =
+                        filtrarEsdeveniments(filteredEvents, tipus, 1);
+                  } else {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, tipus, 1);
+                  }
+                  /*filteredEvents = filtrarEsdeveniments(generalEvents, newValue, 1); generalEvents
+                            .where((e) => e.category.contains(newValue))
+                            .toList();*/
+                });
+              });
+            },
+          ),
+          SizedBox(
+            height: 180,
+          ),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                AppLocalizations.of(context).noesdeveniments,
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        ]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _publishEsdeveniment();
+          },
+          tooltip: 'Publish event',
+          child: Icon(
+            Icons.add,
+          ),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+        ),
+      );
+      /*localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', ''),
+          const Locale('es', ''),
+          const Locale('ca', ''),
+        ],
+        localeResolutionCallback: (locale, supportedLocales) {
+          for (var supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == locale.languageCode)
+              return supportedLocale;
+          }
+          return supportedLocales.first;
+        },
+      );*/
     }
   }
 
