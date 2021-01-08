@@ -172,7 +172,7 @@ class _MostraState extends State<Mostra> {
   MyInfo mi;
   bool liked;
   bool _hafetFeedback = false;
-  String textButtonFeedback = 'Publica';
+  String textButtonFeedback = AppLocalizations.of(context).publica;
   EsdevenimentEspecificModel event;
   //PermissionName permissionName = PermissionName.Internet;
   Completer<GoogleMapController> _controller = Completer();
@@ -848,7 +848,7 @@ class _MostraState extends State<Mostra> {
         if (feedb != null) {
           controllerfeedback.text = feedb.message;
           _hafetFeedback = true;
-          textButtonFeedback = 'Edita';
+          textButtonFeedback = AppLocalizations.of(context).edit;
           feedbackid = feedb.id;
         }
       }
@@ -870,7 +870,7 @@ class _MostraState extends State<Mostra> {
       if (fe.statusCode == 200) {
         _hafetFeedback = true;
         setState(() {
-          textButtonFeedback = 'Edita';
+          textButtonFeedback = AppLocalizations.of(context).edit;
         });
       }
     } else {

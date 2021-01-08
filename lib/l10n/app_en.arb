@@ -401,5 +401,9 @@
     "aglosub" : "Try to be at least 2 m away from people around, be safe all the time!",
     "@aglosub": {
               "description": "Text for selecting a prevencio"
-            }
+            },
+                 "edit" : "Edit",
+                 "@edit": {
+                               "description": "Text for selecting a edit"
+                             }
 }

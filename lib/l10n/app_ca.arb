@@ -98,7 +98,8 @@
     "mascsub" : "Has de dur posada la mascareta en tot moment, cobrint la boca i el nas.\nMai et treguis la mascareta!",
     "aglo" : "Evita les aglomeracions",
     "aglosub" : "Procura estar a mínim 2 m de la gent del teu voltant, estigues segur/a en tot moment!",
-    "error_entardes": "La entrada no es correcta o s'ha produït un error"
+    "error_entardes": "La entrada no es correcta o s'ha produït un error",
+    "edit" : "Edita"
 
 
 

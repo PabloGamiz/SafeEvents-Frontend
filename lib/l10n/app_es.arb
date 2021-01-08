@@ -98,5 +98,6 @@
     "masc" : "Usa la mascarilla",
     "mascsub" : "Debes llevar puesta la mascarilla en todo momento, cubriendo la boca y la nariz. \nNunca te la quites!",
     "aglo" : "Evita les aglomeracions",
-    "aglosub" : "Procura estar a mínim 2 m de la gent del teu voltant, estigues segur/a en tot moment!"
+    "aglosub" : "Procura estar a mínim 2 m de la gent del teu voltant, estigues segur/a en tot moment!",
+    "edit" : "Edita"
 }
