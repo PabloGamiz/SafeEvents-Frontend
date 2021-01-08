@@ -92,13 +92,11 @@
     "tots": "Todos",
     "scategory": "Selecciona una categoria",
     "prevencio" : "Prevención COVID 19",
-     "prevenciosub" : "Por tu seguridad y por la de todos, sigue estas recomendaciones",
-     "mans" : "Lávate las manos",
-     "manssub" : "Lávate las manos regularmente durante 20 segundos, con jabón y/o gel hidroalcohólico",
-     "masc" : "Usa la mascarilla",
-     "mascsub" : "Debes llevar puesta la mascarilla en todo momento, cubriendo la boca y la nariz. \nNunca te la quites!",
-     "aglo" : "Evita les aglomeracions",
-     "aglosub" : "Procura estar a mínim 2 m de la gent del teu voltant, estigues segur/a en tot moment!"
-
-
+    "prevenciosub" : "Por tu seguridad y por la de todos, sigue estas recomendaciones",
+    "mans" : "Lávate las manos",
+    "manssub" : "Lávate las manos regularmente durante 20 segundos, con jabón y/o gel hidroalcohólico",
+    "masc" : "Usa la mascarilla",
+    "mascsub" : "Debes llevar puesta la mascarilla en todo momento, cubriendo la boca y la nariz. \nNunca te la quites!",
+    "aglo" : "Evita les aglomeracions",
+    "aglosub" : "Procura estar a mínim 2 m de la gent del teu voltant, estigues segur/a en tot moment!"
 }
