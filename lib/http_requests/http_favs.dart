@@ -13,7 +13,7 @@ Future<List<FavsModel>> http_Favs() async {
   var uri = Uri.http('10.4.41.148:8080', '/event/favorites');
   final response = await http.put(uri, body: body);
   if (response.statusCode == 200 || response.statusCode == 201) {
-    return favsModelFromJson(response.body);
+    return favsModelFromJson(utf8.decode(response.bodyBytes));
   } else {
     print(response.statusCode);
     print(response.body);

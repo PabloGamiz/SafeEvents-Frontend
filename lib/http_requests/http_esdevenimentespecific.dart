@@ -15,7 +15,7 @@ Future<EsdevenimentEspecificModel> http_esdevenimentespecific(
     print('Status code = ' + response.statusCode.toString());
     print('Status body = ' + response.body.toString());
     final EsdevenimentEspecificModel list =
-        esdevenimentEspecificModelFromJson(response.body);
+        esdevenimentEspecificModelFromJson(utf8.decode(response.bodyBytes));
     return list;
   } else if (response.statusCode == 400) {
     print('Status code = ' + response.statusCode.toString());

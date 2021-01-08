@@ -7,7 +7,7 @@ Future<List<ListEsdevenimentsModel>> http_GeneralEvents() async {
   final response = await http.get(apitUrl);
   if (response.statusCode == 201 || response.statusCode == 200) {
     final listEsdevenimentsModel =
-        listEsdevenimentsModelFromJson(response.body);
+        listEsdevenimentsModelFromJson(utf8.decode(response.bodyBytes));
     return listEsdevenimentsModel;
   } else if (response.statusCode == 400) {
     return null;
