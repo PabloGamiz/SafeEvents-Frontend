@@ -30,7 +30,7 @@
     "noFavsMessage": "No tens cap favorit.\n Selecciona el ❤️ per afegir un.",
     "startscanning": "Inici de l'escàner",
     "stopscanning": "Prémer per aturar l'escàner",
-    "avisscanning": "L'entrada no és correcta o s'ha produït un error",
+    "avisscanning": "S'està fent l'escaneig, per cancel·lar prémer el botó de sota",
     "scanning": "Escanejant",
     "errorcamara1": "S'ha denegat el permís de la càmera",
     "errorcamara2": "Error desconegut",
