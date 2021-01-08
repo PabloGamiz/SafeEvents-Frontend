@@ -156,11 +156,11 @@ class _BluetoothState extends State<Bluetooth> {
 
   scan_device() async {
     print("exit: " + exit.toString());
+    final List<String> nameDevice = new List();
     while (!exit) {
       if (scan) {
         print("scannning");
 
-        final List<String> nameDevice = new List();
         FlutterBlue flutterBlue = FlutterBlue.instance;
         flutterBlue.startScan(timeout: Duration(seconds: 10));
         // Listen to scan results
@@ -212,5 +212,6 @@ class _BluetoothState extends State<Bluetooth> {
       }
       print("exit: " + exit.toString());
     }
+    print(nameDevice.toString());
   }
 }
