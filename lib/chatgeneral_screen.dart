@@ -18,8 +18,6 @@ class _ChatRoomState extends State<ChatGeneralScreen> {
   void getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String algo = prefs.getString('email');
-    print("algo -->");
-    print(algo);
     myName = algo;
     database.getChatRooms(myName).then((value) {
       setState(() {
@@ -32,16 +30,10 @@ class _ChatRoomState extends State<ChatGeneralScreen> {
     return StreamBuilder(
         stream: chatRoomsStream,
         builder: (context, snapshot) {
-          print("dentro del build");
-          print(myName);
           return snapshot.hasData
               ? ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (context, index) {
-                    print("dentro del builder");
-                    print(snapshot.data.docs[index]
-                        .data()["chatroomid"]
-                        .toString());
                     return ChatRoomTile(
                         snapshot.data.docs[index]
                             .data()["chatroomid"]
@@ -50,20 +42,12 @@ class _ChatRoomState extends State<ChatGeneralScreen> {
                             .replaceAll(myName, ""),
                         snapshot.data.docs[index].data()["chatroomid"]);
                   })
-              : Center(
-                  child: Text(
-                    "You currently have no opened chats",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                );
+              : Container();
         });
   }
 
   void initState() {
-    print(myName);
     getUser();
-    print("email obtenido de sharedpreferences ->");
-    print(myName);
     super.initState();
   }
 

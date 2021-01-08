@@ -98,20 +98,19 @@ class _GeneralEventsState extends State {
       setState(() {
         generalEvents = eventsFromServer;
         filteredEvents = generalEvents;
-        print(filteredEvents.length);
       });
     });
   }
 
   Widget build(BuildContext context) {
-    http_Favs().then((favourites) {
+    /* http_Favs().then((favourites) {
       setState(() {
         if (favourites == null)
           favs = List();
         else
           favs = favourites;
       });
-    });
+    });*/
     if (registered && filteredEvents.length > 0) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -134,8 +133,9 @@ class _GeneralEventsState extends State {
                   ciutatCercada = string;
                   if (string == "") {
                     filteredcity = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, tipus, 1);
+                    if (filteredcategory)
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, tipus, 1);
                   } else {
                     filteredcity = true;
                   }
@@ -146,10 +146,6 @@ class _GeneralEventsState extends State {
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, string, 0);
                   }
-                  /*generalEvents
-                      .where(
-                          (e) => (e.controller.location.name.contains(string)))
-                      .toList();*/
                 });
               });
             },
@@ -198,12 +194,12 @@ class _GeneralEventsState extends State {
                       newValue == "Otros") tipus = "Altres";
                   if (tipus == "") {
                     filteredcategory = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
                   } else {
                     filteredcategory = true;
                   }
                   if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
                     filteredEvents =
                         filtrarEsdeveniments(filteredEvents, tipus, 1);
                   } else {
@@ -292,12 +288,11 @@ class _GeneralEventsState extends State {
                                 Center(
                                   child: Container(
                                     child: Text(
-                                      filteredEvents[index].location
-                                      /*"ácéntó"*/, //MIRAR QUE ESTO TAMBIEN ESTE BIEN
+                                      filteredEvents[index]
+                                          .location
+                                          .split('--')[0],
                                       style: TextStyle(color: Colors.white),
-                                      //maxLines: 2,
                                       textAlign: TextAlign.center,
-                                      //overflow: TextOverflow.fade,
                                     ),
                                   ),
                                 ),
@@ -383,8 +378,9 @@ class _GeneralEventsState extends State {
                   ciutatCercada = string;
                   if (string == "") {
                     filteredcity = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, tipus, 1);
+                    if (filteredcategory)
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, tipus, 1);
                   } else {
                     filteredcity = true;
                   }
@@ -395,10 +391,6 @@ class _GeneralEventsState extends State {
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, string, 0);
                   }
-                  /*generalEvents
-                      .where(
-                          (e) => (e.controller.location.name.contains(string)))
-                      .toList();*/
                 });
               });
             },
@@ -447,12 +439,12 @@ class _GeneralEventsState extends State {
                       newValue == "Otros") tipus = "Altres";
                   if (tipus == "") {
                     filteredcategory = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
                   } else {
                     filteredcategory = true;
                   }
                   if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
                     filteredEvents =
                         filtrarEsdeveniments(filteredEvents, tipus, 1);
                   } else {
@@ -527,7 +519,9 @@ class _GeneralEventsState extends State {
                                   child: Container(
                                     child: Text(
                                       /*'Palau Sant Jordi',*/
-                                      filteredEvents[index].location,
+                                      filteredEvents[index]
+                                          .location
+                                          .split('--')[0],
                                       style: TextStyle(color: Colors.white),
                                       textAlign: TextAlign.center,
                                       // maxLines: 2,
@@ -617,8 +611,9 @@ class _GeneralEventsState extends State {
                   ciutatCercada = string;
                   if (string == "") {
                     filteredcity = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, tipus, 1);
+                    if (filteredcategory)
+                      filteredEvents =
+                          filtrarEsdeveniments(generalEvents, tipus, 1);
                   } else {
                     filteredcity = true;
                   }
@@ -629,10 +624,6 @@ class _GeneralEventsState extends State {
                     filteredEvents =
                         filtrarEsdeveniments(generalEvents, string, 0);
                   }
-                  /*generalEvents
-                      .where(
-                          (e) => (e.controller.location.name.contains(string)))
-                      .toList();*/
                 });
               });
             },
@@ -681,12 +672,12 @@ class _GeneralEventsState extends State {
                       newValue == "Otros") tipus = "Altres";
                   if (tipus == "") {
                     filteredcategory = false;
-                    filteredEvents =
-                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
                   } else {
                     filteredcategory = true;
                   }
                   if (filteredcity) {
+                    filteredEvents =
+                        filtrarEsdeveniments(generalEvents, ciutatCercada, 0);
                     filteredEvents =
                         filtrarEsdeveniments(filteredEvents, tipus, 1);
                   } else {

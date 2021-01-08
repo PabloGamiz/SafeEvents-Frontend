@@ -11,7 +11,6 @@ Future<List<FavsModel>> http_Favs() async {
   String stringValue = prefs.getString('cookie');
   var body = json.encode({"cookie": stringValue});
   var uri = Uri.http('10.4.41.148:8080', '/event/favorites');
-  print(uri);
   final response = await http.put(uri, body: body);
   if (response.statusCode == 200 || response.statusCode == 201) {
     return favsModelFromJson(response.body);
