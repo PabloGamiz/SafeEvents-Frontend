@@ -19,7 +19,7 @@ Future<ClientInfoMod> fetchClient(int id) async {
     body: body,
   );
   if (response.statusCode == 200) {
-    return clientInfoModFromJson(response.body);
+    return clientInfoModFromJson(utf8.decode(response.bodyBytes));
   } else {
     throw Exception('Failed to load client info');
   }
