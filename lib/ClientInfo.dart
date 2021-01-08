@@ -489,7 +489,7 @@ class _ClientInfoState extends State<ClientInfo> {
                     Center(
                       child: Container(
                         child: Text(
-                          event.location,
+                          event.location.split("--")[0],
                           /*filteredEvents[index].location.name,*/
                           style: TextStyle(color: Colors.white),
                           maxLines: 2,

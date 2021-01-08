@@ -354,7 +354,7 @@
     "@noOrgEvents": {
       "description": "Text when client doesn't have organized events"
     },
-    "mapsHintText": "Direcció de l'Esdeveniment",
+    "mapsHintText": "Event address",
     "@mapsHintText": {
       "description": "Text for maps search bar"
     },

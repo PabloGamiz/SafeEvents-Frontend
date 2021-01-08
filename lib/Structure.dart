@@ -112,6 +112,7 @@ class _StructureState extends State<Structure> {
               backgroundColor: Colors.blueGrey,
             ),
           ],
+          showSelectedLabels: false,
           currentIndex: _selectedIndex,
           selectedItemColor: Colors.blueAccent,
           onTap: _onItemTapped,
